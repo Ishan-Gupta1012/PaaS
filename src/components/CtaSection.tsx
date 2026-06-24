@@ -8,13 +8,13 @@ export default function CtaSection() {
         </div>
         
         <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6 leading-tight">
-          I'm building this in public.<br />
+          I&apos;m building this in public.<br />
           Your feedback ships the first<br />
           templates.
         </h2>
         
         <p className="text-gray-400 mb-12 max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
-          Drop your email — I'll send the first preview, ask 3 quick questions, and ship if there's real demand. No spam, no launch sequences.
+          Drop your email — I&apos;ll send the first preview, ask 3 quick questions, and ship if there&apos;s real demand. No spam, no launch sequences.
         </p>
         
         <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto mb-16">
@@ -40,7 +40,7 @@ export default function CtaSection() {
           </div>
           <div className="bg-gray-900/30 border border-gray-800/60 rounded-2xl p-6">
             <div className="text-gray-600 text-[10px] uppercase font-bold tracking-wider mb-2">Q03</div>
-            <p className="text-gray-300 text-sm">What's the ONE thing your current portfolio lacks?</p>
+            <p className="text-gray-300 text-sm">What&apos;s the ONE thing your current portfolio lacks?</p>
           </div>
         </div>
       </div>

@@ -6,6 +6,17 @@
   --color-background: #ffffff;
   --color-foreground: #000000;
   
+  --color-brand-600: #4F46E5;
+  --color-brand-100: #EEF2FF;
+  --color-neutral-900: #111827;
+  --color-neutral-700: #374151;
+  --color-neutral-500: #6B7280;
+  --color-neutral-200: #E5E7EB;
+  --color-neutral-50: #F9FAFB;
+  --color-success-500: #10B981;
+  --color-warning-400: #F59E0B;
+  --color-danger-500: #EF4444;
+
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   
   --color-muted: #f9fafb;

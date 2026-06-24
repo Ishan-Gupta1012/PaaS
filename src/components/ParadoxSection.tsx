@@ -39,7 +39,7 @@ export default function ParadoxSection() {
               <div className="text-primary font-bold text-sm tracking-widest mb-4">03</div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">Generators feel generic</h3>
               <p className="text-gray-500 leading-relaxed text-sm md:text-base">
-                Drag-and-drop builders scream template. You want code you'd actually be proud to push.
+                Drag-and-drop builders scream template. You want code you&apos;d actually be proud to push.
               </p>
             </div>
           </div>

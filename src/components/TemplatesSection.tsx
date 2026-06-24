@@ -11,7 +11,7 @@ export default function TemplatesSection() {
           
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 max-w-xl leading-tight">
-              Templates that don't look like templates.
+              Templates that don&apos;t look like templates.
             </h2>
             <p className="text-gray-500 max-w-md lg:pb-2 text-sm md:text-base leading-relaxed">
               Each one is hand-coded by us — production-ready Next.js with proper motion, semantic HTML, and accessibility baked in.

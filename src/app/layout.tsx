@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from "@/context/AuthContext";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -22,7 +23,11 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} antialiased scroll-smooth`}
     >
-      <body className="min-h-screen bg-white text-black font-sans flex flex-col overflow-x-hidden">{children}</body>
+      <body className="min-h-screen bg-white text-black font-sans flex flex-col overflow-x-hidden">
+        <AuthProvider>
+          {children}
+        </AuthProvider>
+      </body>
     </html>
   );
 }
