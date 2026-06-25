@@ -1,9 +1,9 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-
-export interface PersonalInfo {
+import { createClient } from '@/utils/supabase/client';export interface PersonalInfo {
   name: string;
+  email?: string;
   title: string;
   location: string;
   isOpenToWork: boolean;
@@ -329,29 +329,73 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<StudentProfile | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // Load user from localStorage
+  // Load user from Supabase and LocalStorage
   useEffect(() => {
-    const storedUser = localStorage.getItem('student_user');
-    if (storedUser) {
-      try {
-        const parsedUser = JSON.parse(storedUser) as StudentProfile;
-        // Schema validation: reject stale data from old format that lacked personalInfo
-        if (!parsedUser.personalInfo || !parsedUser.themeSettings || !parsedUser.skills) {
-          localStorage.removeItem('student_user');
+    const supabase = createClient();
+    
+    // Check active session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        // If we have a supabase user, check if we have a mocked local profile
+        const storedUser = localStorage.getItem('student_user');
+        if (storedUser) {
+          try {
+            const parsedUser = JSON.parse(storedUser) as StudentProfile;
+            if (parsedUser.personalInfo && parsedUser.themeSettings && parsedUser.skills) {
+              // ALWAYS sync with the real Supabase session data to prevent outdated mock data from showing
+              const metadata = session.user.user_metadata;
+              const name = metadata?.full_name || metadata?.name || session.user.email?.split('@')[0] || parsedUser.personalInfo.name;
+              const avatar = metadata?.avatar_url || parsedUser.personalInfo.avatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=fallback";
+              
+              parsedUser.personalInfo.name = name;
+              parsedUser.personalInfo.email = session.user.email;
+              parsedUser.personalInfo.avatar = avatar;
+              parsedUser.provider = (session.user.app_metadata.provider as any) || parsedUser.provider;
+              
+              setUser(parsedUser);
+              localStorage.setItem('student_user', JSON.stringify(parsedUser)); // Update local storage with real data
+            }
+          } catch {}
         } else {
-          setTimeout(() => {
-            setUser(parsedUser);
-            setIsLoading(false);
-          }, 0);
-          return;
+          // Fallback if no local profile but auth exists
+          const metadata = session.user.user_metadata;
+          const provider = session.user.app_metadata.provider || 'email';
+          const name = metadata?.full_name || metadata?.name || session.user.email?.split('@')[0] || 'User';
+          const avatar = metadata?.avatar_url || "https://api.dicebear.com/7.x/avataaars/svg?seed=fallback";
+          const username = session.user.email?.split('@')[0] || 'user';
+          
+          setUser({ 
+            ...mockProfiles.email, 
+            provider: provider as any, 
+            username, 
+            personalInfo: { 
+              name: name, 
+              email: session.user.email,
+              title: 'Software Developer', 
+              location: 'Remote', 
+              isOpenToWork: true, 
+              avatar: avatar 
+            } 
+          } as StudentProfile);
         }
-      } catch {
+      } else {
+        setUser(null);
         localStorage.removeItem('student_user');
       }
-    }
-    setTimeout(() => {
       setIsLoading(false);
-    }, 0);
+    });
+
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!session) {
+        setUser(null);
+        localStorage.removeItem('student_user');
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const login = async (
@@ -360,8 +404,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     name?: string
   ): Promise<void> => {
     setIsLoading(true);
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const supabase = createClient();
+
+    if (provider === 'email') {
+      // In a real app, you'd use supabase.auth.signInWithPassword or signInWithOtp
+      console.log('Email login not fully implemented in mock yet. Use OAuth.');
+    } else {
+      // Trigger OAuth Login
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: provider,
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+      if (error) {
+        console.error('Error logging in:', error.message);
+        setIsLoading(false);
+        return;
+      }
+    }
 
     let finalProfile: StudentProfile;
 
@@ -420,9 +481,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(false);
   };
 
-  const logout = () => {
+  const logout = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
     setUser(null);
     localStorage.removeItem('student_user');
+    window.location.href = '/';
   };
 
   const updateProfile = (newProfile: StudentProfile) => {
