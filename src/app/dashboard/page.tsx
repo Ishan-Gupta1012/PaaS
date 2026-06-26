@@ -20,18 +20,18 @@ export default function Dashboard() {
         </div>
         <nav className="flex-1 px-md space-y-2 mt-4">
           {/* Active Tab: Dashboard */}
-          <a className="flex items-center gap-md px-md py-[10px] bg-secondary-container text-on-surface-variant font-semibold rounded-xl transition-all duration-200" href="#">
+          <Link className="flex items-center gap-md px-md py-[10px] bg-secondary-container text-on-surface-variant font-semibold rounded-xl transition-all duration-200" href="/dashboard">
             <LayoutDashboard size={20} />
             <span className="font-body-md font-semibold">Dashboard</span>
-          </a>
+          </Link>
           <a className="flex items-center gap-md px-md py-[10px] text-on-surface-variant hover:bg-surface-container-low rounded-xl transition-all" href="#">
             <PenTool size={20} />
             <span className="font-body-md font-medium">Portfolio Builder</span>
           </a>
-          <a className="flex items-center gap-md px-md py-[10px] text-on-surface-variant hover:bg-surface-container-low rounded-xl transition-all" href="#">
+          <Link className="flex items-center gap-md px-md py-[10px] text-on-surface-variant hover:bg-surface-container-low rounded-xl transition-all" href="/dashboard/templates">
             <LayoutTemplate size={20} />
             <span className="font-body-md font-medium">Templates</span>
-          </a>
+          </Link>
           <a className="flex items-center gap-md px-md py-[10px] text-on-surface-variant hover:bg-surface-container-low rounded-xl transition-all" href="#">
             <RefreshCw size={20} />
             <span className="font-body-md font-medium">GitHub Sync</span>
