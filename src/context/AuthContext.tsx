@@ -1,7 +1,10 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { createClient } from '@/utils/supabase/client';export interface PersonalInfo {
+import { createClient } from '@/utils/supabase/client';
+import { isSupabaseConfigured } from '@/utils/supabase/env';
+
+export interface PersonalInfo {
   name: string;
   email?: string;
   title: string;
@@ -331,6 +334,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Load user from Supabase and LocalStorage
   useEffect(() => {
+    if (!isSupabaseConfigured()) {
+      const storedUser = localStorage.getItem('student_user');
+      if (storedUser) {
+        try {
+          const parsedUser = JSON.parse(storedUser) as StudentProfile;
+          if (parsedUser.personalInfo && parsedUser.themeSettings && parsedUser.skills) {
+            setUser(parsedUser);
+          }
+        } catch {}
+      }
+      setIsLoading(false);
+      return;
+    }
+
     const supabase = createClient();
     
     // Check active session
@@ -404,12 +421,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     name?: string
   ): Promise<void> => {
     setIsLoading(true);
-    const supabase = createClient();
 
-    if (provider === 'email') {
-      // In a real app, you'd use supabase.auth.signInWithPassword or signInWithOtp
-      console.log('Email login not fully implemented in mock yet. Use OAuth.');
-    } else {
+    if (provider !== 'email' && isSupabaseConfigured()) {
+      const supabase = createClient();
+
       // Trigger OAuth Login
       const { error } = await supabase.auth.signInWithOAuth({
         provider: provider,
@@ -422,6 +437,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setIsLoading(false);
         return;
       }
+    } else if (provider !== 'email') {
+      console.warn('Supabase is not configured. Using local mock profile instead of OAuth.');
     }
 
     let finalProfile: StudentProfile;
@@ -482,8 +499,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logout = async () => {
-    const supabase = createClient();
-    await supabase.auth.signOut();
+    if (isSupabaseConfigured()) {
+      const supabase = createClient();
+      await supabase.auth.signOut();
+    }
     setUser(null);
     localStorage.removeItem('student_user');
     window.location.href = '/';
