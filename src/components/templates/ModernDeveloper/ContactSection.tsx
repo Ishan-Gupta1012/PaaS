@@ -9,7 +9,7 @@ interface Props {
 
 export const ContactSection: React.FC<Props> = ({ data, socials }) => {
   return (
-    <section id="contact" className="py-40 bg-transparent border-b-2 border-[#1a1a1a] text-white flex flex-col relative overflow-hidden">
+    <section id="contact" className="py-40 bg-transparent text-white flex flex-col relative overflow-hidden">
       
       {/* Brutalist Dot Pattern */}
       <style>{`

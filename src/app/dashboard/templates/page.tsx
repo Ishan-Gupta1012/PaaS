@@ -10,6 +10,8 @@ import Link from 'next/link';
 export default function Dashboard() {
   const { user, logout } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [activeCategory, setActiveCategory] = useState('All');
+  const categories = ['All', 'Your Templates', 'Premium', 'Community'];
 
   return (
     <div className="bg-background text-on-surface font-body-md selection:bg-primary-container selection:text-on-primary-container">
@@ -124,50 +126,91 @@ export default function Dashboard() {
         {/* Main Content */}
         {/* Main Content */}
         <main className="flex-1 p-lg md:p-xl space-y-xl max-w-container-max mx-auto w-full">
-          <div>
-            <h2 className="font-headline-lg text-headline-lg font-bold">Templates</h2>
-            <p className="text-on-surface-variant mt-xs">Select a template to start building your portfolio.</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-lg">
-            {/* Slot 1 */}
-            <div className="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm hover:border-primary/50 transition-colors group block relative">
-              <div className="w-full aspect-video bg-surface-container-low rounded-lg mb-md flex items-center justify-center overflow-hidden relative">
-                <LayoutTemplate size={48} className="text-on-surface-variant group-hover:text-primary transition-colors" />
-                <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4 backdrop-blur-sm">
-                  <Link href="/dashboard/templates/preview" className="bg-surface-container-lowest text-primary px-4 py-2 rounded-lg font-semibold border border-primary hover:bg-primary/10 transition-colors">
-                    Preview
-                  </Link>
-                  <Link href="/dashboard/builder" className="bg-primary text-on-primary px-4 py-2 rounded-lg font-semibold hover:opacity-90 transition-opacity">
-                    Build
-                  </Link>
-                </div>
-              </div>
-              <h3 className="font-headline-sm text-headline-sm font-bold">Modern Developer</h3>
-              <p className="text-label-sm text-on-surface-variant mt-xs">Clean, minimalist design for modern software engineers.</p>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div>
+              <h2 className="font-headline-lg text-headline-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-600">Templates Library</h2>
+              <p className="text-on-surface-variant mt-xs text-lg">Select a stunning template to start building your portfolio.</p>
             </div>
             
-            {/* Slot 2 */}
-            <div className="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm hover:border-primary/50 transition-colors group cursor-pointer">
-              <div className="w-full aspect-video bg-surface-container-low rounded-lg mb-md flex items-center justify-center overflow-hidden relative">
-                <Code2 size={48} className="text-on-surface-variant group-hover:text-primary transition-colors" />
-                <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span className="bg-primary text-on-primary px-md py-sm rounded-lg font-semibold">Select Template</span>
+            {/* Category Selector */}
+            <div className="flex bg-surface-container-low p-1 rounded-2xl border border-outline-variant/50">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`px-6 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 ${
+                    activeCategory === cat 
+                      ? 'bg-primary text-on-primary shadow-lg shadow-primary/25 scale-105' 
+                      : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Slot 1: Modern Developer */}
+            <div className="bg-surface-container-lowest p-5 rounded-3xl border-2 border-outline-variant shadow-xl hover:border-primary/60 hover:shadow-primary/20 hover:-translate-y-2 transition-all duration-300 group block relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="w-full aspect-video bg-surface-container-low rounded-2xl mb-6 flex items-center justify-center overflow-hidden relative border border-white/5 shadow-inner">
+                <img src="https://i.postimg.cc/HkdNLqsM/Screenshot-2026-07-03-at-12-44-13-AM-1.png" alt="Modern Developer" className="w-full h-full object-cover blur-[2px] group-hover:blur-0 group-hover:scale-110 group-hover:rotate-1 transition-all duration-700 ease-out" />
+                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 backdrop-blur-sm">
+                  <Link href="/dashboard/templates/preview" className="bg-white/10 text-white px-5 py-2.5 rounded-xl font-bold border border-white/20 hover:bg-white/20 transition-all hover:scale-105">
+                    Preview
+                  </Link>
+                  <Link href="/dashboard/builder" className="bg-primary text-on-primary px-5 py-2.5 rounded-xl font-bold hover:scale-105 transition-all shadow-[0_0_20px_rgba(var(--primary),0.4)]">
+                    Build Now
+                  </Link>
                 </div>
               </div>
-              <h3 className="font-headline-sm text-headline-sm font-bold">Creative Portfolio</h3>
-              <p className="text-label-sm text-on-surface-variant mt-xs">Stand out with bold colors and unique layouts.</p>
+              <div className="relative z-10 flex justify-between items-start">
+                <div>
+                  <h3 className="font-headline-sm text-headline-sm font-bold text-on-surface group-hover:text-primary transition-colors">Modern Developer</h3>
+                  <p className="text-label-sm text-on-surface-variant mt-2 leading-relaxed">Clean, minimalist glassmorphism design. Perfect for showcasing software engineering projects.</p>
+                </div>
+                <span className="bg-surface-container-highest text-xs font-bold px-3 py-1 rounded-full text-on-surface-variant border border-outline-variant">Free</span>
+              </div>
+            </div>
+            
+            {/* Slot 2: Creative Portfolio */}
+            <div className="bg-surface-container-lowest p-5 rounded-3xl border-2 border-outline-variant shadow-xl hover:border-blue-500/50 hover:shadow-blue-500/20 hover:-translate-y-2 transition-all duration-300 group cursor-pointer relative overflow-hidden">
+              <div className="w-full aspect-video bg-gradient-to-br from-blue-900/40 to-purple-900/40 rounded-2xl mb-6 flex items-center justify-center overflow-hidden relative border border-white/5">
+                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
+                <Code2 size={56} className="text-blue-400 group-hover:scale-110 transition-transform duration-500" />
+                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm">
+                  <span className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold shadow-[0_0_20px_rgba(37,99,235,0.4)]">Select Template</span>
+                </div>
+              </div>
+              <div className="relative z-10 flex justify-between items-start">
+                <div>
+                  <h3 className="font-headline-sm text-headline-sm font-bold text-on-surface group-hover:text-blue-400 transition-colors">Creative Canvas</h3>
+                  <p className="text-label-sm text-on-surface-variant mt-2 leading-relaxed">Stand out with bold colors, dynamic layouts, and smooth micro-animations.</p>
+                </div>
+                <span className="bg-surface-container-highest text-xs font-bold px-3 py-1 rounded-full text-on-surface-variant border border-outline-variant">Free</span>
+              </div>
             </div>
 
-            {/* Slot 3 */}
-            <div className="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm hover:border-primary/50 transition-colors group cursor-pointer">
-              <div className="w-full aspect-video bg-surface-container-low rounded-lg mb-md flex items-center justify-center overflow-hidden relative">
-                <Rocket size={48} className="text-on-surface-variant group-hover:text-primary transition-colors" />
-                <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span className="bg-primary text-on-primary px-md py-sm rounded-lg font-semibold">Select Template</span>
+            {/* Slot 3: Enterprise Pro */}
+            <div className="bg-surface-container-lowest p-5 rounded-3xl border-2 border-outline-variant shadow-xl hover:border-amber-500/50 hover:shadow-amber-500/20 hover:-translate-y-2 transition-all duration-300 group cursor-pointer relative overflow-hidden">
+              <div className="w-full aspect-video bg-gradient-to-tr from-surface-container-lowest to-surface-container-high rounded-2xl mb-6 flex items-center justify-center overflow-hidden relative border border-white/5">
+                <Rocket size={56} className="text-amber-500 group-hover:-translate-y-2 group-hover:translate-x-2 transition-transform duration-500" />
+                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm">
+                  <span className="bg-gradient-to-r from-amber-500 to-orange-600 text-white px-6 py-3 rounded-xl font-bold shadow-[0_0_20px_rgba(245,158,11,0.4)] flex items-center gap-2">
+                    Unlock Premium
+                  </span>
                 </div>
               </div>
-              <h3 className="font-headline-sm text-headline-sm font-bold">Enterprise Pro</h3>
-              <p className="text-label-sm text-on-surface-variant mt-xs">Professional layout suited for enterprise consultants.</p>
+              <div className="relative z-10 flex justify-between items-start">
+                <div>
+                  <h3 className="font-headline-sm text-headline-sm font-bold text-on-surface group-hover:text-amber-500 transition-colors">Enterprise Pro</h3>
+                  <p className="text-label-sm text-on-surface-variant mt-2 leading-relaxed">Professional layout suited for enterprise consultants and senior architects.</p>
+                </div>
+                <span className="bg-gradient-to-r from-amber-500/20 to-orange-600/20 text-amber-500 text-xs font-bold px-3 py-1 rounded-full border border-amber-500/30 flex items-center gap-1">
+                  Premium
+                </span>
+              </div>
             </div>
           </div>
         </main>

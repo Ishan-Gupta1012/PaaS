@@ -5,6 +5,7 @@ import { AchievementSection } from './AchievementSection';
 import { SkillsSection } from './SkillsSection';
 import { ProjectsSection } from './ProjectsSection';
 import { ContactSection } from './ContactSection';
+import { ThreeBackground } from './ThreeBackground';
 
 interface Props {
   data: PortfolioData;
@@ -31,6 +32,8 @@ export default function ModernDeveloperTemplate({ data }: Props) {
       
       {/* Global Floating Background */}
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <ThreeBackground />
+        
         {/* Soft Glowing Orbs */}
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-[#ccff00]/5 blur-[120px] animate-float-slow" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-[#ccff00]/5 blur-[150px] animate-float-slow" style={{ animationDelay: '-10s' }} />
@@ -43,6 +46,24 @@ export default function ModernDeveloperTemplate({ data }: Props) {
       </div>
 
       <main className="relative z-10">
+        <div className="sticky top-0 z-50 w-full bg-transparent">
+          <nav className="w-full max-w-[1200px] mx-auto px-6 py-6 flex justify-between items-center">
+            <div className="font-display text-xl md:text-2xl font-bold tracking-tight text-white flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-[#ccff00] text-black flex items-center justify-center font-bold">
+                {data.hero.logoText ? data.hero.logoText.substring(0, 1).toUpperCase() : 'A'}
+              </div>
+              <span>{data.hero.logoText ? data.hero.logoText.substring(1) : 'R'}</span>
+            </div>
+            
+            <div className="hidden md:flex items-center gap-8 bg-[#111] px-6 py-3 rounded-full border border-white/5 shadow-lg">
+              <button onClick={() => document.getElementById('home')?.scrollIntoView({ behavior: 'smooth' })} className="text-sm font-medium text-white hover:text-[#ccff00] transition-colors">Home</button>
+              <button onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })} className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Projects</button>
+              <button onClick={() => document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' })} className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Achievements</button>
+              <button onClick={() => document.getElementById('skills')?.scrollIntoView({ behavior: 'smooth' })} className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Skills</button>
+              <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Contact</button>
+            </div>
+          </nav>
+        </div>
         <HeroSection data={data.hero} />
         {data.projects && data.projects.length > 0 && <ProjectsSection data={data.projects} />}
         {data.achievements && data.achievements.length > 0 && <AchievementSection data={data.achievements} />}

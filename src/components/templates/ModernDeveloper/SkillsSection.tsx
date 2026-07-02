@@ -8,34 +8,8 @@ interface Props {
 
 export const SkillsSection: React.FC<Props> = ({ data }) => {
   return (
-    <section id="skills" className="py-40 bg-transparent relative overflow-hidden flex flex-col items-center border-b border-[#1a1a1a]">
+    <section id="skills" className="py-40 bg-transparent relative overflow-hidden flex flex-col items-center">
       
-      <style>{`
-        .bg-tech-grid {
-          background-image: 
-            linear-gradient(rgba(204, 255, 0, 0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(204, 255, 0, 0.05) 1px, transparent 1px);
-          background-size: 60px 60px;
-          background-position: center center;
-          mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
-          -webkit-mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
-        }
-        @keyframes scanline {
-          0% { transform: translateY(-100vh); }
-          100% { transform: translateY(100vh); }
-        }
-        .animate-scan {
-          animation: scanline 10s linear infinite;
-        }
-      `}</style>
-      
-      {/* Stack Mastery Specific Pattern */}
-      <div className="absolute inset-0 z-0 pointer-events-none flex items-center justify-center opacity-80">
-        <div className="absolute inset-0 bg-tech-grid" />
-        <div className="absolute top-0 left-0 w-full h-[1px] bg-[#ccff00] opacity-30 animate-scan shadow-[0_0_15px_#ccff00]" />
-        <div className="absolute w-[600px] h-[600px] bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#ccff00]/5 via-[#ccff00]/2 to-transparent blur-[80px] rounded-full animate-pulse" style={{ animationDuration: '6s' }} />
-      </div>
-
       <div className="text-center mb-24 relative z-10">
         <p className="text-gray-500 text-xs font-semibold tracking-widest uppercase mb-4">Built With Precision</p>
         <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-extrabold tracking-tight text-white uppercase">

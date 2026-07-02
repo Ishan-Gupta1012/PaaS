@@ -11,11 +11,8 @@ export const ProjectsSection: React.FC<Props> = ({ data }) => {
   if (!data || data.length === 0) return null;
 
   return (
-    <section id="projects" className="py-40 bg-transparent relative overflow-hidden border-b border-[#1a1a1a]">
+    <section id="projects" className="py-40 bg-transparent relative overflow-hidden">
       
-      {/* Subtle Background Glows */}
-      <div className="absolute top-0 left-0 w-full h-[500px] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-white/[0.03] via-transparent to-transparent pointer-events-none" />
-
       <div className="w-full max-w-[1400px] mx-auto px-6 relative z-10">
         
         {/* Header */}

@@ -1,5 +1,5 @@
 export interface SocialLink {
-  platform: 'github' | 'gitlab' | 'linkedin' | 'twitter' | 'website' | 'leetcode' | 'codeforces' | 'youtube';
+  platform: 'github' | 'gitlab' | 'linkedin' | 'twitter' | 'website' | 'leetcode' | 'codeforces' | 'youtube' | 'codechef';
   url: string;
 }
 
@@ -43,8 +43,9 @@ export interface PortfolioData {
   hero: {
     name: string;
     tagline: string;
-    taglineHighlight: string;
     bio: string;
+    title?: string;
+    resumeUrl?: string;
     location: string;
     avatarUrl: string;
     logoText: string;
@@ -60,8 +61,9 @@ export const initialPortfolioData: PortfolioData = {
   hero: {
     name: "",
     tagline: "",
-    taglineHighlight: "",
     bio: "",
+    title: "",
+    resumeUrl: "",
     location: "",
     avatarUrl: "",
     logoText: "",
