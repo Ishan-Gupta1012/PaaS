@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import React, { useState } from 'react';
@@ -24,10 +25,7 @@ export default function Dashboard() {
             <LayoutDashboard size={20} />
             <span className="font-body-md font-semibold">Dashboard</span>
           </Link>
-          <a className="flex items-center gap-md px-md py-[10px] text-on-surface-variant hover:bg-surface-container-low rounded-xl transition-all" href="#">
-            <PenTool size={20} />
-            <span className="font-body-md font-medium">Portfolio Builder</span>
-          </a>
+
           <Link className="flex items-center gap-md px-md py-[10px] text-on-surface-variant hover:bg-surface-container-low rounded-xl transition-all" href="/dashboard/templates">
             <LayoutTemplate size={20} />
             <span className="font-body-md font-medium">Templates</span>

@@ -340,6 +340,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         try {
           const parsedUser = JSON.parse(storedUser) as StudentProfile;
           if (parsedUser.personalInfo && parsedUser.themeSettings && parsedUser.skills) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setUser(parsedUser);
           }
         } catch {}
@@ -367,7 +368,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               parsedUser.personalInfo.name = name;
               parsedUser.personalInfo.email = session.user.email;
               parsedUser.personalInfo.avatar = avatar;
-              parsedUser.provider = (session.user.app_metadata.provider as any) || parsedUser.provider;
+              parsedUser.provider = (session.user.app_metadata.provider as StudentProfile['provider']) || parsedUser.provider;
               
               setUser(parsedUser);
               localStorage.setItem('student_user', JSON.stringify(parsedUser)); // Update local storage with real data
@@ -383,7 +384,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           
           setUser({ 
             ...mockProfiles.email, 
-            provider: provider as any, 
+            provider: provider as StudentProfile['provider'], 
             username, 
             personalInfo: { 
               name: name, 

@@ -1,9 +1,10 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import React from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
-import { ArrowLeft, Mail, Shield, MapPin, Building, Globe, ExternalLink } from 'lucide-react';
+import { ArrowLeft, Mail, Shield, MapPin, Building } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function ProfilePage() {

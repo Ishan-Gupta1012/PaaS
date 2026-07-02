@@ -1,7 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import React, { useState } from 'react';
-import { Plus, Copy, LayoutDashboard, PenTool, LayoutTemplate, RefreshCw, Eye, BarChart3, Code2, Rocket, Settings, Search, Bell, CheckCircle2, Check, Lightbulb, Monitor, Tablet, Smartphone, ExternalLink, UserCircle, Sparkles, User, Terminal, Briefcase, GraduationCap, ShieldCheck, Share2, ArrowRight, Globe, LogOut, ChevronDown } from 'lucide-react';
+import { Plus, LayoutDashboard, PenTool, LayoutTemplate, RefreshCw, Eye, BarChart3, Code2, Rocket, Settings, Search, Bell, UserCircle, LogOut, ChevronDown } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
 
@@ -24,10 +25,7 @@ export default function Dashboard() {
             <LayoutDashboard size={20} />
             <span className="font-body-md font-medium">Dashboard</span>
           </Link>
-          <a className="flex items-center gap-md px-md py-[10px] text-on-surface-variant hover:bg-surface-container-low rounded-xl transition-all" href="#">
-            <PenTool size={20} />
-            <span className="font-body-md font-medium">Portfolio Builder</span>
-          </a>
+
           <Link className="flex items-center gap-md px-md py-[10px] bg-secondary-container text-on-surface-variant font-semibold rounded-xl transition-all duration-200" href="/dashboard/templates">
             <LayoutTemplate size={20} />
             <span className="font-body-md font-semibold">Templates</span>
@@ -132,11 +130,16 @@ export default function Dashboard() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-lg">
             {/* Slot 1 */}
-            <div className="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm hover:border-primary/50 transition-colors group cursor-pointer">
+            <div className="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm hover:border-primary/50 transition-colors group block relative">
               <div className="w-full aspect-video bg-surface-container-low rounded-lg mb-md flex items-center justify-center overflow-hidden relative">
                 <LayoutTemplate size={48} className="text-on-surface-variant group-hover:text-primary transition-colors" />
-                <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span className="bg-primary text-on-primary px-md py-sm rounded-lg font-semibold">Select Template</span>
+                <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4 backdrop-blur-sm">
+                  <Link href="/dashboard/templates/preview" className="bg-surface-container-lowest text-primary px-4 py-2 rounded-lg font-semibold border border-primary hover:bg-primary/10 transition-colors">
+                    Preview
+                  </Link>
+                  <Link href="/dashboard/builder" className="bg-primary text-on-primary px-4 py-2 rounded-lg font-semibold hover:opacity-90 transition-opacity">
+                    Build
+                  </Link>
                 </div>
               </div>
               <h3 className="font-headline-sm text-headline-sm font-bold">Modern Developer</h3>
