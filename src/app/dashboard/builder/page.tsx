@@ -276,16 +276,16 @@ export default function BuilderPage() {
             </div>
 
             {/* Scrollable Area */}
-            <div className="flex-1 overflow-y-auto min-h-0 p-6 scroll-smooth custom-scrollbar">
+            <div className="flex-1 overflow-y-auto min-h-0 px-6 md:px-8 py-6 scroll-smooth custom-scrollbar">
               
               {/* HERO TAB */}
               {activeTab === 'hero' && (
-                <div className="space-y-6 animate-fade-in-up">
-                  <div className="space-y-5 bg-[#121214] p-6 rounded-2xl border border-white/5 shadow-inner">
+                <div className="space-y-8 animate-fade-in-up">
+                  <div className="bg-[#121214] p-8 rounded-2xl border border-white/5 shadow-inner flex flex-col gap-6">
                     
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Profile Photo</label>
-                      <div className="flex items-center gap-4 bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[10px]">
+                    <div className="flex flex-col gap-2.5">
+                      <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase">Profile Photo</label>
+                      <div className="flex items-center gap-4 bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-4">
                         <label className="cursor-pointer bg-[#232328] hover:bg-[#2e2e35] text-white text-xs font-bold px-4 py-2.5 rounded-lg border border-white/5 transition-all">
                           Choose File
                           <input 
@@ -301,44 +301,44 @@ export default function BuilderPage() {
                       </div>
                     </div>
  
-                    <div className="space-y-5">
-                      <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Name</label>
-                        <input type="text" placeholder="John Doe" value={data.hero.logoText} onChange={(e) => handleHeroChange('logoText', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[12px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-zinc-500 text-white" />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Job Title</label>
-                        <input type="text" placeholder="Full-Stack Engineer" value={data.hero.title || ''} onChange={(e) => handleHeroChange('title', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[12px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-zinc-500 text-white" />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Resume Link (Optional)</label>
-                        <input type="url" placeholder="https://link-to-your-resume.pdf" value={data.hero.resumeUrl || ''} onChange={(e) => handleHeroChange('resumeUrl', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[12px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-zinc-500 text-white" />
-                      </div>
+                    <div className="flex flex-col gap-2.5">
+                      <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase">Name</label>
+                      <input type="text" placeholder="John Doe" value={data.hero.logoText} onChange={(e) => handleHeroChange('logoText', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-4 text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-zinc-500 text-white" />
+                    </div>
+
+                    <div className="flex flex-col gap-2.5">
+                      <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase">Job Title</label>
+                      <input type="text" placeholder="Full-Stack Engineer" value={data.hero.title || ''} onChange={(e) => handleHeroChange('title', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-4 text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-zinc-500 text-white" />
+                    </div>
+
+                    <div className="flex flex-col gap-2.5">
+                      <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase">Resume Link (Optional)</label>
+                      <input type="url" placeholder="https://link-to-your-resume.pdf" value={data.hero.resumeUrl || ''} onChange={(e) => handleHeroChange('resumeUrl', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-4 text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-zinc-500 text-white" />
                     </div>
  
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Hero Headline</label>
-                      <input type="text" placeholder="Building scalable digital experiences." value={data.hero.tagline} onChange={(e) => handleHeroChange('tagline', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[12px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-zinc-500 text-white" />
+                    <div className="flex flex-col gap-2.5">
+                      <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase">Hero Headline</label>
+                      <input type="text" placeholder="Building scalable digital experiences." value={data.hero.tagline} onChange={(e) => handleHeroChange('tagline', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-4 text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-zinc-500 text-white" />
                     </div>
  
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Bio</label>
-                      <textarea rows={5} placeholder="Write a short bio..." value={data.hero.bio} onChange={(e) => handleHeroChange('bio', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[12px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all resize-none placeholder:text-zinc-500 text-white" />
+                    <div className="flex flex-col gap-2.5">
+                      <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase">Bio</label>
+                      <textarea rows={6} placeholder="Write a short bio..." value={data.hero.bio} onChange={(e) => handleHeroChange('bio', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-4 text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all resize-none placeholder:text-zinc-500 text-white min-h-[160px]" />
                     </div>
                   </div>
  
-                  <div className="space-y-4 bg-[#121214] p-6 rounded-2xl border border-white/5">
-                    <div className="flex items-center justify-between border-b border-white/5 pb-3">
+                  <div className="bg-[#121214] p-8 rounded-2xl border border-white/5 flex flex-col gap-6">
+                    <div className="flex items-center justify-between border-b border-white/5 pb-4">
                       <h3 className="text-[10px] font-bold text-white/40 tracking-wider uppercase">Social Links</h3>
                     </div>
                     
-                    <div className="space-y-3">
+                    <div className="flex flex-col gap-4">
                       {data.hero.socials.map((social, idx) => (
-                        <div key={idx} className="flex gap-3 items-center bg-[#0D0D10] p-3 rounded-xl border border-white/5 focus-within:border-primary/30 transition-colors">
+                        <div key={idx} className="flex gap-3 items-center bg-[#0D0D10] p-4 rounded-xl border border-white/5 focus-within:border-primary/30 transition-colors">
                           <select 
                             value={social.platform}
                             onChange={(e) => handleSocialChange(idx, 'platform', e.target.value)}
-                            className="bg-transparent border-r border-white/5 pr-3 py-1 text-sm outline-none font-bold text-white/80 cursor-pointer"
+                            className="bg-transparent border-r border-white/5 pr-4 py-1 text-sm outline-none font-bold text-white/80 cursor-pointer"
                           >
                             <option value="github" className="bg-[#16161A]">GitHub</option>
                             <option value="linkedin" className="bg-[#16161A]">LinkedIn</option>
@@ -350,11 +350,11 @@ export default function BuilderPage() {
                             <option value="codechef" className="bg-[#16161A]">CodeChef</option>
                           </select>
                           <input type="text" placeholder="https://..." value={social.url} onChange={(e) => handleSocialChange(idx, 'url', e.target.value)} className="flex-1 bg-transparent px-2 text-sm outline-none placeholder:text-zinc-500 text-white" />
-                          <button onClick={() => removeSocial(idx)} className="text-error hover:bg-error/20 bg-error/10 p-2 rounded-lg transition-colors"><Trash2 size={16} /></button>
+                          <button onClick={() => removeSocial(idx)} className="text-error hover:bg-error/20 bg-error/10 p-2.5 rounded-lg transition-colors"><Trash2 size={16} /></button>
                         </div>
                       ))}
                       
-                      <button onClick={addSocial} className="w-full py-3 border border-dashed border-white/10 hover:border-white/20 rounded-xl text-white/50 hover:text-white font-bold text-xs hover:bg-white/[0.01] transition-all flex items-center justify-center gap-2">
+                      <button onClick={addSocial} className="w-full py-4 border border-dashed border-white/10 hover:border-white/20 rounded-xl text-white/50 hover:text-white font-bold text-xs hover:bg-white/[0.01] transition-all flex items-center justify-center gap-2">
                         <Plus size={14} /> Add Social Link
                       </button>
                     </div>
