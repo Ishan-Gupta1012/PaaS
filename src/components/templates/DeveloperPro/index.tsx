@@ -101,7 +101,9 @@ export default function DeveloperProTemplate({ data }: Props) {
   const goTo = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     const el = document.getElementById(id);
-    if (el) window.scrollTo({ top: el.offsetTop - 80, behavior: "smooth" });
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -208,7 +210,7 @@ export default function DeveloperProTemplate({ data }: Props) {
       </header>
 
       {/* HERO */}
-      <section id="home" style={{ minHeight:"100vh", display:"flex", alignItems:"center", position:"relative", paddingTop:"72px", overflow:"hidden" }}>
+      <section id="home" style={{ minHeight:"100vh", display:"flex", alignItems:"center", position:"relative", paddingTop:"72px", overflow:"hidden", scrollMarginTop: "100px" }}>
         <div aria-hidden="true" style={{ position:"absolute", inset:0, backgroundImage:"radial-gradient(circle, rgba(45,212,191,0.11) 1px, transparent 1px)", backgroundSize:"30px 30px", pointerEvents:"none" }} />
         <div aria-hidden="true" style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse 85% 75% at 50% 40%, transparent 25%, #09090B 80%)", pointerEvents:"none" }} />
         <div style={{ maxWidth:"1140px", width:"100%", margin:"0 auto", padding:"80px 32px", position:"relative" }}>
@@ -308,7 +310,7 @@ export default function DeveloperProTemplate({ data }: Props) {
 
       {/* PROJECTS */}
       {data.projects && data.projects.length > 0 && (
-        <section id="projects" style={{ padding:"120px 0", borderBottom:"1px solid rgba(255,255,255,.04)" }}>
+        <section id="projects" style={{ padding:"120px 0", borderBottom:"1px solid rgba(255,255,255,.04)", scrollMarginTop: "100px" }}>
           <div style={{ maxWidth:"1140px", margin:"0 auto", padding:"0 32px" }}>
             <EchoHeading text="Projects" />
             {data.projects.map((p, idx)=>(
@@ -351,7 +353,7 @@ export default function DeveloperProTemplate({ data }: Props) {
 
       {/* EXPERIENCE + ACHIEVEMENTS */}
       {(experienceList.length > 0 || achievementsList.length > 0) && (
-        <section id="experience" style={{ padding:"120px 0", borderBottom:"1px solid rgba(255,255,255,.04)" }}>
+        <section id="experience" style={{ padding:"120px 0", borderBottom:"1px solid rgba(255,255,255,.04)", scrollMarginTop: "100px" }}>
           <div style={{ maxWidth:"1140px", margin:"0 auto", padding:"0 32px" }}>
             <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"80px" }} className="se-g2">
               {experienceList.length > 0 && (
@@ -372,7 +374,7 @@ export default function DeveloperProTemplate({ data }: Props) {
                 </div>
               )}
               {achievementsList.length > 0 && (
-                <div id="achievements">
+                <div id="achievements" style={{ scrollMarginTop: "100px" }}>
                   <EchoHeading text="Achievements" />
                   <div style={{ display:"flex", flexDirection:"column", gap:"12px" }}>
                     {achievementsList.map((a, idx)=>(
@@ -394,7 +396,7 @@ export default function DeveloperProTemplate({ data }: Props) {
       )}
 
       {/* CONTACT */}
-      <section id="contact" style={{ padding:"120px 0" }}>
+      <section id="contact" style={{ padding:"120px 0", scrollMarginTop: "100px" }}>
         <div style={{ maxWidth:"1140px", margin:"0 auto", padding:"0 32px" }}>
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"80px", alignItems:"start" }} className="se-g2">
             <div>
