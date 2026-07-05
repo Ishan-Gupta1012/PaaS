@@ -150,28 +150,7 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-lg">
-            {/* Slot 1 — Developer Pro */}
-            <div className="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm hover:border-primary/50 transition-colors group flex flex-col justify-between">
-              <div>
-                <Link href="/templates/software-engineer" className="block w-full aspect-video bg-surface-container-low rounded-lg mb-md overflow-hidden relative">
-                  <LayoutTemplate size={48} className="absolute inset-0 m-auto text-on-surface-variant group-hover:text-primary transition-colors" />
-                  <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <span className="bg-primary text-on-primary px-md py-sm rounded-lg font-semibold">Preview Template</span>
-                  </div>
-                </Link>
-                <h3 className="font-headline-sm text-headline-sm font-bold">Developer Pro</h3>
-                <p className="text-label-sm text-on-surface-variant mt-xs mb-4">Clean, dark-themed bento design for modern software engineers.</p>
-              </div>
-              <Link
-                href="/templates/software-engineer"
-                className="w-full text-center py-2 border border-outline-variant text-primary hover:bg-surface-container-low rounded-lg font-semibold text-label-md flex items-center justify-center gap-2 transition-all hover:border-primary/30"
-              >
-                Live Preview
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
-              </Link>
-            </div>
-            
-            {/* Slot 2 — Creative Edge */}
+            {/* Slot 1 — Creative Edge */}
             <div className="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm hover:border-primary/50 transition-colors group flex flex-col justify-between">
               <div>
                 <Link href="/templates/creative-edge" className="block w-full aspect-video bg-[#060814] rounded-lg mb-md overflow-hidden relative">
@@ -186,6 +165,27 @@ export default function Dashboard() {
               </div>
               <Link
                 href="/templates/creative-edge"
+                className="w-full text-center py-2 border border-outline-variant text-primary hover:bg-surface-container-low rounded-lg font-semibold text-label-md flex items-center justify-center gap-2 transition-all hover:border-primary/30"
+              >
+                Live Preview
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+              </Link>
+            </div>
+
+            {/* Slot 2 — Developer Pro */}
+            <div className="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm hover:border-primary/50 transition-colors group flex flex-col justify-between">
+              <div>
+                <Link href="/templates/software-engineer" className="block w-full aspect-video bg-surface-container-low rounded-lg mb-md overflow-hidden relative">
+                  <LayoutTemplate size={48} className="absolute inset-0 m-auto text-on-surface-variant group-hover:text-primary transition-colors" />
+                  <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span className="bg-primary text-on-primary px-md py-sm rounded-lg font-semibold">Preview Template</span>
+                  </div>
+                </Link>
+                <h3 className="font-headline-sm text-headline-sm font-bold">Developer Pro</h3>
+                <p className="text-label-sm text-on-surface-variant mt-xs mb-4">Clean, dark-themed bento design for modern software engineers.</p>
+              </div>
+              <Link
+                href="/templates/software-engineer"
                 className="w-full text-center py-2 border border-outline-variant text-primary hover:bg-surface-container-low rounded-lg font-semibold text-label-md flex items-center justify-center gap-2 transition-all hover:border-primary/30"
               >
                 Live Preview

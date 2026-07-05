@@ -20,43 +20,12 @@ export default function TemplatesSection() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-          {/* Card 1 - Modern Developer (Dark) */}
-          <div className="rounded-3xl bg-[#0A0A0A] aspect-[4/3] border border-gray-800 flex flex-col p-8 relative overflow-hidden group shadow-xl transition-all duration-300 hover:border-blue-500/50 hover:-translate-y-2">
-            <div className="absolute inset-0 bg-gradient-to-tr from-gray-950 to-[#0A0A0A] opacity-90" />
-            <div className="relative z-10 flex-1 flex flex-col justify-center">
-              <span className="text-[10px] font-bold tracking-widest text-blue-400 uppercase mb-2">SLOT 1 &bull; DARK THEME</span>
-              <h3 className="text-2xl font-bold text-white mb-2">Modern Developer</h3>
-              <p className="text-gray-400 text-xs leading-relaxed max-w-xs mb-6">
-                Premium dark-slate layout for software engineers. Features a work experience timeline, bento toolkit, and interactive email copy widgets.
-              </p>
-              <div className="flex gap-2 flex-wrap">
-                <span className="rounded bg-[#090a0f] border border-gray-800 px-2.5 py-1 text-[10px] text-gray-400 font-medium">Next.js</span>
-                <span className="rounded bg-[#090a0f] border border-gray-800 px-2.5 py-1 text-[10px] text-gray-400 font-medium">TypeScript</span>
-                <span className="rounded bg-[#090a0f] border border-gray-800 px-2.5 py-1 text-[10px] text-gray-400 font-medium">Tailwind</span>
-              </div>
-            </div>
-            <div className="absolute inset-0 bg-black/85 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-4 z-20">
-              <span className="text-white font-bold text-lg">Modern Developer</span>
-              <a
-                href="/templates/software-engineer"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-white text-black px-5 py-2.5 rounded-xl font-semibold text-sm hover:bg-zinc-200 transition-colors flex items-center gap-2"
-              >
-                Live Preview
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                </svg>
-              </a>
-            </div>
-          </div>
-
-          {/* Card 2 - Creative Edge (Purple/Pink) */}
+          {/* Card 1 - Creative Edge (Purple/Pink) */}
           <div className="rounded-3xl bg-[#060814] aspect-[4/3] border border-purple-900/40 flex flex-col p-8 relative overflow-hidden group shadow-xl transition-all duration-300 hover:border-purple-500/50 hover:-translate-y-2">
             <div className="absolute top-0 left-0 w-64 h-64 bg-purple-600/15 rounded-full blur-[80px] pointer-events-none" />
             <div className="absolute bottom-0 right-0 w-64 h-64 bg-pink-600/15 rounded-full blur-[80px] pointer-events-none" />
             <div className="relative z-10 flex-1 flex flex-col justify-center">
-              <span className="text-[10px] font-bold tracking-widest text-purple-400 uppercase mb-2">SLOT 2 &bull; CREATIVE DARK</span>
+              <span className="text-[10px] font-bold tracking-widest text-purple-400 uppercase mb-2">SLOT 1 &bull; CREATIVE DARK</span>
               <h3 className="text-2xl font-bold text-white mb-2">Creative Edge</h3>
               <p className="text-purple-200/60 text-xs leading-relaxed max-w-xs mb-6">
                 Vibrant purple-pink gradient portfolio for creative technologists and digital artists. Animated hero, 6-project grid, and process timeline.
@@ -74,6 +43,37 @@ export default function TemplatesSection() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-5 py-2.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all flex items-center gap-2"
+              >
+                Live Preview
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          {/* Card 2 - Modern Developer (Dark) */}
+          <div className="rounded-3xl bg-[#0A0A0A] aspect-[4/3] border border-gray-800 flex flex-col p-8 relative overflow-hidden group shadow-xl transition-all duration-300 hover:border-blue-500/50 hover:-translate-y-2">
+            <div className="absolute inset-0 bg-gradient-to-tr from-gray-950 to-[#0A0A0A] opacity-90" />
+            <div className="relative z-10 flex-1 flex flex-col justify-center">
+              <span className="text-[10px] font-bold tracking-widest text-blue-400 uppercase mb-2">SLOT 2 &bull; DARK THEME</span>
+              <h3 className="text-2xl font-bold text-white mb-2">Modern Developer</h3>
+              <p className="text-gray-400 text-xs leading-relaxed max-w-xs mb-6">
+                Premium dark-slate layout for software engineers. Features a work experience timeline, bento toolkit, and interactive email copy widgets.
+              </p>
+              <div className="flex gap-2 flex-wrap">
+                <span className="rounded bg-[#090a0f] border border-gray-800 px-2.5 py-1 text-[10px] text-gray-400 font-medium">Next.js</span>
+                <span className="rounded bg-[#090a0f] border border-gray-800 px-2.5 py-1 text-[10px] text-gray-400 font-medium">TypeScript</span>
+                <span className="rounded bg-[#090a0f] border border-gray-800 px-2.5 py-1 text-[10px] text-gray-400 font-medium">Tailwind</span>
+              </div>
+            </div>
+            <div className="absolute inset-0 bg-black/85 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-4 z-20">
+              <span className="text-white font-bold text-lg">Modern Developer</span>
+              <a
+                href="/templates/software-engineer"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white text-black px-5 py-2.5 rounded-xl font-semibold text-sm hover:bg-zinc-200 transition-colors flex items-center gap-2"
               >
                 Live Preview
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">
