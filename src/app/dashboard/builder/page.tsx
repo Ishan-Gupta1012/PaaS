@@ -7,6 +7,104 @@ import DeveloperProTemplate from '@/components/templates/DeveloperPro';
 import Link from 'next/link';
 import { ArrowLeft, Save, Plus, Trash2, User, Briefcase, Code, Mail, Edit3, X, Zap } from 'lucide-react';
 
+interface FormGroupProps {
+  label: string;
+  children: React.ReactNode;
+}
+
+const FormGroup = ({ label, children }: FormGroupProps) => (
+  <div className="flex flex-col gap-2.5 w-full">
+    <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase">
+      {label}
+    </label>
+    {children}
+  </div>
+);
+
+interface FormFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {}
+
+const FormField = React.forwardRef<HTMLInputElement, FormFieldProps>((props, ref) => (
+  <input
+    ref={ref}
+    {...props}
+    className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-4 text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-zinc-500 text-white hover:border-white/10"
+  />
+));
+FormField.displayName = 'FormField';
+
+interface FormTextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
+
+const FormTextArea = React.forwardRef<HTMLTextAreaElement, FormTextAreaProps>((props, ref) => (
+  <textarea
+    ref={ref}
+    {...props}
+    className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-4 text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all resize-none placeholder:text-zinc-500 text-white hover:border-white/10 min-h-[120px]"
+  />
+));
+FormTextArea.displayName = 'FormTextArea';
+
+interface FormSelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
+  children: React.ReactNode;
+}
+
+const FormSelect = React.forwardRef<HTMLSelectElement, FormSelectProps>(({ children, ...props }, ref) => (
+  <select
+    ref={ref}
+    {...props}
+    className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-4 text-sm focus:border-primary/50 outline-none text-white cursor-pointer hover:border-white/10 transition-colors"
+  >
+    {children}
+  </select>
+));
+FormSelect.displayName = 'FormSelect';
+
+interface FormCardProps {
+  children: React.ReactNode;
+  className?: string;
+  onRemove?: () => void;
+  indexLabel?: number;
+  titlePlaceholder?: string;
+  titleValue?: string;
+  onTitleChange?: (val: string) => void;
+}
+
+const FormCard = ({ 
+  children, 
+  className = "", 
+  onRemove,
+  indexLabel,
+  titlePlaceholder,
+  titleValue,
+  onTitleChange 
+}: FormCardProps) => (
+  <div className={`bg-[#121214] p-8 rounded-2xl border border-white/5 shadow-inner flex flex-col gap-6 relative group hover:border-white/10 transition-all ${className}`}>
+    {onRemove && (
+      <button 
+        onClick={onRemove} 
+        className="absolute top-6 right-6 text-error hover:bg-error/20 bg-black/40 p-2.5 rounded-full opacity-0 group-hover:opacity-100 transition-all shadow-sm z-10"
+        title="Remove"
+      >
+        <Trash2 size={16} />
+      </button>
+    )}
+    
+    {indexLabel !== undefined && onTitleChange !== undefined && (
+      <div className="flex items-center gap-3 border-b border-white/5 pb-4 pr-10">
+        <span className="text-primary font-bold text-xl">{indexLabel}</span>
+        <input 
+          type="text" 
+          placeholder={titlePlaceholder} 
+          value={titleValue} 
+          onChange={(e) => onTitleChange(e.target.value)} 
+          className="flex-1 bg-transparent text-xl font-bold focus:outline-none placeholder:text-white/20 text-white" 
+        />
+      </div>
+    )}
+    
+    {children}
+  </div>
+);
+
 export default function BuilderPage() {
   const [data, setData] = useState<PortfolioData>(initialPortfolioData);
   const [isPreviewFullscreen] = useState(false);
@@ -225,20 +323,20 @@ export default function BuilderPage() {
           </div>
 
           {/* Left Icon Sidebar */}
-          <div className="w-[72px] min-w-[72px] border-r border-white/10 flex flex-col items-center py-6 gap-6 bg-black/40 rounded-l-2xl">
-            <Link href="/dashboard/templates" className="p-3 hover:bg-white/5 rounded-xl transition-colors text-white/50 hover:text-white" title="Back to Templates">
+          <div className="w-16 min-w-[64px] border-r border-white/10 flex flex-col items-center py-6 gap-6 bg-black/40 rounded-l-2xl">
+            <Link href="/dashboard/templates" className="w-11 h-11 flex justify-center items-center hover:bg-white/5 rounded-xl transition-colors text-white/50 hover:text-white" title="Back to Templates">
               <ArrowLeft size={20} />
             </Link>
             
             <div className="w-full h-px bg-white/5" />
             
-            <div className="flex flex-col gap-2 w-full px-2">
+            <div className="flex flex-col gap-2.5 w-full px-2.5">
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as 'hero' | 'projects' | 'achievements' | 'skills' | 'contact')}
                   title={tab.label}
-                  className={`p-3 rounded-xl flex justify-center items-center transition-all group relative ${
+                  className={`w-11 h-11 rounded-xl flex justify-center items-center transition-all group relative ${
                     activeTab === tab.id 
                       ? 'bg-primary text-white shadow-lg shadow-primary/20' 
                       : 'text-white/50 hover:bg-white/5 hover:text-white'
@@ -253,13 +351,13 @@ export default function BuilderPage() {
               ))}
             </div>
           </div>
-
+ 
           {/* Main Form Content Wrapper */}
           <div className="flex-1 flex flex-col min-w-0 h-full">
             
             {/* Header */}
             <div 
-              className="h-[72px] min-h-[72px] px-6 border-b border-white/5 flex items-center justify-between bg-white/[0.01] cursor-move"
+              className="h-[72px] min-h-[72px] px-8 border-b border-white/5 flex items-center justify-between bg-white/[0.01] cursor-move"
               onMouseDown={startDragging}
             >
               <h2 className="font-bold text-lg tracking-wide select-none">
@@ -274,17 +372,15 @@ export default function BuilderPage() {
                 </button>
               </div>
             </div>
-
+ 
             {/* Scrollable Area */}
-            <div className="flex-1 overflow-y-auto min-h-0 px-6 md:px-8 py-6 scroll-smooth custom-scrollbar">
+            <div className="flex-1 overflow-y-auto min-h-0 px-6 md:px-8 pt-6 pb-12 scroll-smooth custom-scrollbar">
               
               {/* HERO TAB */}
               {activeTab === 'hero' && (
                 <div className="space-y-8 animate-fade-in-up">
-                  <div className="bg-[#121214] p-8 rounded-2xl border border-white/5 shadow-inner flex flex-col gap-6">
-                    
-                    <div className="flex flex-col gap-2.5">
-                      <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase">Profile Photo</label>
+                  <FormCard>
+                    <FormGroup label="Profile Photo">
                       <div className="flex items-center gap-4 bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-4">
                         <label className="cursor-pointer bg-[#232328] hover:bg-[#2e2e35] text-white text-xs font-bold px-4 py-2.5 rounded-lg border border-white/5 transition-all">
                           Choose File
@@ -299,35 +395,30 @@ export default function BuilderPage() {
                           {data.hero.avatarUrl ? "Photo Uploaded" : "No file chosen"}
                         </span>
                       </div>
-                    </div>
+                    </FormGroup>
  
-                    <div className="flex flex-col gap-2.5">
-                      <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase">Name</label>
-                      <input type="text" placeholder="John Doe" value={data.hero.logoText} onChange={(e) => handleHeroChange('logoText', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-4 text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-zinc-500 text-white" />
-                    </div>
+                    <FormGroup label="Name">
+                      <FormField placeholder="John Doe" value={data.hero.logoText} onChange={(e) => handleHeroChange('logoText', e.target.value)} />
+                    </FormGroup>
 
-                    <div className="flex flex-col gap-2.5">
-                      <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase">Job Title</label>
-                      <input type="text" placeholder="Full-Stack Engineer" value={data.hero.title || ''} onChange={(e) => handleHeroChange('title', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-4 text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-zinc-500 text-white" />
-                    </div>
+                    <FormGroup label="Job Title">
+                      <FormField placeholder="Full-Stack Engineer" value={data.hero.title || ''} onChange={(e) => handleHeroChange('title', e.target.value)} />
+                    </FormGroup>
 
-                    <div className="flex flex-col gap-2.5">
-                      <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase">Resume Link (Optional)</label>
-                      <input type="url" placeholder="https://link-to-your-resume.pdf" value={data.hero.resumeUrl || ''} onChange={(e) => handleHeroChange('resumeUrl', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-4 text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-zinc-500 text-white" />
-                    </div>
+                    <FormGroup label="Resume Link (Optional)">
+                      <FormField type="url" placeholder="https://link-to-your-resume.pdf" value={data.hero.resumeUrl || ''} onChange={(e) => handleHeroChange('resumeUrl', e.target.value)} />
+                    </FormGroup>
  
-                    <div className="flex flex-col gap-2.5">
-                      <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase">Hero Headline</label>
-                      <input type="text" placeholder="Building scalable digital experiences." value={data.hero.tagline} onChange={(e) => handleHeroChange('tagline', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-4 text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-zinc-500 text-white" />
-                    </div>
+                    <FormGroup label="Hero Headline">
+                      <FormField placeholder="Building scalable digital experiences." value={data.hero.tagline} onChange={(e) => handleHeroChange('tagline', e.target.value)} />
+                    </FormGroup>
  
-                    <div className="flex flex-col gap-2.5">
-                      <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase">Bio</label>
-                      <textarea rows={6} placeholder="Write a short bio..." value={data.hero.bio} onChange={(e) => handleHeroChange('bio', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-4 text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all resize-none placeholder:text-zinc-500 text-white min-h-[160px]" />
-                    </div>
-                  </div>
+                    <FormGroup label="Bio">
+                      <FormTextArea rows={6} placeholder="Write a short bio..." value={data.hero.bio} onChange={(e) => handleHeroChange('bio', e.target.value)} className="min-h-[160px]" />
+                    </FormGroup>
+                  </FormCard>
  
-                  <div className="bg-[#121214] p-8 rounded-2xl border border-white/5 flex flex-col gap-6">
+                  <FormCard>
                     <div className="flex items-center justify-between border-b border-white/5 pb-4">
                       <h3 className="text-[10px] font-bold text-white/40 tracking-wider uppercase">Social Links</h3>
                     </div>
@@ -358,171 +449,163 @@ export default function BuilderPage() {
                         <Plus size={14} /> Add Social Link
                       </button>
                     </div>
-                  </div>
+                  </FormCard>
                 </div>
               )}
-
+ 
               {/* PROJECTS TAB */}
               {activeTab === 'projects' && (
-                <div className="space-y-6 animate-fade-in-up">
+                <div className="space-y-8 animate-fade-in-up">
                   {data.projects.map((project, index) => (
-                    <div key={project.id} className="bg-[#121214] p-6 rounded-2xl border border-white/5 space-y-5 relative group hover:border-primary/20 transition-all">
-                      <button onClick={() => removeProject(index)} className="absolute top-6 right-6 text-error hover:bg-error/20 bg-black/40 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all shadow-sm"><Trash2 size={16} /></button>
+                    <FormCard
+                      key={project.id}
+                      indexLabel={index + 1}
+                      titlePlaceholder="Project Name"
+                      titleValue={project.name}
+                      onTitleChange={(val) => handleProjectChange(index, 'name', val)}
+                      onRemove={() => removeProject(index)}
+                    >
+                      <FormGroup label="Thumbnail Image">
+                        <div className="flex items-center gap-4 bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-4">
+                          <label className="cursor-pointer bg-[#232328] hover:bg-[#2e2e35] text-white text-xs font-bold px-4 py-2.5 rounded-lg border border-white/5 transition-all">
+                            Choose File
+                            <input 
+                              type="file" 
+                              accept="image/*"
+                              onChange={(e) => handleProjectImageUpload(index, e)} 
+                              className="hidden" 
+                            />
+                          </label>
+                          <span className="text-xs text-white/50 truncate">
+                            {project.images?.[0] ? "Thumbnail Uploaded" : "No file chosen"}
+                          </span>
+                        </div>
+                      </FormGroup>
+ 
+                      <FormGroup label="Description">
+                        <FormTextArea rows={3} placeholder="What does this project do?" value={project.description} onChange={(e) => handleProjectChange(index, 'description', e.target.value)} />
+                      </FormGroup>
+ 
+                      <FormGroup label="Tech Stack (comma separated)">
+                        <FormField placeholder="React, Node.js, Tailwind..." value={project.techStack.join(', ')} onChange={(e) => handleProjectChange(index, 'techStack', e.target.value.split(',').map(s => s.trim()))} />
+                      </FormGroup>
+ 
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <FormGroup label="GitHub URL (Optional)">
+                          <FormField placeholder="https://github.com/..." value={project.githubUrl || ''} onChange={(e) => handleProjectChange(index, 'githubUrl', e.target.value)} />
+                        </FormGroup>
+                        <FormGroup label="Live URL (Optional)">
+                          <FormField placeholder="https://..." value={project.liveUrl || ''} onChange={(e) => handleProjectChange(index, 'liveUrl', e.target.value)} />
+                        </FormGroup>
+                      </div>
                       
-                      <div className="flex items-center gap-3 border-b border-white/5 pb-4 pr-10">
-                        <span className="text-primary font-bold text-xl">{index + 1}</span>
-                        <input type="text" placeholder="Project Name" value={project.name} onChange={(e) => handleProjectChange(index, 'name', e.target.value)} className="flex-1 bg-transparent text-xl font-bold focus:outline-none placeholder:text-white/20 text-white" />
-                      </div>
-
-                      <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Thumbnail Image</label>
-                        <input 
-                          type="file" 
-                          accept="image/*"
-                          onChange={(e) => handleProjectImageUpload(index, e)} 
-                          className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[10px] text-xs focus:outline-none file:mr-4 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#232328] file:text-white/90 hover:file:bg-[#2e2e35] cursor-pointer text-white/40" 
-                        />
-                      </div>
-
-                      <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Description</label>
-                        <textarea rows={3} placeholder="What does this project do?" value={project.description} onChange={(e) => handleProjectChange(index, 'description', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none resize-none placeholder:text-zinc-500 text-white" />
-                      </div>
-
-                      <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Tech Stack (comma separated)</label>
-                        <input 
-                          type="text" 
-                          placeholder="React, Node.js, Tailwind..."
-                          value={project.techStack.join(', ')} 
-                          onChange={(e) => handleProjectChange(index, 'techStack', e.target.value.split(',').map(s => s.trim()))} 
-                          className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none placeholder:text-zinc-500 text-white" 
-                        />
-                      </div>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">GitHub URL (Optional)</label>
-                          <input type="text" placeholder="https://github.com/..." value={project.githubUrl || ''} onChange={(e) => handleProjectChange(index, 'githubUrl', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none placeholder:text-zinc-500 text-white" />
-                        </div>
-                        <div className="space-y-2">
-                          <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Live URL (Optional)</label>
-                          <input type="text" placeholder="https://..." value={project.liveUrl || ''} onChange={(e) => handleProjectChange(index, 'liveUrl', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none placeholder:text-zinc-500 text-white" />
-                        </div>
-                        <div className="space-y-2 col-span-2">
-                          <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Demo Video URL (Optional)</label>
-                          <input type="text" placeholder="https://youtube.com/..." value={project.demoVideoUrl || ''} onChange={(e) => handleProjectChange(index, 'demoVideoUrl', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none placeholder:text-zinc-500 text-white" />
-                        </div>
-                      </div>
-                    </div>
+                      <FormGroup label="Demo Video URL (Optional)">
+                        <FormField placeholder="https://youtube.com/..." value={project.demoVideoUrl || ''} onChange={(e) => handleProjectChange(index, 'demoVideoUrl', e.target.value)} />
+                      </FormGroup>
+                    </FormCard>
                   ))}
                   
-                  <button onClick={addProject} className="w-full py-4 border border-dashed border-white/10 hover:border-white/20 rounded-xl text-white/70 hover:text-white font-bold hover:bg-white/[0.02] transition-all flex items-center justify-center gap-2">
-                    <Plus size={16} /> Add New Project
+                  <button onClick={addProject} className="w-full py-4 border border-dashed border-white/10 hover:border-white/20 rounded-xl text-white/50 hover:text-white font-bold text-xs hover:bg-white/[0.01] transition-all flex items-center justify-center gap-2">
+                    <Plus size={14} /> Add New Project
                   </button>
                 </div>
               )}
-
+ 
               {/* ACHIEVEMENTS TAB */}
               {activeTab === 'achievements' && (
-                <div className="space-y-6 animate-fade-in-up">
+                <div className="space-y-8 animate-fade-in-up">
                   {data.achievements.map((ach, index) => (
-                    <div key={ach.id} className="bg-[#121214] p-6 rounded-2xl border border-white/5 space-y-5 relative group hover:border-primary/20 transition-all">
-                      <button onClick={() => removeAchievement(index)} className="absolute top-6 right-6 text-error hover:bg-error/20 bg-black/40 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all shadow-sm"><Trash2 size={16} /></button>
-                      
-                      <div className="flex items-center gap-3 border-b border-white/5 pb-4 pr-10">
-                        <span className="text-primary font-bold text-xl">{index + 1}</span>
-                        <input type="text" placeholder="Role / Title" value={ach.title} onChange={(e) => handleAchievementChange(index, 'title', e.target.value)} className="flex-1 bg-transparent text-xl font-bold focus:outline-none placeholder:text-white/20 text-white" />
-                      </div>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Company / Organization</label>
-                          <input type="text" placeholder="Google" value={ach.organization || ''} onChange={(e) => handleAchievementChange(index, 'organization', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none text-white placeholder:text-zinc-500" />
-                        </div>
-                        <div className="space-y-2">
-                          <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Type</label>
-                          <select value={ach.type} onChange={(e) => handleAchievementChange(index, 'type', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 outline-none text-white cursor-pointer">
+                    <FormCard
+                      key={ach.id}
+                      indexLabel={index + 1}
+                      titlePlaceholder="Role / Title"
+                      titleValue={ach.title}
+                      onTitleChange={(val) => handleAchievementChange(index, 'title', val)}
+                      onRemove={() => removeAchievement(index)}
+                    >
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <FormGroup label="Company / Organization">
+                          <FormField placeholder="Google" value={ach.organization || ''} onChange={(e) => handleAchievementChange(index, 'organization', e.target.value)} />
+                        </FormGroup>
+                        <FormGroup label="Type">
+                          <FormSelect value={ach.type} onChange={(e) => handleAchievementChange(index, 'type', e.target.value)}>
                             <option value="job" className="bg-[#16161A]">Job</option>
                             <option value="internship" className="bg-[#16161A]">Internship</option>
                             <option value="freelance" className="bg-[#16161A]">Freelance</option>
                             <option value="achievement" className="bg-[#16161A]">Achievement</option>
-                          </select>
-                        </div>
+                          </FormSelect>
+                        </FormGroup>
                       </div>
-
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Start Date</label>
-                          <input type="text" placeholder="Jan 2022" value={ach.startDate} onChange={(e) => handleAchievementChange(index, 'startDate', e.target.value)} className="w-full bg-[#0D0D10] border border-[#232328] rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none text-white placeholder:text-zinc-500" />
-                        </div>
-                        <div className="space-y-2">
-                          <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">End Date</label>
-                          <input type="text" placeholder="Present" value={ach.endDate} onChange={(e) => handleAchievementChange(index, 'endDate', e.target.value)} className="w-full bg-[#0D0D10] border border-[#232328] rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none text-white placeholder:text-zinc-500" />
-                        </div>
+ 
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <FormGroup label="Start Date">
+                          <FormField placeholder="Jan 2022" value={ach.startDate} onChange={(e) => handleAchievementChange(index, 'startDate', e.target.value)} />
+                        </FormGroup>
+                        <FormGroup label="End Date">
+                          <FormField placeholder="Present" value={ach.endDate} onChange={(e) => handleAchievementChange(index, 'endDate', e.target.value)} />
+                        </FormGroup>
                       </div>
                       
-                      <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Description</label>
-                        <textarea rows={4} placeholder="What were your key responsibilities and achievements?" value={ach.description} onChange={(e) => handleAchievementChange(index, 'description', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none resize-none text-white placeholder:text-zinc-500" />
-                      </div>
-                    </div>
+                      <FormGroup label="Description">
+                        <FormTextArea rows={4} placeholder="What were your key responsibilities and achievements?" value={ach.description} onChange={(e) => handleAchievementChange(index, 'description', e.target.value)} />
+                      </FormGroup>
+                    </FormCard>
                   ))}
                   
-                  <button onClick={addAchievement} className="w-full py-4 border border-dashed border-white/10 hover:border-white/20 rounded-xl text-white/70 hover:text-white font-bold hover:bg-white/[0.02] transition-all flex items-center justify-center gap-2">
-                    <Plus size={16} /> Add Experience / Achievement
+                  <button onClick={addAchievement} className="w-full py-4 border border-dashed border-white/10 hover:border-white/20 rounded-xl text-white/50 hover:text-white font-bold text-xs hover:bg-white/[0.01] transition-all flex items-center justify-center gap-2">
+                    <Plus size={14} /> Add Experience / Achievement
                   </button>
                 </div>
               )}
-
+ 
               {/* SKILLS TAB */}
               {activeTab === 'skills' && (
-                <div className="space-y-6 animate-fade-in-up bg-[#121214] p-6 rounded-2xl border border-white/5">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-[10px] font-bold text-white/40 tracking-wider uppercase">Core Skills</h3>
-                    <button onClick={addSkill} className="text-primary hover:bg-primary/20 bg-primary/10 p-2 rounded-lg transition-colors"><Plus size={16} /></button>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4">
-                    {data.skills.map((skill, index) => (
-                      <div key={skill.id} className="relative group">
-                        <input 
-                          type="text" 
-                          value={skill.name} 
-                          onChange={(e) => handleSkillChange(index, e.target.value)} 
-                          className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm font-bold focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-colors text-white placeholder:text-zinc-500"
-                          placeholder="e.g. React.js" 
-                        />
-                        <button onClick={() => removeSkill(index)} className="absolute right-2 top-1/2 -translate-y-1/2 text-error hover:bg-error/20 bg-white/5 p-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 size={14} /></button>
-                      </div>
-                    ))}
-                  </div>
-                  
-                  {data.skills.length === 0 && (
-                    <div className="text-center py-10 text-white/20 text-sm font-bold border border-dashed border-white/5 rounded-xl mt-4">
-                      No skills added yet. Click the + button to add one.
+                <div className="space-y-8 animate-fade-in-up">
+                  <FormCard>
+                    <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                      <h3 className="text-[10px] font-bold text-white/40 tracking-wider uppercase">Core Skills</h3>
                     </div>
-                  )}
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {data.skills.map((skill, index) => (
+                        <div key={skill.id} className="relative group">
+                          <FormField 
+                            value={skill.name} 
+                            onChange={(e) => handleSkillChange(index, e.target.value)} 
+                            placeholder="e.g. React.js" 
+                          />
+                          <button onClick={() => removeSkill(index)} className="absolute right-3 top-1/2 -translate-y-1/2 text-error hover:bg-error/20 bg-white/5 p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 size={14} /></button>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <button onClick={addSkill} className="w-full py-4 border border-dashed border-white/10 hover:border-white/20 rounded-xl text-white/50 hover:text-white font-bold text-xs hover:bg-white/[0.01] transition-all flex items-center justify-center gap-2">
+                      <Plus size={14} /> Add Skill
+                    </button>
+                    
+                    {data.skills.length === 0 && (
+                      <div className="text-center py-10 text-white/20 text-sm font-bold border border-dashed border-white/5 rounded-xl">
+                        No skills added yet. Click the Add Skill button to add one.
+                      </div>
+                    )}
+                  </FormCard>
                 </div>
               )}
-
+ 
               {/* CONTACT TAB */}
               {activeTab === 'contact' && (
-                <div className="space-y-6 animate-fade-in-up bg-[#121214] p-6 rounded-2xl border border-white/5">
-                  
-                  <div className="space-y-5 pt-2">
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Public Email Address</label>
-                      <input type="email" placeholder="hello@example.com" value={data.contact.email} onChange={(e) => handleContactChange('email', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all text-white placeholder:text-zinc-500" />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Location Display</label>
-                      <input type="text" placeholder="San Francisco, CA" value={data.contact.location} onChange={(e) => handleContactChange('location', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all text-white placeholder:text-zinc-500" />
-                    </div>
-                  </div>
+                <div className="space-y-8 animate-fade-in-up">
+                  <FormCard>
+                    <FormGroup label="Public Email Address">
+                      <FormField type="email" placeholder="hello@example.com" value={data.contact.email} onChange={(e) => handleContactChange('email', e.target.value)} />
+                    </FormGroup>
+                    <FormGroup label="Location Display">
+                      <FormField type="text" placeholder="San Francisco, CA" value={data.contact.location} onChange={(e) => handleContactChange('location', e.target.value)} />
+                    </FormGroup>
+                  </FormCard>
                 </div>
               )}
-
+ 
             </div>
           </div>
         </div>
