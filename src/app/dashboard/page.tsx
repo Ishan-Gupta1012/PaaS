@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Plus, Copy, LayoutDashboard, PenTool, LayoutTemplate, RefreshCw, Eye, BarChart3, Code2, Rocket, Settings, Search, Bell, CheckCircle2, Check, Lightbulb, Monitor, Tablet, Smartphone, ExternalLink, UserCircle, Sparkles, User, Terminal, Briefcase, GraduationCap, ShieldCheck, Share2, ArrowRight, Globe, LogOut, ChevronDown } from 'lucide-react';
+import { Plus, Copy, LayoutDashboard, PenTool, LayoutTemplate, RefreshCw, Eye, BarChart3, Code2, Rocket, Settings, Search, Bell, CheckCircle2, Check, Lightbulb, Monitor, Tablet, Smartphone, UserCircle, Sparkles, User, Terminal, Briefcase, GraduationCap, ShieldCheck, Share2, ArrowRight, Globe, LogOut, ChevronDown } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
 
@@ -10,6 +10,8 @@ import Link from 'next/link';
 export default function Dashboard() {
   const { user, logout } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState("/templates/software-engineer");
+  const [viewport, setViewport] = useState<"monitor" | "tablet" | "smartphone">("monitor");
 
   return (
     <div className="bg-background text-on-surface font-body-md selection:bg-primary-container selection:text-on-primary-container">
@@ -244,7 +246,7 @@ export default function Dashboard() {
                     </button>
                   </div>
                   <button className="flex items-center gap-xs px-md py-sm border border-outline-variant rounded-lg text-label-md font-semibold hover:bg-surface-container-low transition-colors">
-                    <ExternalLink className="text-[18px]" size={20} />
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
                     Open Full Preview
                   </button>
                 </div>
@@ -477,34 +479,36 @@ export default function Dashboard() {
           <section className="space-y-lg">
             <div className="flex items-center justify-between">
               <h2 className="font-headline-lg text-headline-lg">Template Marketplace</h2>
-              <button className="text-primary font-semibold flex items-center gap-xs hover:underline">
+              <Link href="/dashboard/templates" className="text-primary font-semibold flex items-center gap-xs hover:underline">
                 View All
                 <ArrowRight className="text-[18px]" size={20} />
-              </button>
+              </Link>
             </div>
             <div className="flex overflow-x-auto gap-lg pb-md no-scrollbar snap-x">
+              {/* Developer Pro — links to preview */}
               <div className="min-w-[320px] bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden snap-start group">
-                <div className="h-40 relative">
-                  <img className="w-full h-full object-cover" data-alt="A clean, professional developer portfolio template with a sidebar navigation and a dark mode interface. The design is sleek, using neon blue accents and large, readable sans-serif typography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSLLADsqXlADz4oz1nmlWaooa1bW1LrWhW59n3PPgAsAtloqA1xMz8tQNl32KQadAzYcKrgoXZBQvFpr9YH6xLaRLG9aDLAt7RFJXWb_TOQPbbmfTnfwiUKvH-HA4B9SGps4w9pv67yQmiVfIMmmGjZ6xGuGjiDY-h5oL7Z2Vd8VjsPf1neVyGtMA0lKsVbbEwovenPM7IIgQjhb6k8ywbjAPZPwdb86wXg6Jj74AM0SyOZT_0QhHynhBqlB9HTSBH1LbbizAzCSY6" alt="template" />
+                <Link href="/templates/software-engineer" className="block h-40 relative">
+                  <img className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSLLADsqXlADz4oz1nmlWaooa1bW1LrWhW59n3PPgAsAtloqA1xMz8tQNl32KQadAzYcKrgoXZBQvFpr9YH6xLaRLG9aDLAt7RFJXWb_TOQPbbmfTnfwiUKvH-HA4B9SGps4w9pv67yQmiVfIMmmGjZ6xGuGjiDY-h5oL7Z2Vd8VjsPf1neVyGtMA0lKsVbbEwovenPM7IIgQjhb6k8ywbjAPZPwdb86wXg6Jj74AM0SyOZT_0QhHynhBqlB9HTSBH1LbbizAzCSY6" alt="Developer Pro template" />
                   <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <button className="bg-surface-container-lowest text-on-surface px-md py-sm rounded-lg font-bold shadow-xl">Preview</button>
+                    <span className="bg-surface-container-lowest text-on-surface px-md py-sm rounded-lg font-bold shadow-xl">Preview</span>
                   </div>
-                </div>
+                </Link>
                 <div className="p-md flex justify-between items-center">
                   <div>
                     <h4 className="font-bold">Developer Pro</h4>
                     <p className="text-label-sm text-on-surface-variant">Dark Mode • IDE Layout</p>
                   </div>
-                  <button className="px-md py-sm bg-primary text-on-primary rounded-lg font-semibold text-label-sm hover:opacity-90">Select</button>
+                  <Link href="/templates/software-engineer" className="px-md py-sm bg-primary text-on-primary rounded-lg font-semibold text-label-sm hover:opacity-90">Select</Link>
                 </div>
               </div>
+              {/* Modern — active */}
               <div className="min-w-[320px] bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden snap-start group border-primary ring-2 ring-primary ring-opacity-20">
-                <div className="h-40 relative">
-                  <img className="w-full h-full object-cover" data-alt="A minimalist portfolio template with high contrast, pure white background, and bold black typography. The aesthetic is clean and modern with lots of whitespace and centered content." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCb5Ph4hVNHzkKfHfBaxriRVGW6ZENZLbupKHPZOGBuGtOWgX_77MFe1oxNA9g_PvtPO-aHZkjOhehHoVKQC0lDXZPmz1_t_kkRAZHXRUmsMcUV9kGdbbCvjTZBNgKcygrbgq3X7yV3RUquLM1M3oBs5VtNmBgFd_CVwKBm9WOZbLLbSnh7XtvoE7AXmnS6ncf72GsWlAVyvETIO0VRJHzwIXQ06sFm9fE7lEoa9P6RXwENBxMLdEmGDg8XyPH4veOZYghcY7w76nRZ" alt="template" />
+                <Link href="/templates/modern" className="block h-40 relative">
+                  <img className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCb5Ph4hVNHzkKfHfBaxriRVGW6ZENZLbupKHPZOGBuGtOWgX_77MFe1oxNA9g_PvtPO-aHZkjOhehHoVKQC0lDXZPmz1_t_kkRAZHXRUmsMcUV9kGdbbCvjTZBNgKcygrbgq3X7yV3RUquLM1M3oBs5VtNmBgFd_CVwKBm9WOZbLLbSnh7XtvoE7AXmnS6ncf72GsWlAVyvETIO0VRJHzwIXQ06sFm9fE7lEoa9P6RXwENBxMLdEmGDg8XyPH4veOZYghcY7w76nRZ" alt="Modern Clean template" />
                   <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <button className="bg-surface-container-lowest text-on-surface px-md py-sm rounded-lg font-bold shadow-xl">Preview</button>
+                    <span className="bg-surface-container-lowest text-on-surface px-md py-sm rounded-lg font-bold shadow-xl">Preview</span>
                   </div>
-                </div>
+                </Link>
                 <div className="p-md flex justify-between items-center">
                   <div>
                     <h4 className="font-bold">Modern</h4>
@@ -516,19 +520,20 @@ export default function Dashboard() {
                   </div>
                 </div>
               </div>
+              {/* Creative Edge */}
               <div className="min-w-[320px] bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden snap-start group">
-                <div className="h-40 relative">
-                  <img className="w-full h-full object-cover" data-alt="A vibrant, creative portfolio template with asymmetrical layouts, pastel color gradients, and playful typography. The mood is artistic and welcoming, targeting designers and creative developers." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOvfJaZT5MJh6Hy8qm9f1so-_6fBlE4Z3XSz3ZbQkd1pzFc1_5gmmBIj0EAx_9bBIkVOS46P7ZlROMYvlNm-N00A4pCvy7fRw6qC94LMS-au8Ss1Hx51U8Nqdkr4ewIhvAtg732ElXQBd51LHWc6PpiHpK_wvjJVudgSo2424OPApq2coKlzOdRk2VfreRt0Qvr8triaz0fl-C_PSRscpWzfBqg3PrQ8ezwkUvh-l4BIv2oYAfjQx8Oh3JcuJAhKwXO9K6WVzljl18" alt="template" />
+                <Link href="/templates/creative-edge" className="block h-40 relative">
+                  <img className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOvfJaZT5MJh6Hy8qm9f1so-_6fBlE4Z3XSz3ZbQkd1pzFc1_5gmmBIj0EAx_9bBIkVOS46P7ZlROMYvlNm-N00A4pCvy7fRw6qC94LMS-au8Ss1Hx51U8Nqdkr4ewIhvAtg732ElXQBd51LHWc6PpiHpK_wvjJVudgSo2424OPApq2coKlzOdRk2VfreRt0Qvr8triaz0fl-C_PSRscpWzfBqg3PrQ8ezwkUvh-l4BIv2oYAfjQx8Oh3JcuJAhKwXO9K6WVzljl18" alt="Creative Edge template" />
                   <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <button className="bg-surface-container-lowest text-on-surface px-md py-sm rounded-lg font-bold shadow-xl">Preview</button>
+                    <span className="bg-surface-container-lowest text-on-surface px-md py-sm rounded-lg font-bold shadow-xl">Preview</span>
                   </div>
-                </div>
+                </Link>
                 <div className="p-md flex justify-between items-center">
                   <div>
                     <h4 className="font-bold">Creative Edge</h4>
                     <p className="text-label-sm text-on-surface-variant">Dynamic • Gradients</p>
                   </div>
-                  <button className="px-md py-sm bg-primary text-on-primary rounded-lg font-semibold text-label-sm hover:opacity-90">Select</button>
+                  <Link href="/templates/creative-edge" className="px-md py-sm bg-primary text-on-primary rounded-lg font-semibold text-label-sm hover:opacity-90">Select</Link>
                 </div>
               </div>
             </div>

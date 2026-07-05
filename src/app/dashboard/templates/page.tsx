@@ -149,68 +149,75 @@ export default function Dashboard() {
               ))}
             </div>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Slot 1: Modern Developer */}
-            <div className="bg-surface-container-lowest p-5 rounded-3xl border-2 border-outline-variant shadow-xl hover:border-primary/60 hover:shadow-primary/20 hover:-translate-y-2 transition-all duration-300 group block relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="w-full aspect-video bg-surface-container-low rounded-2xl mb-6 flex items-center justify-center overflow-hidden relative border border-white/5 shadow-inner">
-                <img src="https://i.postimg.cc/HkdNLqsM/Screenshot-2026-07-03-at-12-44-13-AM-1.png" alt="Modern Developer" className="w-full h-full object-cover blur-[2px] group-hover:blur-0 group-hover:scale-110 group-hover:rotate-1 transition-all duration-700 ease-out" />
-                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 backdrop-blur-sm">
-                  <Link href="/dashboard/templates/preview" className="bg-white/10 text-white px-5 py-2.5 rounded-xl font-bold border border-white/20 hover:bg-white/20 transition-all hover:scale-105">
-                    Preview
-                  </Link>
-                  <Link href="/dashboard/builder" className="bg-primary text-on-primary px-5 py-2.5 rounded-xl font-bold hover:scale-105 transition-all shadow-[0_0_20px_rgba(var(--primary),0.4)]">
-                    Build Now
-                  </Link>
-                </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-lg">
+            {/* Slot 1 — Creative Edge */}
+            <div className="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm hover:border-primary/50 transition-colors group flex flex-col justify-between">
+              <div>
+                <a href="/templates/creative-edge" target="_blank" rel="noopener noreferrer" className="block w-full aspect-video bg-[#060814] rounded-lg mb-md overflow-hidden relative">
+                  <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-tr from-purple-600/20 to-pink-500/10 pointer-events-none" />
+                  <Code2 size={48} className="absolute inset-0 m-auto text-purple-400 group-hover:text-pink-400 transition-colors relative z-10" />
+                  <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-20">
+                    <span className="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-md py-sm rounded-lg font-semibold text-label-sm">Preview Template</span>
+                  </div>
+                </a>
+                <h3 className="font-headline-sm text-headline-sm font-bold">Creative Edge</h3>
+                <p className="text-label-sm text-on-surface-variant mt-xs mb-4">Vibrant purple-pink portfolio for creative technologists and digital artists.</p>
               </div>
-              <div className="relative z-10 flex justify-between items-start">
-                <div>
-                  <h3 className="font-headline-sm text-headline-sm font-bold text-on-surface group-hover:text-primary transition-colors">Modern Developer</h3>
-                  <p className="text-label-sm text-on-surface-variant mt-2 leading-relaxed">Clean, minimalist glassmorphism design. Perfect for showcasing software engineering projects.</p>
-                </div>
-                <span className="bg-surface-container-highest text-xs font-bold px-3 py-1 rounded-full text-on-surface-variant border border-outline-variant">Free</span>
-              </div>
-            </div>
-            
-            {/* Slot 2: Creative Portfolio */}
-            <div className="bg-surface-container-lowest p-5 rounded-3xl border-2 border-outline-variant shadow-xl hover:border-blue-500/50 hover:shadow-blue-500/20 hover:-translate-y-2 transition-all duration-300 group cursor-pointer relative overflow-hidden">
-              <div className="w-full aspect-video bg-gradient-to-br from-blue-900/40 to-purple-900/40 rounded-2xl mb-6 flex items-center justify-center overflow-hidden relative border border-white/5">
-                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
-                <Code2 size={56} className="text-blue-400 group-hover:scale-110 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm">
-                  <span className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold shadow-[0_0_20px_rgba(37,99,235,0.4)]">Select Template</span>
-                </div>
-              </div>
-              <div className="relative z-10 flex justify-between items-start">
-                <div>
-                  <h3 className="font-headline-sm text-headline-sm font-bold text-on-surface group-hover:text-blue-400 transition-colors">Creative Canvas</h3>
-                  <p className="text-label-sm text-on-surface-variant mt-2 leading-relaxed">Stand out with bold colors, dynamic layouts, and smooth micro-animations.</p>
-                </div>
-                <span className="bg-surface-container-highest text-xs font-bold px-3 py-1 rounded-full text-on-surface-variant border border-outline-variant">Free</span>
-              </div>
+              <a
+                href="/templates/creative-edge"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full text-center py-2 border border-outline-variant text-primary hover:bg-surface-container-low rounded-lg font-semibold text-label-md flex items-center justify-center gap-2 transition-all hover:border-primary/30"
+              >
+                Live Preview
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+              </a>
             </div>
 
-            {/* Slot 3: Enterprise Pro */}
-            <div className="bg-surface-container-lowest p-5 rounded-3xl border-2 border-outline-variant shadow-xl hover:border-amber-500/50 hover:shadow-amber-500/20 hover:-translate-y-2 transition-all duration-300 group cursor-pointer relative overflow-hidden">
-              <div className="w-full aspect-video bg-gradient-to-tr from-surface-container-lowest to-surface-container-high rounded-2xl mb-6 flex items-center justify-center overflow-hidden relative border border-white/5">
-                <Rocket size={56} className="text-amber-500 group-hover:-translate-y-2 group-hover:translate-x-2 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm">
-                  <span className="bg-gradient-to-r from-amber-500 to-orange-600 text-white px-6 py-3 rounded-xl font-bold shadow-[0_0_20px_rgba(245,158,11,0.4)] flex items-center gap-2">
-                    Unlock Premium
-                  </span>
-                </div>
+            {/* Slot 2 — Developer Pro */}
+            <div className="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm hover:border-primary/50 transition-colors group flex flex-col justify-between">
+              <div>
+                <a href="/templates/software-engineer" target="_blank" rel="noopener noreferrer" className="block w-full aspect-video bg-surface-container-low rounded-lg mb-md overflow-hidden relative">
+                  <LayoutTemplate size={48} className="absolute inset-0 m-auto text-on-surface-variant group-hover:text-primary transition-colors" />
+                  <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span className="bg-primary text-on-primary px-md py-sm rounded-lg font-semibold">Preview Template</span>
+                  </div>
+                </a>
+                <h3 className="font-headline-sm text-headline-sm font-bold">Developer Pro</h3>
+                <p className="text-label-sm text-on-surface-variant mt-xs mb-4">Clean, dark-themed bento design for modern software engineers.</p>
               </div>
-              <div className="relative z-10 flex justify-between items-start">
-                <div>
-                  <h3 className="font-headline-sm text-headline-sm font-bold text-on-surface group-hover:text-amber-500 transition-colors">Enterprise Pro</h3>
-                  <p className="text-label-sm text-on-surface-variant mt-2 leading-relaxed">Professional layout suited for enterprise consultants and senior architects.</p>
-                </div>
-                <span className="bg-gradient-to-r from-amber-500/20 to-orange-600/20 text-amber-500 text-xs font-bold px-3 py-1 rounded-full border border-amber-500/30 flex items-center gap-1">
-                  Premium
-                </span>
+              <a
+                href="/templates/software-engineer"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full text-center py-2 border border-outline-variant text-primary hover:bg-surface-container-low rounded-lg font-semibold text-label-md flex items-center justify-center gap-2 transition-all hover:border-primary/30"
+              >
+                Live Preview
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+              </a>
+            </div>
+
+            {/* Slot 3 — Modern Clean */}
+            <div className="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm hover:border-primary/50 transition-colors group flex flex-col justify-between">
+              <div>
+                <a href="/templates/modern" target="_blank" rel="noopener noreferrer" className="block w-full aspect-video bg-slate-50 rounded-lg mb-md overflow-hidden relative border border-slate-200">
+                  <Rocket size={48} className="absolute inset-0 m-auto text-emerald-500 group-hover:text-emerald-600 transition-colors" />
+                  <div className="absolute inset-0 bg-slate-900/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span className="bg-white text-slate-900 px-md py-sm rounded-lg font-semibold text-label-sm">Preview Template</span>
+                  </div>
+                </a>
+                <h3 className="font-headline-sm text-headline-sm font-bold">Modern Clean</h3>
+                <p className="text-label-sm text-on-surface-variant mt-xs mb-4">Minimalist white-card layout for full-stack developers and consultants.</p>
               </div>
+              <a
+                href="/templates/modern"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full text-center py-2 border border-outline-variant text-primary hover:bg-surface-container-low rounded-lg font-semibold text-label-md flex items-center justify-center gap-2 transition-all hover:border-primary/30"
+              >
+                Live Preview
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+              </a>
             </div>
           </div>
         </main>
