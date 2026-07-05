@@ -153,65 +153,71 @@ export default function Dashboard() {
             {/* Slot 1 — Creative Edge */}
             <div className="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm hover:border-primary/50 transition-colors group flex flex-col justify-between">
               <div>
-                <Link href="/templates/creative-edge" className="block w-full aspect-video bg-[#060814] rounded-lg mb-md overflow-hidden relative">
+                <a href="/templates/creative-edge" target="_blank" rel="noopener noreferrer" className="block w-full aspect-video bg-[#060814] rounded-lg mb-md overflow-hidden relative">
                   <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-tr from-purple-600/20 to-pink-500/10 pointer-events-none" />
                   <Code2 size={48} className="absolute inset-0 m-auto text-purple-400 group-hover:text-pink-400 transition-colors relative z-10" />
                   <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-20">
                     <span className="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-md py-sm rounded-lg font-semibold text-label-sm">Preview Template</span>
                   </div>
-                </Link>
+                </a>
                 <h3 className="font-headline-sm text-headline-sm font-bold">Creative Edge</h3>
                 <p className="text-label-sm text-on-surface-variant mt-xs mb-4">Vibrant purple-pink portfolio for creative technologists and digital artists.</p>
               </div>
-              <Link
+              <a
                 href="/templates/creative-edge"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full text-center py-2 border border-outline-variant text-primary hover:bg-surface-container-low rounded-lg font-semibold text-label-md flex items-center justify-center gap-2 transition-all hover:border-primary/30"
               >
                 Live Preview
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
-              </Link>
+              </a>
             </div>
 
             {/* Slot 2 — Developer Pro */}
             <div className="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm hover:border-primary/50 transition-colors group flex flex-col justify-between">
               <div>
-                <Link href="/templates/software-engineer" className="block w-full aspect-video bg-surface-container-low rounded-lg mb-md overflow-hidden relative">
+                <a href="/templates/software-engineer" target="_blank" rel="noopener noreferrer" className="block w-full aspect-video bg-surface-container-low rounded-lg mb-md overflow-hidden relative">
                   <LayoutTemplate size={48} className="absolute inset-0 m-auto text-on-surface-variant group-hover:text-primary transition-colors" />
                   <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <span className="bg-primary text-on-primary px-md py-sm rounded-lg font-semibold">Preview Template</span>
                   </div>
-                </Link>
+                </a>
                 <h3 className="font-headline-sm text-headline-sm font-bold">Developer Pro</h3>
                 <p className="text-label-sm text-on-surface-variant mt-xs mb-4">Clean, dark-themed bento design for modern software engineers.</p>
               </div>
-              <Link
+              <a
                 href="/templates/software-engineer"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full text-center py-2 border border-outline-variant text-primary hover:bg-surface-container-low rounded-lg font-semibold text-label-md flex items-center justify-center gap-2 transition-all hover:border-primary/30"
               >
                 Live Preview
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
-              </Link>
+              </a>
             </div>
 
             {/* Slot 3 — Modern Clean */}
             <div className="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm hover:border-primary/50 transition-colors group flex flex-col justify-between">
               <div>
-                <Link href="/templates/modern" className="block w-full aspect-video bg-slate-50 rounded-lg mb-md overflow-hidden relative border border-slate-200">
+                <a href="/templates/modern" target="_blank" rel="noopener noreferrer" className="block w-full aspect-video bg-slate-50 rounded-lg mb-md overflow-hidden relative border border-slate-200">
                   <Rocket size={48} className="absolute inset-0 m-auto text-emerald-500 group-hover:text-emerald-600 transition-colors" />
                   <div className="absolute inset-0 bg-slate-900/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <span className="bg-white text-slate-900 px-md py-sm rounded-lg font-semibold text-label-sm">Preview Template</span>
                   </div>
-                </Link>
+                </a>
                 <h3 className="font-headline-sm text-headline-sm font-bold">Modern Clean</h3>
                 <p className="text-label-sm text-on-surface-variant mt-xs mb-4">Minimalist white-card layout for full-stack developers and consultants.</p>
               </div>
-              <Link
+              <a
                 href="/templates/modern"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full text-center py-2 border border-outline-variant text-primary hover:bg-surface-container-low rounded-lg font-semibold text-label-md flex items-center justify-center gap-2 transition-all hover:border-primary/30"
               >
                 Live Preview
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
-              </Link>
+              </a>
             </div>
           </div>
         </main>
