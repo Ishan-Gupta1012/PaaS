@@ -281,48 +281,55 @@ export default function BuilderPage() {
               {/* HERO TAB */}
               {activeTab === 'hero' && (
                 <div className="space-y-6 animate-fade-in-up">
-                  <div className="space-y-5 bg-[#121214] p-6 rounded-2xl border border-white/5">
+                  <div className="space-y-5 bg-[#121214] p-6 rounded-2xl border border-white/5 shadow-inner">
                     
                     <div className="space-y-2">
                       <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Profile Photo</label>
-                      <input 
-                        type="file" 
-                        accept="image/png, image/jpeg, image/webp"
-                        onChange={handlePhotoUpload} 
-                        className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[10px] text-xs focus:outline-none file:mr-4 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#232328] file:text-white/90 hover:file:bg-[#2e2e35] cursor-pointer text-white/40" 
-                      />
+                      <div className="flex items-center gap-4 bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[10px]">
+                        <label className="cursor-pointer bg-[#232328] hover:bg-[#2e2e35] text-white text-xs font-bold px-4 py-2.5 rounded-lg border border-white/5 transition-all">
+                          Choose File
+                          <input 
+                            type="file" 
+                            accept="image/png, image/jpeg, image/webp"
+                            onChange={handlePhotoUpload} 
+                            className="hidden" 
+                          />
+                        </label>
+                        <span className="text-xs text-white/50 truncate">
+                          {data.hero.avatarUrl ? "Photo Uploaded" : "No file chosen"}
+                        </span>
+                      </div>
                     </div>
  
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-5">
                       <div className="space-y-2">
                         <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Name</label>
-                        <input type="text" placeholder="John Doe" value={data.hero.logoText} onChange={(e) => handleHeroChange('logoText', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-zinc-500 text-white" />
+                        <input type="text" placeholder="John Doe" value={data.hero.logoText} onChange={(e) => handleHeroChange('logoText', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[12px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-zinc-500 text-white" />
                       </div>
                       <div className="space-y-2">
                         <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Job Title</label>
-                        <input type="text" placeholder="Full-Stack Engineer" value={data.hero.title || ''} onChange={(e) => handleHeroChange('title', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-zinc-500 text-white" />
+                        <input type="text" placeholder="Full-Stack Engineer" value={data.hero.title || ''} onChange={(e) => handleHeroChange('title', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[12px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-zinc-500 text-white" />
                       </div>
-                      <div className="space-y-2 col-span-2">
+                      <div className="space-y-2">
                         <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Resume Link (Optional)</label>
-                        <input type="url" placeholder="https://link-to-your-resume.pdf" value={data.hero.resumeUrl || ''} onChange={(e) => handleHeroChange('resumeUrl', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-zinc-500 text-white" />
+                        <input type="url" placeholder="https://link-to-your-resume.pdf" value={data.hero.resumeUrl || ''} onChange={(e) => handleHeroChange('resumeUrl', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[12px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-zinc-500 text-white" />
                       </div>
                     </div>
  
                     <div className="space-y-2">
                       <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Hero Headline</label>
-                      <input type="text" placeholder="Building scalable digital experiences." value={data.hero.tagline} onChange={(e) => handleHeroChange('tagline', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-zinc-500 text-white" />
+                      <input type="text" placeholder="Building scalable digital experiences." value={data.hero.tagline} onChange={(e) => handleHeroChange('tagline', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[12px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-zinc-500 text-white" />
                     </div>
  
                     <div className="space-y-2">
                       <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Bio</label>
-                      <textarea rows={5} placeholder="Write a short bio..." value={data.hero.bio} onChange={(e) => handleHeroChange('bio', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all resize-none placeholder:text-zinc-500 text-white" />
+                      <textarea rows={5} placeholder="Write a short bio..." value={data.hero.bio} onChange={(e) => handleHeroChange('bio', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[12px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all resize-none placeholder:text-zinc-500 text-white" />
                     </div>
                   </div>
-
+ 
                   <div className="space-y-4 bg-[#121214] p-6 rounded-2xl border border-white/5">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between border-b border-white/5 pb-3">
                       <h3 className="text-[10px] font-bold text-white/40 tracking-wider uppercase">Social Links</h3>
-                      <button onClick={addSocial} className="text-primary hover:bg-primary/20 bg-primary/10 p-2 rounded-lg transition-colors"><Plus size={16} /></button>
                     </div>
                     
                     <div className="space-y-3">
@@ -346,11 +353,10 @@ export default function BuilderPage() {
                           <button onClick={() => removeSocial(idx)} className="text-error hover:bg-error/20 bg-error/10 p-2 rounded-lg transition-colors"><Trash2 size={16} /></button>
                         </div>
                       ))}
-                      {data.hero.socials.length === 0 && (
-                        <div className="text-center py-6 text-white/20 text-sm font-semibold border border-dashed border-white/5 rounded-xl">
-                          No social links added. Click the + button to add.
-                        </div>
-                      )}
+                      
+                      <button onClick={addSocial} className="w-full py-3 border border-dashed border-white/10 hover:border-white/20 rounded-xl text-white/50 hover:text-white font-bold text-xs hover:bg-white/[0.01] transition-all flex items-center justify-center gap-2">
+                        <Plus size={14} /> Add Social Link
+                      </button>
                     </div>
                   </div>
                 </div>
