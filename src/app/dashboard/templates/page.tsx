@@ -173,27 +173,27 @@ export default function Dashboard() {
               </div>
             </div>
 
-            {/* Slot 2 — Developer Pro */}
-            <div className="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm hover:border-primary/50 transition-colors group flex flex-col justify-between">
-              <div>
-                <a href="/templates/software-engineer" target="_blank" rel="noopener noreferrer" className="block w-full aspect-video bg-surface-container-low rounded-lg mb-md overflow-hidden relative">
-                  <LayoutTemplate size={48} className="absolute inset-0 m-auto text-on-surface-variant group-hover:text-primary transition-colors" />
-                  <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <span className="bg-primary text-on-primary px-md py-sm rounded-lg font-semibold">Preview Template</span>
-                  </div>
-                </a>
-                <h3 className="font-headline-sm text-headline-sm font-bold">Developer Pro</h3>
-                <p className="text-label-sm text-on-surface-variant mt-xs mb-4">Clean, dark-themed bento design for modern software engineers.</p>
+            {/* Slot 2: Developer Pro */}
+            <div className="bg-surface-container-lowest p-5 rounded-3xl border-2 border-outline-variant shadow-xl hover:border-primary/60 hover:shadow-primary/20 hover:-translate-y-2 transition-all duration-300 group block relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="w-full aspect-video bg-surface-container-low rounded-2xl mb-6 flex items-center justify-center overflow-hidden relative border border-white/5 shadow-inner">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSLLADsqXlADz4oz1nmlWaooa1bW1LrWhW59n3PPgAsAtloqA1xMz8tQNl32KQadAzYcKrgoXZBQvFpr9YH6xLaRLG9aDLAt7RFJXWb_TOQPbbmfTnfwiUKvH-HA4B9SGps4w9pv67yQmiVfIMmmGjZ6xGuGjiDY-h5oL7Z2Vd8VjsPf1neVyGtMA0lKsVbbEwovenPM7IIgQjhb6k8ywbjAPZPwdb86wXg6Jj74AM0SyOZT_0QhHynhBqlB9HTSBH1LbbizAzCSY6" alt="Developer Pro" className="w-full h-full object-cover blur-[2px] group-hover:blur-0 group-hover:scale-110 group-hover:rotate-1 transition-all duration-700 ease-out" />
+                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 backdrop-blur-sm">
+                  <Link href="/dashboard/templates/preview?template=software-engineer" className="bg-white/10 text-white px-5 py-2.5 rounded-xl font-bold border border-white/20 hover:bg-white/20 transition-all hover:scale-105">
+                    Preview
+                  </Link>
+                  <Link href="/dashboard/builder?template=software-engineer" className="bg-primary text-on-primary px-5 py-2.5 rounded-xl font-bold hover:scale-105 transition-all shadow-[0_0_20px_rgba(var(--primary),0.4)]">
+                    Build Now
+                  </Link>
+                </div>
               </div>
-              <a
-                href="/templates/software-engineer"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full text-center py-2 border border-outline-variant text-primary hover:bg-surface-container-low rounded-lg font-semibold text-label-md flex items-center justify-center gap-2 transition-all hover:border-primary/30"
-              >
-                Live Preview
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
-              </a>
+              <div className="relative z-10 flex justify-between items-start">
+                <div>
+                  <h3 className="font-headline-sm text-headline-sm font-bold text-on-surface group-hover:text-primary transition-colors">Developer Pro</h3>
+                  <p className="text-label-sm text-on-surface-variant mt-2 leading-relaxed">Clean, dark-themed bento design. Perfect for modern software engineers.</p>
+                </div>
+                <span className="bg-surface-container-highest text-xs font-bold px-3 py-1 rounded-full text-on-surface-variant border border-outline-variant">Free</span>
+              </div>
             </div>
 
             {/* Slot 3 — Modern Clean */}

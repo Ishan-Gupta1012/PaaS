@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { initialPortfolioData, PortfolioData, Achievement, Project, SocialLink } from '@/types/portfolio';
 import ModernDeveloperTemplate from '@/components/templates/ModernDeveloper';
+import DeveloperProTemplate from '@/components/templates/DeveloperPro';
 import Link from 'next/link';
 import { ArrowLeft, Save, Plus, Trash2, User, Briefcase, Code, Mail, Edit3, X, Zap } from 'lucide-react';
 
@@ -10,6 +11,17 @@ export default function BuilderPage() {
   const [data, setData] = useState<PortfolioData>(initialPortfolioData);
   const [isPreviewFullscreen] = useState(false);
   const [activeTab, setActiveTab] = useState<'hero' | 'projects' | 'achievements' | 'skills' | 'contact'>('hero');
+  const [selectedTemplate, setSelectedTemplate] = useState<string>('modern-developer');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const temp = params.get('template');
+      if (temp) {
+        setSelectedTemplate(temp);
+      }
+    }
+  }, []);
   
   // Resizing and Dragging State
   const [panelWidth, setPanelWidth] = useState(500);
@@ -187,7 +199,11 @@ export default function BuilderPage() {
       {/* Live Preview (Base Layer) */}
       <div className="absolute inset-0 z-0 h-full w-full overflow-y-auto overflow-x-hidden custom-scrollbar">
         {/* Render Template */}
-        <ModernDeveloperTemplate data={data} />
+        {selectedTemplate === 'software-engineer' ? (
+          <DeveloperProTemplate data={data} />
+        ) : (
+          <ModernDeveloperTemplate data={data} />
+        )}
       </div>
 
       {/* Floating Editor Panel */}

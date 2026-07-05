@@ -1,12 +1,25 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ModernDeveloperTemplate from '@/components/templates/ModernDeveloper';
+import DeveloperProTemplate from '@/components/templates/DeveloperPro';
 import { initialPortfolioData } from '@/types/portfolio';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 
 export default function PreviewPage() {
+  const [selectedTemplate, setSelectedTemplate] = useState<string>('modern-developer');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const temp = params.get('template');
+      if (temp) {
+        setSelectedTemplate(temp);
+      }
+    }
+  }, []);
+
   return (
     <div className="min-h-screen w-full relative">
       <Link 
@@ -16,7 +29,11 @@ export default function PreviewPage() {
         <ArrowLeft size={18} />
         <span className="font-semibold text-sm">Back to Templates</span>
       </Link>
-      <ModernDeveloperTemplate data={initialPortfolioData} />
+      {selectedTemplate === 'software-engineer' ? (
+        <DeveloperProTemplate data={initialPortfolioData} />
+      ) : (
+        <ModernDeveloperTemplate data={initialPortfolioData} />
+      )}
     </div>
   );
 }
