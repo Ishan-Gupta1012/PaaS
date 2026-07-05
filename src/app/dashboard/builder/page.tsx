@@ -289,33 +289,33 @@ export default function BuilderPage() {
                         type="file" 
                         accept="image/png, image/jpeg, image/webp"
                         onChange={handlePhotoUpload} 
-                        className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-3.5 text-xs focus:outline-none file:mr-4 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#232328] file:text-white/90 hover:file:bg-[#2e2e35] cursor-pointer text-white/40" 
+                        className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[10px] text-xs focus:outline-none file:mr-4 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#232328] file:text-white/90 hover:file:bg-[#2e2e35] cursor-pointer text-white/40" 
                       />
                     </div>
  
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Name</label>
-                        <input type="text" placeholder="John Doe" value={data.hero.logoText} onChange={(e) => handleHeroChange('logoText', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-3.5 text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-white/20 text-white" />
+                        <input type="text" placeholder="John Doe" value={data.hero.logoText} onChange={(e) => handleHeroChange('logoText', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-zinc-500 text-white" />
                       </div>
                       <div className="space-y-2">
                         <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Job Title</label>
-                        <input type="text" placeholder="Full-Stack Engineer" value={data.hero.title || ''} onChange={(e) => handleHeroChange('title', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-3.5 text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-white/20 text-white" />
+                        <input type="text" placeholder="Full-Stack Engineer" value={data.hero.title || ''} onChange={(e) => handleHeroChange('title', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-zinc-500 text-white" />
                       </div>
                       <div className="space-y-2 col-span-2">
                         <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Resume Link (Optional)</label>
-                        <input type="url" placeholder="https://link-to-your-resume.pdf" value={data.hero.resumeUrl || ''} onChange={(e) => handleHeroChange('resumeUrl', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-3.5 text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-white/20 text-white" />
+                        <input type="url" placeholder="https://link-to-your-resume.pdf" value={data.hero.resumeUrl || ''} onChange={(e) => handleHeroChange('resumeUrl', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-zinc-500 text-white" />
                       </div>
                     </div>
  
                     <div className="space-y-2">
                       <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Hero Headline</label>
-                      <input type="text" placeholder="Building scalable digital experiences." value={data.hero.tagline} onChange={(e) => handleHeroChange('tagline', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-3.5 text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-white/20 text-white" />
+                      <input type="text" placeholder="Building scalable digital experiences." value={data.hero.tagline} onChange={(e) => handleHeroChange('tagline', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-zinc-500 text-white" />
                     </div>
  
                     <div className="space-y-2">
                       <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Bio</label>
-                      <textarea rows={5} placeholder="Write a short bio..." value={data.hero.bio} onChange={(e) => handleHeroChange('bio', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-3.5 text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all resize-none placeholder:text-white/20 text-white" />
+                      <textarea rows={5} placeholder="Write a short bio..." value={data.hero.bio} onChange={(e) => handleHeroChange('bio', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all resize-none placeholder:text-zinc-500 text-white" />
                     </div>
                   </div>
 
@@ -342,7 +342,7 @@ export default function BuilderPage() {
                             <option value="codeforces" className="bg-[#16161A]">Codeforces</option>
                             <option value="codechef" className="bg-[#16161A]">CodeChef</option>
                           </select>
-                          <input type="text" placeholder="https://..." value={social.url} onChange={(e) => handleSocialChange(idx, 'url', e.target.value)} className="flex-1 bg-transparent px-2 text-sm outline-none placeholder:text-white/20 text-white" />
+                          <input type="text" placeholder="https://..." value={social.url} onChange={(e) => handleSocialChange(idx, 'url', e.target.value)} className="flex-1 bg-transparent px-2 text-sm outline-none placeholder:text-zinc-500 text-white" />
                           <button onClick={() => removeSocial(idx)} className="text-error hover:bg-error/20 bg-error/10 p-2 rounded-lg transition-colors"><Trash2 size={16} /></button>
                         </div>
                       ))}
@@ -374,13 +374,13 @@ export default function BuilderPage() {
                           type="file" 
                           accept="image/*"
                           onChange={(e) => handleProjectImageUpload(index, e)} 
-                          className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-3.5 text-xs focus:outline-none file:mr-4 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#232328] file:text-white/90 hover:file:bg-[#2e2e35] cursor-pointer text-white/40" 
+                          className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[10px] text-xs focus:outline-none file:mr-4 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#232328] file:text-white/90 hover:file:bg-[#2e2e35] cursor-pointer text-white/40" 
                         />
                       </div>
 
                       <div className="space-y-2">
                         <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Description</label>
-                        <textarea rows={3} placeholder="What does this project do?" value={project.description} onChange={(e) => handleProjectChange(index, 'description', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-3.5 text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none resize-none placeholder:text-white/20 text-white" />
+                        <textarea rows={3} placeholder="What does this project do?" value={project.description} onChange={(e) => handleProjectChange(index, 'description', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none resize-none placeholder:text-zinc-500 text-white" />
                       </div>
 
                       <div className="space-y-2">
@@ -390,22 +390,22 @@ export default function BuilderPage() {
                           placeholder="React, Node.js, Tailwind..."
                           value={project.techStack.join(', ')} 
                           onChange={(e) => handleProjectChange(index, 'techStack', e.target.value.split(',').map(s => s.trim()))} 
-                          className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-3.5 text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none placeholder:text-white/20 text-white" 
+                          className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none placeholder:text-zinc-500 text-white" 
                         />
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">GitHub URL (Optional)</label>
-                          <input type="text" placeholder="https://github.com/..." value={project.githubUrl || ''} onChange={(e) => handleProjectChange(index, 'githubUrl', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-3.5 text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none placeholder:text-white/20 text-white" />
+                          <input type="text" placeholder="https://github.com/..." value={project.githubUrl || ''} onChange={(e) => handleProjectChange(index, 'githubUrl', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none placeholder:text-zinc-500 text-white" />
                         </div>
                         <div className="space-y-2">
                           <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Live URL (Optional)</label>
-                          <input type="text" placeholder="https://..." value={project.liveUrl || ''} onChange={(e) => handleProjectChange(index, 'liveUrl', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-3.5 text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none placeholder:text-white/20 text-white" />
+                          <input type="text" placeholder="https://..." value={project.liveUrl || ''} onChange={(e) => handleProjectChange(index, 'liveUrl', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none placeholder:text-zinc-500 text-white" />
                         </div>
                         <div className="space-y-2 col-span-2">
                           <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Demo Video URL (Optional)</label>
-                          <input type="text" placeholder="https://youtube.com/..." value={project.demoVideoUrl || ''} onChange={(e) => handleProjectChange(index, 'demoVideoUrl', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-3.5 text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none placeholder:text-white/20 text-white" />
+                          <input type="text" placeholder="https://youtube.com/..." value={project.demoVideoUrl || ''} onChange={(e) => handleProjectChange(index, 'demoVideoUrl', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none placeholder:text-zinc-500 text-white" />
                         </div>
                       </div>
                     </div>
@@ -432,11 +432,11 @@ export default function BuilderPage() {
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Company / Organization</label>
-                          <input type="text" placeholder="Google" value={ach.organization || ''} onChange={(e) => handleAchievementChange(index, 'organization', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-3.5 text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none text-white placeholder:text-white/20" />
+                          <input type="text" placeholder="Google" value={ach.organization || ''} onChange={(e) => handleAchievementChange(index, 'organization', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none text-white placeholder:text-zinc-500" />
                         </div>
                         <div className="space-y-2">
                           <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Type</label>
-                          <select value={ach.type} onChange={(e) => handleAchievementChange(index, 'type', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-3.5 text-sm focus:border-primary/50 outline-none text-white cursor-pointer">
+                          <select value={ach.type} onChange={(e) => handleAchievementChange(index, 'type', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 outline-none text-white cursor-pointer">
                             <option value="job" className="bg-[#16161A]">Job</option>
                             <option value="internship" className="bg-[#16161A]">Internship</option>
                             <option value="freelance" className="bg-[#16161A]">Freelance</option>
@@ -448,17 +448,17 @@ export default function BuilderPage() {
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Start Date</label>
-                          <input type="text" placeholder="Jan 2022" value={ach.startDate} onChange={(e) => handleAchievementChange(index, 'startDate', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-3.5 text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none text-white placeholder:text-white/20" />
+                          <input type="text" placeholder="Jan 2022" value={ach.startDate} onChange={(e) => handleAchievementChange(index, 'startDate', e.target.value)} className="w-full bg-[#0D0D10] border border-[#232328] rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none text-white placeholder:text-zinc-500" />
                         </div>
                         <div className="space-y-2">
                           <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">End Date</label>
-                          <input type="text" placeholder="Present" value={ach.endDate} onChange={(e) => handleAchievementChange(index, 'endDate', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-3.5 text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none text-white placeholder:text-white/20" />
+                          <input type="text" placeholder="Present" value={ach.endDate} onChange={(e) => handleAchievementChange(index, 'endDate', e.target.value)} className="w-full bg-[#0D0D10] border border-[#232328] rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none text-white placeholder:text-zinc-500" />
                         </div>
                       </div>
                       
                       <div className="space-y-2">
                         <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Description</label>
-                        <textarea rows={4} placeholder="What were your key responsibilities and achievements?" value={ach.description} onChange={(e) => handleAchievementChange(index, 'description', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-3.5 text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none resize-none text-white placeholder:text-white/20" />
+                        <textarea rows={4} placeholder="What were your key responsibilities and achievements?" value={ach.description} onChange={(e) => handleAchievementChange(index, 'description', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none resize-none text-white placeholder:text-zinc-500" />
                       </div>
                     </div>
                   ))}
@@ -484,7 +484,7 @@ export default function BuilderPage() {
                           type="text" 
                           value={skill.name} 
                           onChange={(e) => handleSkillChange(index, e.target.value)} 
-                          className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-3 text-sm font-bold focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-colors text-white placeholder:text-white/20"
+                          className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm font-bold focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-colors text-white placeholder:text-zinc-500"
                           placeholder="e.g. React.js" 
                         />
                         <button onClick={() => removeSkill(index)} className="absolute right-2 top-1/2 -translate-y-1/2 text-error hover:bg-error/20 bg-white/5 p-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 size={14} /></button>
@@ -507,11 +507,11 @@ export default function BuilderPage() {
                   <div className="space-y-5 pt-2">
                     <div className="space-y-2">
                       <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Public Email Address</label>
-                      <input type="email" placeholder="hello@example.com" value={data.contact.email} onChange={(e) => handleContactChange('email', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-3.5 text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all text-white placeholder:text-white/20" />
+                      <input type="email" placeholder="hello@example.com" value={data.contact.email} onChange={(e) => handleContactChange('email', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all text-white placeholder:text-zinc-500" />
                     </div>
                     <div className="space-y-2">
                       <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase mb-2 block">Location Display</label>
-                      <input type="text" placeholder="San Francisco, CA" value={data.contact.location} onChange={(e) => handleContactChange('location', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-3.5 text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all text-white placeholder:text-white/20" />
+                      <input type="text" placeholder="San Francisco, CA" value={data.contact.location} onChange={(e) => handleContactChange('location', e.target.value)} className="w-full bg-[#0D0D10] border border-white/5 rounded-xl px-4 py-[14px] text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all text-white placeholder:text-zinc-500" />
                     </div>
                   </div>
                 </div>
