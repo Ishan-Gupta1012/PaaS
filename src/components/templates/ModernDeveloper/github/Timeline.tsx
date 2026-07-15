@@ -21,9 +21,11 @@ export function Timeline({ events }: Props) {
   if (meaningfulEvents.length === 0) return null;
 
   const renderEventDetails = (event: GithubEvent) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const payload = event.payload as any;
     switch (event.type) {
       case 'PushEvent':
-        const commits = event.payload.commits?.length || 0;
+        const commits = payload.commits?.length || 0;
         return (
           <div className="flex flex-col gap-1">
             <span className="text-white font-medium">Pushed {commits} commit{commits !== 1 ? 's' : ''}</span>
@@ -35,7 +37,7 @@ export function Timeline({ events }: Props) {
       case 'PullRequestEvent':
         return (
           <div className="flex flex-col gap-1">
-            <span className="text-white font-medium">{event.payload.action === 'opened' ? 'Opened' : 'Merged'} Pull Request</span>
+            <span className="text-white font-medium">{payload.action === 'opened' ? 'Opened' : 'Merged'} Pull Request</span>
             <span className="text-xs text-white/40 font-mono truncate max-w-[200px]">
               {event.repo.name}
             </span>
