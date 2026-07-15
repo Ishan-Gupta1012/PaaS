@@ -88,8 +88,8 @@ export default function SoftwareEngineerTemplate() {
   useEffect(() => {
     const current = ROLES[roleIndex];
     if (isPaused) { const t = setTimeout(() => { setIsPaused(false); setIsDeleting(true); }, 2200); return () => clearTimeout(t); }
-    if (isDeleting && displayText === "") { setIsDeleting(false); setRoleIndex(i => (i + 1) % ROLES.length); return; }
-    if (!isDeleting && displayText === current) { setIsPaused(true); return; }
+    if (isDeleting && displayText === "") { setTimeout(() => { setIsDeleting(false); setRoleIndex(i => (i + 1) % ROLES.length); }, 0); return; }
+    if (!isDeleting && displayText === current) { setTimeout(() => setIsPaused(true), 0); return; }
     const t = setTimeout(() => setDisplayText(p => isDeleting ? p.slice(0, -1) : current.slice(0, p.length + 1)), isDeleting ? 55 : 105);
     return () => clearTimeout(t);
   }, [displayText, isDeleting, isPaused, roleIndex]);

@@ -49,6 +49,7 @@ export interface PortfolioData {
     location: string;
     avatarUrl: string;
     logoText: string;
+    githubUsername?: string;
     socials: SocialLink[];
   };
   achievements: Achievement[];
@@ -67,6 +68,7 @@ export const initialPortfolioData: PortfolioData = {
     location: "",
     avatarUrl: "",
     logoText: "",
+    githubUsername: "",
     socials: []
   },
   achievements: [

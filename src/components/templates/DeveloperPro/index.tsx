@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { PortfolioData } from "@/types/portfolio";
 
 const C = {
@@ -46,12 +46,14 @@ export default function DeveloperProTemplate({ data }: Props) {
     .toUpperCase() || "JD";
 
   // Dynamic Typing Roles
-  const taglineRoles = data.hero.tagline
-    ? data.hero.tagline.split(/[,;|]/).map(r => r.trim()).filter(Boolean)
-    : [];
-  const roles = taglineRoles.length > 0
-    ? taglineRoles.map(r => r.endsWith(".") ? r : r + ".")
-    : ["Developer.", "Designer.", "Engineer.", "Creator."];
+  const roles = useMemo(() => {
+    const taglineRoles = data.hero?.tagline
+      ? data.hero.tagline.split(/[,;|]/).map(r => r.trim()).filter(Boolean)
+      : [];
+    return taglineRoles.length > 0
+      ? taglineRoles.map(r => r.endsWith(".") ? r : r + ".")
+      : ["Developer.", "Designer.", "Engineer.", "Creator."];
+  }, [data.hero.tagline]);
 
   const [roleIndex, setRoleIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
@@ -70,12 +72,14 @@ export default function DeveloperProTemplate({ data }: Props) {
       return () => clearTimeout(t); 
     }
     if (isDeleting && displayText === "") { 
-      setIsDeleting(false); 
-      setRoleIndex(i => (i + 1) % roles.length); 
+      setTimeout(() => {
+        setIsDeleting(false); 
+        setRoleIndex(i => (i + 1) % roles.length); 
+      }, 0);
       return; 
     }
     if (!isDeleting && displayText === current) { 
-      setIsPaused(true); 
+      setTimeout(() => setIsPaused(true), 0); 
       return; 
     }
     const t = setTimeout(() => setDisplayText(p => isDeleting ? p.slice(0, -1) : current.slice(0, p.length + 1)), isDeleting ? 55 : 105);
@@ -271,8 +275,9 @@ export default function DeveloperProTemplate({ data }: Props) {
                   <div key={i} className={`r${i+1}`} style={{ position:"absolute", inset:`${i*30}px`, borderRadius:"50%", border:`1px solid rgba(45,212,191,${0.18-i*0.05})` }} />
                 ))}
                 <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center" }}>
-                  {data.hero.avatarUrl ? (
-                    <img src={data.hero.avatarUrl} alt="Avatar" style={{ width:"72px", height:"72px", borderRadius:"18px", border:"1.5px solid rgba(45,212,191,.2)", objectFit: "cover" }} />
+                  {data.hero?.avatarUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={data.hero.avatarUrl} alt={data.hero.logoText || "Profile"} style={{ width:"72px", height:"72px", borderRadius:"18px", border:"1.5px solid rgba(45,212,191,.2)", objectFit: "cover" }} />
                   ) : (
                     <div style={{ width:"72px", height:"72px", borderRadius:"18px", backgroundColor:"rgba(45,212,191,.08)", border:"1.5px solid rgba(45,212,191,.2)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:"20px", fontWeight:900, color:"#2DD4BF", letterSpacing:"-0.03em" }}>
                       {initials}

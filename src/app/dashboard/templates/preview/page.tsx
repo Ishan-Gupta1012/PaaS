@@ -15,7 +15,7 @@ export default function PreviewPage() {
       const params = new URLSearchParams(window.location.search);
       const temp = params.get('template');
       if (temp) {
-        setSelectedTemplate(temp);
+        setTimeout(() => setSelectedTemplate(temp), 0);
       }
     }
   }, []);

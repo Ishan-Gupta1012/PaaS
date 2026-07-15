@@ -10,8 +10,7 @@ import Link from 'next/link';
 export default function Dashboard() {
   const { user, logout } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState("/templates/software-engineer");
-  const [viewport, setViewport] = useState<"monitor" | "tablet" | "smartphone">("monitor");
+
 
   return (
     <div className="bg-background text-on-surface font-body-md selection:bg-primary-container selection:text-on-primary-container">
