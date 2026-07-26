@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 
+import { ThemeProvider } from "@/components/ThemeProvider";
+
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -21,12 +23,20 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${inter.variable} antialiased scroll-smooth`}
     >
-      <body className="min-h-screen bg-white text-black font-sans flex flex-col overflow-x-hidden">
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+      <body className="min-h-screen bg-background text-foreground font-sans flex flex-col overflow-x-hidden">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AuthProvider>
+            {children}
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

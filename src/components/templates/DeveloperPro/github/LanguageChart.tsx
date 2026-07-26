@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { GithubRepo } from './types';
 import { Code } from 'lucide-react';
 
@@ -60,10 +60,10 @@ export function LanguageChart({ repos, customLanguages = [], setCustomLanguages,
   if (languageStats.length === 0) return null;
 
   return (
-    <div className="bg-black/20 backdrop-blur-md border border-white/5 rounded-[2rem] p-6 flex flex-col gap-4 relative h-fit">
+    <div className="bg-[#111113] border border-[rgba(255,255,255,0.06)] rounded-sm p-6 flex flex-col gap-4 relative h-fit">
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-pink-500/10 rounded-xl text-pink-400">
+          <div className="p-2 bg-[#2DD4BF]/10 rounded-sm text-[#2DD4BF]">
             <Code size={18} />
           </div>
           <h3 className="text-lg font-bold text-white tracking-tight">Languages</h3>
@@ -74,7 +74,7 @@ export function LanguageChart({ repos, customLanguages = [], setCustomLanguages,
         {languageStats.map((lang) => (
           <div 
             key={lang.name} 
-            className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-white/10 bg-white/5 text-sm font-medium text-white/80"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-sm border border-[rgba(255,255,255,0.06)] bg-[#16161A] text-sm font-medium text-white/80"
           >
             <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: lang.color }} />
             {lang.name}
@@ -104,9 +104,9 @@ export function LanguageChart({ repos, customLanguages = [], setCustomLanguages,
             value={newLanguage}
             onChange={(e) => setNewLanguage(e.target.value)}
             placeholder="Add language..."
-            className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white placeholder-white/30 focus:outline-none focus:border-primary/50"
+            className="flex-1 bg-[#16161A] border border-[rgba(255,255,255,0.06)] rounded-sm px-3 py-1.5 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[#2DD4BF]/50"
           />
-          <button type="submit" className="px-3 py-1.5 bg-primary text-black rounded-lg text-sm font-bold hover:bg-primary/90">
+          <button type="submit" className="px-3 py-1.5 bg-[#2DD4BF] text-black rounded-sm text-sm font-bold hover:bg-[#2DD4BF]/90">
             Add
           </button>
         </form>

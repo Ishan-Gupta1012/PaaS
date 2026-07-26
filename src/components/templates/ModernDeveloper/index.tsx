@@ -69,7 +69,7 @@ export default function ModernDeveloperTemplate({ data }: Props) {
         {data.projects && data.projects.length > 0 && <ProjectsSection data={data.projects} />}
         {data.achievements && data.achievements.length > 0 && <AchievementSection data={data.achievements} />}
         {data.skills && data.skills.length > 0 && <SkillsSection data={data.skills} />}
-        {data.hero.githubUsername && <GithubDashboard username={data.hero.githubUsername} />}
+        {data.hero.githubUsername && data.hero.showGithub !== false && <GithubDashboard username={data.hero.githubUsername} />}
       </main>
       <ContactSection data={data.contact} socials={data.hero.socials} />
     </div>

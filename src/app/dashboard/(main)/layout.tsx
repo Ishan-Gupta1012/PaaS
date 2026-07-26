@@ -4,10 +4,11 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
-import { 
-  LayoutDashboard, Settings, LayoutTemplate, 
-  RefreshCw, BarChart3, Globe, Download, 
-  Search, Bell, ChevronDown, UserCircle, LogOut 
+import { ThemeToggle } from '@/components/ThemeToggle';
+import {
+  LayoutDashboard, Settings, LayoutTemplate,
+  RefreshCw, BarChart3, Globe, Download,
+  Search, Bell, ChevronDown, UserCircle, LogOut
 } from 'lucide-react';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -34,19 +35,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <h1 className="font-display-md text-display-md font-bold text-primary">PortfolioOS</h1>
           <p className="font-label-sm text-on-surface-variant uppercase tracking-widest mt-xs">Dashboard</p>
         </div>
-        
+
         <nav className="flex-1 px-md space-y-1 mt-4">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             return (
-              <Link 
+              <Link
                 key={item.name}
                 href={item.href}
-                className={`flex items-center gap-md px-md py-[10px] rounded-xl transition-all ${
-                  isActive 
-                    ? 'bg-secondary-container text-on-surface-variant font-semibold' 
+                className={`flex items-center gap-md px-md py-[10px] rounded-xl transition-all ${isActive
+                    ? 'bg-secondary-container text-on-surface-variant font-semibold'
                     : 'text-on-surface-variant hover:bg-surface-container-low font-medium'
-                }`}
+                  }`}
               >
                 <item.icon size={20} />
                 <span className="font-body-md">{item.name}</span>
@@ -54,7 +54,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             );
           })}
         </nav>
-        
+
         <div className="px-md mt-auto pt-lg">
           <Link href="/dashboard/builder" className="w-full flex justify-center py-md bg-primary text-on-primary rounded-xl font-semibold shadow-sm hover:opacity-90 transition-opacity">
             Edit Portfolio
@@ -73,14 +73,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <input className="w-full bg-surface-container-low border-none rounded-full pl-10 pr-4 py-1.5 text-body-sm focus:ring-1 focus:ring-primary focus:bg-surface-container-lowest transition-all" placeholder="Search..." type="text" />
             </div>
           </div>
-          
+
           <div className="flex items-center gap-md">
+            <ThemeToggle />
+            
             <button className="p-sm text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors relative">
               <Bell size={18} />
             </button>
-            
+
             <div className="h-6 w-px bg-outline-variant mx-xs"></div>
-            
+
             <div className="flex items-center gap-sm relative">
               <span className="hidden sm:inline-flex px-3 py-1 bg-surface-container-low text-on-surface-variant rounded-full text-xs font-semibold border border-outline-variant">
                 Draft
@@ -88,16 +90,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <button className="hidden sm:inline-flex px-md py-1.5 bg-primary text-on-primary rounded-lg font-semibold text-sm hover:opacity-90 transition-transform active:scale-95">
                 Publish
               </button>
-              
-              <button 
+
+              <button
                 className="flex items-center gap-2 hover:bg-surface-container-low p-1 rounded-full transition-colors focus:outline-none"
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img 
-                  className="w-7 h-7 rounded-full border border-outline-variant object-cover bg-surface-container-low" 
-                  src={user?.personalInfo?.avatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=fallback"} 
-                  alt="Profile" 
+                <img
+                  className="w-7 h-7 rounded-full border border-outline-variant object-cover bg-surface-container-low"
+                  src={user?.personalInfo?.avatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=fallback"}
+                  alt="Profile"
                 />
                 <ChevronDown size={14} className={`text-on-surface-variant transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
@@ -116,7 +118,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     </Link>
                   </div>
                   <div className="py-1 border-t border-outline-variant">
-                    <button 
+                    <button
                       onClick={logout}
                       className="w-full text-left px-4 py-2 text-sm text-error hover:bg-error-container/20 flex items-center gap-2 transition-colors"
                     >

@@ -388,6 +388,18 @@ export default function BuilderPage() {
                           </button>
                         </div>
                       )}
+                      {githubConnected && (
+                        <div className="mt-3 flex items-center gap-2">
+                          <input 
+                            type="checkbox" 
+                            id="showGithub" 
+                            checked={data.hero.showGithub !== false} 
+                            onChange={(e) => handleHeroChange('showGithub', e.target.checked)}
+                            className="w-4 h-4 rounded bg-black/40 border-white/10 text-primary focus:ring-primary focus:ring-offset-gray-900 cursor-pointer"
+                          />
+                          <label htmlFor="showGithub" className="text-sm text-white/80 cursor-pointer select-none">Show GitHub section in portfolio</label>
+                        </div>
+                      )}
                     </div>
 
                     <div className="flex flex-col gap-2">

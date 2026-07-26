@@ -10,16 +10,16 @@ interface Props {
 
 export function ContributionGraph({ username, stats }: Props) {
   return (
-    <div className="bg-black/20 backdrop-blur-md border border-white/5 rounded-[2rem] p-6 md:p-8 overflow-x-auto relative h-full">
+    <div className="bg-[#111113] border border-[rgba(255,255,255,0.06)] rounded-sm p-6 md:p-8 overflow-x-auto relative h-full">
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-2 text-white/80 font-bold tracking-wide">
-          <Activity size={18} className="text-primary" /> GitHub Activity
+          <Activity size={18} className="text-[#2DD4BF]" /> GitHub Activity
         </div>
         <a 
           href={`https://github.com/${username}`} 
           target="_blank" 
           rel="noreferrer"
-          className="text-white/40 hover:text-white transition-colors flex items-center gap-2 text-sm font-semibold group-hover:text-primary"
+          className="text-white/40 hover:text-white transition-colors flex items-center gap-2 text-sm font-semibold group-hover:text-[#2DD4BF]"
         >
           @{username} <ExternalLink size={16} className="group-hover:rotate-45 transition-transform" />
         </a>

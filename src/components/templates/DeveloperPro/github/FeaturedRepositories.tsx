@@ -48,13 +48,13 @@ export function FeaturedRepositories({ repos, isEditMode, hiddenRepos = [], togg
           return (
             <div 
               key={repo.id} 
-              className={`group bg-black/20 backdrop-blur-md border ${isHidden ? 'border-red-500/30 opacity-50' : 'border-white/5'} hover:border-primary/30 rounded-[2rem] p-6 transition-all duration-300 ${!isHidden ? 'hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5' : ''} flex flex-col h-full relative overflow-hidden`}
+              className={`group bg-[#111113] border ${isHidden ? 'border-red-500/30 opacity-50' : 'border-[rgba(255,255,255,0.06)]'} hover:border-[#2DD4BF]/30 rounded-sm p-6 transition-all duration-300 ${!isHidden ? 'hover:-translate-y-1 hover:shadow-xl hover:shadow-[#2DD4BF]/5' : ''} flex flex-col h-full relative overflow-hidden`}
             >
               {/* Edit Mode Toggle Overlay */}
               {isEditMode && (
                 <button
                   onClick={() => toggleRepo?.(repo.id)}
-                  className={`absolute top-4 right-4 z-20 p-2 rounded-full backdrop-blur-md transition-all ${isHidden ? 'bg-red-500/20 text-red-400 hover:bg-red-500/40' : 'bg-white/10 text-white/50 hover:bg-white/20 hover:text-white'}`}
+                  className={`absolute top-4 right-4 z-20 p-2 rounded-sm transition-all ${isHidden ? 'bg-red-500/20 text-red-400 hover:bg-red-500/40' : 'bg-white/10 text-white/50 hover:bg-white/20 hover:text-white'}`}
                   title={isHidden ? "Show Repository" : "Hide Repository"}
                 >
                   {isHidden ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -68,7 +68,7 @@ export function FeaturedRepositories({ repos, isEditMode, hiddenRepos = [], togg
                 className={`flex flex-col h-full ${isHidden ? 'pointer-events-none' : ''}`}
               >
                 <div className="flex items-start justify-between mb-4">
-                  <div className="p-2 bg-primary/10 rounded-xl text-primary group-hover:scale-110 transition-transform">
+                  <div className="p-2 bg-[#2DD4BF]/10 rounded-sm text-[#2DD4BF] group-hover:scale-110 transition-transform">
                     <GitBranch size={24} />
                   </div>
                   <div className="flex items-center gap-3 pr-8">
@@ -87,7 +87,7 @@ export function FeaturedRepositories({ repos, isEditMode, hiddenRepos = [], togg
                   </div>
                 </div>
                 
-                <h4 className="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors line-clamp-1">
+                <h4 className="text-xl font-bold text-white mb-2 group-hover:text-[#2DD4BF] transition-colors line-clamp-1">
                   {repo.name}
                 </h4>
                 
@@ -98,7 +98,7 @@ export function FeaturedRepositories({ repos, isEditMode, hiddenRepos = [], togg
                 <div className="flex items-center gap-4 text-xs font-semibold tracking-wider text-white/40 mt-auto pt-4 border-t border-white/5">
                   {repo.language && (
                     <div className="flex items-center gap-1.5">
-                      <span className="w-2.5 h-2.5 rounded-full bg-primary/80"></span>
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#2DD4BF]/80"></span>
                       {repo.language}
                     </div>
                   )}

@@ -63,10 +63,10 @@ export default function GithubDashboard({ username }: Props) {
   // Load layout from localStorage
   useEffect(() => {
     try {
-      const savedLayout = localStorage.getItem('portfolio_os_github_layout');
-      const savedHidden = localStorage.getItem('portfolio_os_github_hidden');
-      const savedHiddenRepos = localStorage.getItem('portfolio_os_github_hidden_repos');
-      const savedCustomLanguages = localStorage.getItem('portfolio_os_github_custom_languages');
+      const savedLayout = localStorage.getItem('developer_pro_github_layout');
+      const savedHidden = localStorage.getItem('developer_pro_github_hidden');
+      const savedHiddenRepos = localStorage.getItem('developer_pro_github_hidden_repos');
+      const savedCustomLanguages = localStorage.getItem('developer_pro_github_custom_languages');
       if (savedLayout) {
         const parsedLayout = JSON.parse(savedLayout).filter((id: string) => DEFAULT_LAYOUT.includes(id));
         setLayout(parsedLayout);
@@ -84,10 +84,10 @@ export default function GithubDashboard({ username }: Props) {
 
   // Save preferences when they change
   useEffect(() => {
-    localStorage.setItem('portfolio_os_github_layout', JSON.stringify(layout));
-    localStorage.setItem('portfolio_os_github_hidden', JSON.stringify(hiddenWidgets));
-    localStorage.setItem('portfolio_os_github_hidden_repos', JSON.stringify(hiddenRepos));
-    localStorage.setItem('portfolio_os_github_custom_languages', JSON.stringify(customLanguages));
+    localStorage.setItem('developer_pro_github_layout', JSON.stringify(layout));
+    localStorage.setItem('developer_pro_github_hidden', JSON.stringify(hiddenWidgets));
+    localStorage.setItem('developer_pro_github_hidden_repos', JSON.stringify(hiddenRepos));
+    localStorage.setItem('developer_pro_github_custom_languages', JSON.stringify(customLanguages));
   }, [layout, hiddenWidgets, hiddenRepos, customLanguages]);
 
   const sensors = useSensors(
@@ -294,34 +294,25 @@ export default function GithubDashboard({ username }: Props) {
   const visibleWidgets = layout.filter(id => !hiddenWidgets.includes(id));
 
   return (
-    <section id="github" className="py-24 relative bg-transparent selection:bg-primary/30 min-h-screen">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white/[0.03] via-transparent to-transparent pointer-events-none" />
-      <div 
-        className="absolute inset-0 bg-black/40 backdrop-blur-xl pointer-events-none" 
-        style={{ 
-          maskImage: 'linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)',
-          WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)' 
-        }} 
-      />
-
+    <section id="github" className="py-24 relative bg-[#09090B] selection:bg-[#2DD4BF]/30 min-h-screen">
       {/* Sidebar for Edit Mode */}
-      <div className={`fixed inset-y-0 right-0 w-80 bg-black/40 backdrop-blur-2xl border-l border-white/10 z-[100] transform transition-transform duration-500 ease-in-out ${isEditMode ? 'translate-x-0 shadow-[0_0_50px_rgba(0,0,0,0.5)]' : 'translate-x-full'}`}>
+      <div className={`fixed inset-y-0 right-0 w-80 bg-[#111113] border-l border-[rgba(255,255,255,0.06)] z-[100] transform transition-transform duration-500 ease-in-out ${isEditMode ? 'translate-x-0 shadow-[0_0_50px_rgba(0,0,0,0.5)]' : 'translate-x-full'}`}>
         <div className="p-6 h-full flex flex-col">
           <div className="flex items-center justify-between mb-8">
-            <h3 className="text-xl font-bold text-white tracking-tight flex items-center gap-2">
-              <Settings2 size={20} className="text-primary" />
+            <h3 className="text-xl font-bold text-white tracking-tight flex items-center gap-2" style={{ letterSpacing: ".05em", textTransform: "uppercase" }}>
+              <Settings2 size={20} className="text-[#2DD4BF]" />
               Customize
             </h3>
             <button
               onClick={() => setIsEditMode(false)}
-              className="text-sm font-bold bg-primary text-black px-4 py-2 rounded-full hover:bg-primary/90 transition-colors"
+              className="text-sm font-bold bg-[#2DD4BF] text-black px-4 py-2 rounded hover:bg-[#2DD4BF]/90 transition-colors"
             >
               Done
             </button>
           </div>
 
           <div className="flex-1 overflow-y-auto">
-            <h4 className="text-xs font-bold text-white/50 uppercase tracking-widest mb-4">Hidden Widgets</h4>
+            <h4 className="text-xs font-bold text-[#71717A] uppercase tracking-widest mb-4" style={{ letterSpacing: ".1em" }}>Hidden Widgets</h4>
             <div className="flex flex-col gap-3">
               {hiddenWidgets.length === 0 ? (
                 <div className="text-sm text-white/40 italic p-4 bg-white/5 rounded-xl border border-white/5">
@@ -329,11 +320,11 @@ export default function GithubDashboard({ username }: Props) {
                 </div>
               ) : (
                 hiddenWidgets.map(id => (
-                  <div key={id} className="flex items-center justify-between p-4 bg-white/5 hover:bg-white/10 border border-white/5 rounded-xl transition-colors group">
+                  <div key={id} className="flex items-center justify-between p-4 bg-[#16161A] hover:bg-[#16161A]/80 border border-[rgba(255,255,255,0.06)] rounded transition-colors group">
                     <span className="text-sm font-medium text-white/80">{WIDGET_NAMES[id]}</span>
                     <button
                       onClick={() => showWidget(id)}
-                      className="p-1.5 bg-primary/20 text-primary rounded-md opacity-0 group-hover:opacity-100 transition-all hover:bg-primary hover:text-black"
+                      className="p-1.5 bg-[#2DD4BF]/20 text-[#2DD4BF] rounded-sm opacity-0 group-hover:opacity-100 transition-all hover:bg-[#2DD4BF] hover:text-black"
                     >
                       <Plus size={16} />
                     </button>
@@ -342,8 +333,8 @@ export default function GithubDashboard({ username }: Props) {
               )}
             </div>
 
-            <h4 className="text-xs font-bold text-white/50 uppercase tracking-widest mt-8 mb-4">Tips</h4>
-            <p className="text-sm text-white/40 leading-relaxed bg-white/5 p-4 rounded-xl border border-white/5">
+            <h4 className="text-xs font-bold text-[#71717A] uppercase tracking-widest mt-8 mb-4" style={{ letterSpacing: ".1em" }}>Tips</h4>
+            <p className="text-sm text-[#A1A1AA] leading-relaxed bg-[#16161A] p-4 rounded border border-[rgba(255,255,255,0.06)]">
               Drag and drop widgets on your dashboard to reorder them. Click the × icon to hide a widget. Your preferences are saved automatically!
             </p>
           </div>
@@ -351,32 +342,33 @@ export default function GithubDashboard({ username }: Props) {
       </div>
 
       <div className={`max-w-6xl mx-auto px-6 relative z-10 transition-all duration-500 ease-in-out ${isEditMode ? 'md:pr-80' : ''}`}>
-        <div className="mb-16 flex flex-col md:flex-row md:items-start justify-between gap-6">
+        <div className="mb-16 flex flex-col md:flex-row md:items-start justify-between gap-6" style={{ borderTop: "1px solid rgba(255,255,255,.06)", paddingTop: "40px" }}>
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/60 text-sm font-medium mb-6">
-              <GitBranch size={16} />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-sm bg-[#16161A] border border-[rgba(255,255,255,0.06)] text-[#A1A1AA] text-xs font-bold uppercase tracking-widest mb-6">
+              <GitBranch size={14} />
               <span>Developer OS</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6">
-              Developer Activity
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-[#2DD4BF] mb-6" style={{ letterSpacing: "-0.03em" }}>
+              DEVELOPER ACTIVITY
             </h2>
-            <p className="text-white/60 text-lg max-w-2xl">
+            <p className="text-[#A1A1AA] text-lg max-w-2xl" style={{ lineHeight: 1.75 }}>
               Track your GitHub activity, repositories and development insights automatically.
             </p>
           </div>
 
           <button
             onClick={() => setIsEditMode(!isEditMode)}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm transition-all border shadow-lg ${isEditMode ? 'bg-primary border-primary text-black' : 'bg-white/5 border-white/10 text-white hover:bg-white/10 hover:border-white/20'}`}
+            className={`flex items-center gap-2 px-5 py-2.5 rounded font-bold text-sm transition-all border shadow-lg ${isEditMode ? 'bg-[#2DD4BF] border-[#2DD4BF] text-black' : 'bg-[#16161A] border-[rgba(255,255,255,0.06)] text-[#A1A1AA] hover:text-white'}`}
+            style={{ letterSpacing: ".05em", textTransform: "uppercase" }}
           >
             <Settings2 size={16} className={isEditMode ? 'animate-spin-slow' : ''} />
-            {isEditMode ? 'Exit Edit Mode' : 'Customize Dashboard'}
+            {isEditMode ? 'EXIT EDIT MODE' : 'CUSTOMIZE DASHBOARD'}
           </button>
         </div>
 
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-24 text-white/40 gap-4">
-            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          <div className="flex flex-col items-center justify-center py-24 text-[#71717A] gap-4">
+            <Loader2 className="w-8 h-8 animate-spin text-[#2DD4BF]" />
             <p>Syncing Developer Dashboard...</p>
           </div>
         ) : error ? (
@@ -411,7 +403,7 @@ export default function GithubDashboard({ username }: Props) {
           </DndContext>
 
         ) : (
-          <div className="bg-white/5 border border-white/10 text-white/50 p-12 rounded-3xl text-center font-medium tracking-wide">
+          <div className="bg-[#16161A] border border-[rgba(255,255,255,0.06)] text-[#71717A] p-12 rounded-sm text-center font-medium tracking-wide">
             Start building. PortfolioOS will automatically track your developer journey.
           </div>
         )}

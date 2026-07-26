@@ -9,7 +9,7 @@ interface Props {
 
 export function DeveloperSummary({ profile, stats }: Props) {
   return (
-    <div className="bg-black/20 backdrop-blur-md md:bg-transparent rounded-3xl p-6 md:p-0 relative group">
+    <div className="bg-[#111113] md:bg-[#111113] rounded-sm p-6 md:p-0 relative group">
       <div className="relative z-10 flex flex-col md:flex-row gap-8 items-start md:items-center">
         {/* Left: Avatar & Info */}
         <div className="flex gap-6 items-center flex-1">
@@ -67,11 +67,11 @@ export function DeveloperSummary({ profile, stats }: Props) {
           </div>
 
           <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-2 text-primary/60 mb-1">
+            <div className="flex items-center gap-2 text-[#2DD4BF]/60 mb-1">
               <Activity size={14} />
-              <span className="text-xs font-bold uppercase tracking-wider text-primary">Contributions</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-[#2DD4BF]">Contributions</span>
             </div>
-            <span className="text-2xl font-bold text-primary tracking-tight">{stats.totalContributions}</span>
+            <span className="text-2xl font-bold text-[#2DD4BF] tracking-tight">{stats.totalContributions}</span>
           </div>
         </div>
       </div>
