@@ -5,10 +5,11 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import {
-  LayoutDashboard, Settings, LayoutTemplate,
-  RefreshCw, BarChart3, Globe, Download,
-  Search, Bell, ChevronDown, UserCircle, LogOut
+import { 
+  LayoutDashboard, Settings, LayoutTemplate, 
+  RefreshCw, BarChart3, Globe, Download, 
+  Search, Bell, ChevronDown, UserCircle, LogOut,
+  FileText
 } from 'lucide-react';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -18,9 +19,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   const navItems = [
     { name: 'Overview', href: '/dashboard', icon: LayoutDashboard },
+    { name: 'Templates', href: '/dashboard/templates', icon: LayoutTemplate },
     { name: 'Settings', href: '/dashboard/settings', icon: Settings },
     { name: 'Widgets', href: '/dashboard/widgets', icon: LayoutTemplate },
     { name: 'GitHub Sync', href: '/dashboard/github', icon: RefreshCw },
+    { name: 'Resume', href: '/dashboard/resume', icon: FileText },
     { name: 'Theme', href: '/dashboard/theme', icon: Settings }, // could use a different icon like Palette
     { name: 'Domain', href: '/dashboard/domain', icon: Globe },
     { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
