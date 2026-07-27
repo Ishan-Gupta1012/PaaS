@@ -77,6 +77,7 @@ export interface StudentProfile {
   socialLinks: SocialLinks;
   themeSettings: ThemeSettings;
   notifications: StudentNotification[];
+  resumeData?: any;
 }
 
 interface AuthContextType {
@@ -496,6 +497,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     setUser(finalProfile);
     localStorage.setItem('student_user', JSON.stringify(finalProfile));
+    
+    // Clear temporary resume data from sessionStorage on login to isolate users
+    if (typeof window !== 'undefined') {
+      try {
+        const keysToRemove: string[] = [];
+        for (let i = 0; i < sessionStorage.length; i++) {
+          const key = sessionStorage.key(i);
+          if (key && key.startsWith('temp_resume_upload_')) {
+            keysToRemove.push(key);
+          }
+        }
+        keysToRemove.forEach(key => sessionStorage.removeItem(key));
+      } catch (e) {
+        console.error('Failed to clear temporary resume data', e);
+      }
+    }
+    
     setIsLoading(false);
   };
 
@@ -506,6 +524,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
     setUser(null);
     localStorage.removeItem('student_user');
+    
+    // Clear temporary resume data from sessionStorage on logout to prevent exposure to other users
+    if (typeof window !== 'undefined') {
+      try {
+        const keysToRemove: string[] = [];
+        for (let i = 0; i < sessionStorage.length; i++) {
+          const key = sessionStorage.key(i);
+          if (key && key.startsWith('temp_resume_upload_')) {
+            keysToRemove.push(key);
+          }
+        }
+        keysToRemove.forEach(key => sessionStorage.removeItem(key));
+      } catch (e) {
+        console.error('Failed to clear temporary resume data', e);
+      }
+    }
+    
     window.location.href = '/';
   };
 

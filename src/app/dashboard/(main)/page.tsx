@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Plus, Copy, LayoutDashboard, PenTool, LayoutTemplate, RefreshCw, Eye, BarChart3, Code2, Rocket, Settings, Search, Bell, CheckCircle2, Check, Lightbulb, Monitor, Tablet, Smartphone, UserCircle, Sparkles, User, Terminal, Briefcase, GraduationCap, ShieldCheck, Share2, ArrowRight, Globe, LogOut, ChevronDown } from 'lucide-react';
+import { Plus, Copy, LayoutDashboard, PenTool, LayoutTemplate, RefreshCw, Eye, BarChart3, Code2, Rocket, Settings, Search, Bell, CheckCircle2, Check, Lightbulb, Monitor, Tablet, Smartphone, UserCircle, Sparkles, User, Terminal, Briefcase, GraduationCap, ShieldCheck, Share2, ArrowRight, Globe, LogOut, ChevronDown, FileText } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
 
@@ -35,6 +35,10 @@ export default function Dashboard() {
             <RefreshCw size={20} />
             <span className="font-body-md font-medium">GitHub Sync</span>
           </a>
+          <Link className="flex items-center gap-md px-md py-[10px] text-on-surface-variant hover:bg-surface-container-low rounded-xl transition-all" href="/dashboard/resume">
+            <FileText size={20} />
+            <span className="font-body-md font-medium">Resume</span>
+          </Link>
           <a className="flex items-center gap-md px-md py-[10px] text-on-surface-variant hover:bg-surface-container-low rounded-xl transition-all" href="#">
             <Eye size={20} />
             <span className="font-body-md font-medium">Live Preview</span>
