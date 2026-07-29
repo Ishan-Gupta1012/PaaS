@@ -40,6 +40,10 @@ async function runTests() {
       continue;
     }
 
+    // Add delay between files to avoid rate limiting
+    console.log(`Waiting 3 seconds before starting test for ${tc.filename}...`);
+    await new Promise(resolve => setTimeout(resolve, 3000));
+
     const buffer = fs.readFileSync(filePath);
     console.log(`Testing file: ${tc.filename} (${(buffer.length / 1024).toFixed(1)} KB)`);
 

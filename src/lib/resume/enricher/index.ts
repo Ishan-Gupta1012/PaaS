@@ -2,6 +2,7 @@ import { extractGithubData, GithubEnrichment } from './github';
 import { extractLinkedinData, LinkedinEnrichment } from './linkedin';
 import { extractCodingProfileData, CodingProfileEnrichment } from './coding';
 import { extractPortfolioData, PortfolioEnrichment } from './portfolio';
+import { withTimeout } from '../../utils/timeout';
 
 export interface EnrichedData {
   github: GithubEnrichment[];
@@ -12,13 +13,35 @@ export interface EnrichedData {
 }
 
 /**
- * Detects all URLs present in a raw text block.
+ * Detects all URLs present in a raw text block, matching standard URLs as well as domains without protocol.
  */
 export function detectUrls(text: string): string[] {
-  const urlRegex = /https?:\/\/[a-zA-Z0-9-._~:/?#\[\]@!$&'()*+,;=%]+/gi;
-  const matches = text.match(urlRegex) || [];
+  const urls: string[] = [];
+  let match;
+  
+  // 1. Match standard HTTP/HTTPS URLs
+  const standardRegex = /https?:\/\/[a-zA-Z0-9-._~:/?#\[\]@!$&'()*+,;=%]+/gi;
+  while ((match = standardRegex.exec(text)) !== null) {
+    urls.push(match[0]);
+  }
+
+  // 2. Match common platform domains without protocol
+  const platformRegex = /(?<![a-zA-Z0-9-._~:@])(=?www\.)?(github\.com|linkedin\.com|leetcode\.com|codeforces\.com|codechef\.com|hackerrank\.com|behance\.net|dribbble\.com)\/[a-zA-Z0-9-._~:/?#\[\]@!$&'()*+,;=%]+/gi;
+  while ((match = platformRegex.exec(text)) !== null) {
+    urls.push(`https://${match[0]}`);
+  }
+
+  // 3. Match generic domains (com, org, net, dev, io, me, co, app) without protocol (avoid matching email addresses)
+  const genericRegex = /(?<![a-zA-Z0-9-._~:@])(?:www\.)?[a-zA-Z0-9-]+\.(?:com|org|net|dev|io|me|co|app)(?:\/[a-zA-Z0-9-._~:/?#\[\]@!$&'()*+,;=%]*)?/gi;
+  while ((match = genericRegex.exec(text)) !== null) {
+    const urlStr = match[0];
+    if (!urls.some(existing => existing.includes(urlStr))) {
+      urls.push(`https://${urlStr}`);
+    }
+  }
+
   // Deduplicate and filter out trailing punctuations common in parsed PDFs
-  return Array.from(new Set(matches.map(url => {
+  return Array.from(new Set(urls.map(url => {
     let cleanUrl = url.trim();
     if (cleanUrl.endsWith('.') || cleanUrl.endsWith(',') || cleanUrl.endsWith(')')) {
       cleanUrl = cleanUrl.slice(0, -1);
@@ -37,37 +60,48 @@ export function categorizeUrls(urls: string[]) {
   const portfolio: string[] = [];
   const otherLinks: string[] = [];
 
+  const companyDomains = new Set([
+    'amazon.com', 'microsoft.com', 'google.com', 'apple.com', 'netflix.com',
+    'meta.com', 'crunchyroll.com', 'facebook.com', 'twitter.com', 'x.com',
+    'adobe.com', 'oracle.com', 'ibm.com', 'intel.com', 'salesforce.com'
+  ]);
+
   urls.forEach(urlStr => {
     try {
-      const url = new URL(urlStr);
-      const host = url.hostname.toLowerCase();
+      let formattedUrl = urlStr.trim();
+      if (!/^https?:\/\//i.test(formattedUrl)) {
+        formattedUrl = `https://${formattedUrl}`;
+      }
+      const url = new URL(formattedUrl);
+      const host = url.hostname.toLowerCase().replace(/^www\./, '');
 
-      if (host.includes('github.com')) {
-        github.push(urlStr);
-      } else if (host.includes('linkedin.com')) {
-        linkedin.push(urlStr);
+      if (host === 'github.com' || host.endsWith('.github.com')) {
+        github.push(formattedUrl);
+      } else if (host === 'linkedin.com' || host.endsWith('.linkedin.com')) {
+        linkedin.push(formattedUrl);
       } else if (
-        host.includes('leetcode.com') || 
-        host.includes('codeforces.com') || 
-        host.includes('codechef.com') || 
-        host.includes('hackerrank.com')
+        host === 'leetcode.com' || 
+        host === 'codeforces.com' || 
+        host === 'codechef.com' || 
+        host === 'hackerrank.com'
       ) {
-        coding.push(urlStr);
+        coding.push(formattedUrl);
       } else if (
-        host.includes('google.com') || 
-        host.includes('coursera.org') || 
-        host.includes('udemy.com') || 
-        host.includes('medium.com') || 
-        host.includes('dev.to') || 
-        host.includes('youtube.com') || 
-        host.includes('figma.com') || 
-        host.includes('behance.net') || 
-        host.includes('dribbble.com')
+        host === 'google.com' || 
+        host === 'coursera.org' || 
+        host === 'udemy.com' || 
+        host === 'medium.com' || 
+        host === 'dev.to' || 
+        host === 'youtube.com' || 
+        host === 'figma.com' || 
+        host === 'behance.net' || 
+        host === 'dribbble.com' ||
+        companyDomains.has(host)
       ) {
-        otherLinks.push(urlStr);
+        otherLinks.push(formattedUrl);
       } else {
         // If it's a general website, treat it as a personal portfolio site
-        portfolio.push(urlStr);
+        portfolio.push(formattedUrl);
       }
     } catch {
       // Ignore invalid URLs
@@ -84,10 +118,18 @@ export async function enrichPortfolioData(rawResumeText: string): Promise<Enrich
   const allUrls = detectUrls(rawResumeText);
   const categorized = categorizeUrls(allUrls);
 
-  const githubPromises = categorized.github.map(url => extractGithubData(url));
-  const linkedinPromises = categorized.linkedin.map(url => extractLinkedinData(url));
-  const codingPromises = categorized.coding.map(url => extractCodingProfileData(url));
-  const portfolioPromises = categorized.portfolio.map(url => extractPortfolioData(url));
+  const githubPromises = categorized.github.map(url => 
+    withTimeout(extractGithubData(url), 10000, `GitHub Enrichment for ${url}`, null)
+  );
+  const linkedinPromises = categorized.linkedin.map(url => 
+    withTimeout(extractLinkedinData(url), 10000, `LinkedIn Enrichment for ${url}`, null)
+  );
+  const codingPromises = categorized.coding.map(url => 
+    withTimeout(extractCodingProfileData(url), 10000, `Coding Profile Enrichment for ${url}`, null)
+  );
+  const portfolioPromises = categorized.portfolio.map(url => 
+    withTimeout(extractPortfolioData(url), 10000, `Portfolio Crawling for ${url}`, null)
+  );
 
   // Run all fetches concurrently with Promise.allSettled
   const [

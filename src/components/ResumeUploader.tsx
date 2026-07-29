@@ -7,7 +7,7 @@ import {
   ChevronDown, ChevronUp, Copy, Check, Briefcase, 
   GraduationCap, Code, Award, Sparkles, RefreshCw, 
   Globe, ExternalLink, Eye, Trash2, ShieldAlert,
-  Link as LinkIcon, Database
+  Link as LinkIcon, Database, Terminal
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -70,13 +70,22 @@ export default function ResumeUploader() {
   
   // Results
   const [extractedText, setExtractedText] = useState<string | null>(null);
+  const [detectedUrls, setDetectedUrls] = useState<string[]>([]);
+  const [detectedSections, setDetectedSections] = useState<string[]>([]);
+  const [rawPdfText, setRawPdfText] = useState<string | null>(null);
+  const [cleanedText, setCleanedText] = useState<string | null>(null);
+  const [sectionTexts, setSectionTexts] = useState<Record<string, string> | null>(null);
+  const [llmInputs, setLlmInputs] = useState<Record<string, string> | null>(null);
+  const [extractedJson, setExtractedJson] = useState<any>(null);
   const [resumeData, setResumeData] = useState<ResumeData | null>(null);
   const [externalData, setExternalData] = useState<any>(null);
   const [mergedData, setMergedData] = useState<ResumeData | null>(null);
   const [isDemoMode, setIsDemoMode] = useState(false);
+  const [demoReason, setDemoReason] = useState<string | null>(null);
   
   // Views
-  const [activeTab, setActiveTab] = useState<'resume' | 'external' | 'merged' | 'text' | 'json'>('resume');
+  const [activeTab, setActiveTab] = useState<'resume' | 'external' | 'merged' | 'debug'>('merged');
+  const [debugSubTab, setDebugSubTab] = useState<'rawPdf' | 'cleanedText' | 'sections' | 'sectionTexts' | 'llmInputs' | 'extractedJson' | 'finalPortfolio'>('rawPdf');
   const [copied, setCopied] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
@@ -139,10 +148,18 @@ export default function ResumeUploader() {
           const parsed = JSON.parse(storedTemp);
           setFileName(parsed.fileName || null);
           setExtractedText(parsed.extractedText || null);
+          setDetectedUrls(parsed.detectedUrls || []);
+          setDetectedSections(parsed.detectedSections || []);
+          setRawPdfText(parsed.rawPdfText || null);
+          setCleanedText(parsed.cleanedText || null);
+          setSectionTexts(parsed.sectionTexts || null);
+          setLlmInputs(parsed.llmInputs || null);
+          setExtractedJson(parsed.extractedJson || null);
           setResumeData(parsed.resumeData || null);
           setExternalData(parsed.externalData || null);
           setMergedData(parsed.mergedData || null);
           setIsDemoMode(parsed.isDemo || false);
+          setDemoReason(parsed.demoReason || null);
           setStatus(parsed.status || 'idle');
           setActiveTab(parsed.activeTab || 'merged');
         } catch (e) {
@@ -161,15 +178,23 @@ export default function ResumeUploader() {
     const tempData = {
       fileName,
       extractedText,
+      detectedUrls,
+      detectedSections,
+      rawPdfText,
+      cleanedText,
+      sectionTexts,
+      llmInputs,
+      extractedJson,
       resumeData,
       externalData,
       mergedData,
       isDemo: isDemoMode,
+      demoReason,
       status,
       activeTab,
     };
     sessionStorage.setItem(sessionKey, JSON.stringify(tempData));
-  }, [user, fileName, extractedText, resumeData, externalData, mergedData, isDemoMode, status, activeTab]);
+  }, [user, fileName, extractedText, detectedUrls, detectedSections, rawPdfText, cleanedText, sectionTexts, llmInputs, extractedJson, resumeData, externalData, mergedData, isDemoMode, demoReason, status, activeTab]);
 
   const handleLoadFromProfile = () => {
     if (user?.resumeData) {
@@ -247,6 +272,9 @@ export default function ResumeUploader() {
       });
     }, 200);
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 35000);
+
     try {
       const formData = new FormData();
       formData.append('file', selectedFile);
@@ -256,12 +284,22 @@ export default function ResumeUploader() {
       const response = await fetch('/api/resume/upload', {
         method: 'POST',
         body: formData,
+        signal: controller.signal
       });
 
+      clearTimeout(timeoutId);
       clearInterval(progressInterval);
 
       if (!response.ok) {
         const errorData = await response.json();
+        if (errorData.extractedText || errorData.debugInfo) {
+          setExtractedText(errorData.extractedText || null);
+          setRawPdfText(errorData.debugInfo?.rawPdfText || errorData.extractedText || null);
+          setCleanedText(errorData.debugInfo?.cleanedText || errorData.extractedText || null);
+          setSectionTexts(errorData.debugInfo?.sections || null);
+          setLlmInputs(errorData.debugInfo?.llmInputs || null);
+          setExtractedJson(errorData.debugInfo?.extractedJson || null);
+        }
         throw new Error(errorData.error || 'Failed to process document.');
       }
 
@@ -273,20 +311,41 @@ export default function ResumeUploader() {
       setUploadProgress(100);
       setTimeout(() => {
         setExtractedText(result.extractedText);
+        setDetectedUrls(result.detectedUrls || []);
+        setDetectedSections(result.detectedSections || []);
+        setRawPdfText(result.debugInfo?.rawPdfText || result.extractedText);
+        setCleanedText(result.debugInfo?.cleanedText || result.extractedText);
+        setSectionTexts(result.debugInfo?.sections || null);
+        setLlmInputs(result.debugInfo?.llmInputs || null);
+        setExtractedJson(result.debugInfo?.extractedJson || null);
         setResumeData(result.resumeData);
         setExternalData(result.externalData);
         setMergedData(result.mergedData);
         setIsDemoMode(result.isDemo);
+        setDemoReason(result.demoReason || null);
         setStatus('success');
         setActiveTab('merged'); // Jump to the merged tab showing the final portfolio
-        showToast(result.isDemo ? 'Parsed using Server Demo Engine' : 'AI Resume parsing & enrichment completed!');
+        
+        if (result.isDemo) {
+          if (result.demoReason === 'quota_exceeded') {
+            showToast('Gemini quota exceeded. Local fallback used.', 'error');
+          } else {
+            showToast('Parsed using Server Demo Engine');
+          }
+        } else {
+          showToast('AI Resume parsing & enrichment completed!');
+        }
       }, 500);
 
     } catch (err: any) {
+      clearTimeout(timeoutId);
       clearInterval(progressInterval);
       setStatus('error');
-      setErrorMessage(err.message || 'An error occurred during server-side document parsing.');
-      showToast(err.message || 'Processing failed.', 'error');
+      const msg = err.name === 'AbortError'
+        ? 'The server took too long to respond. Resume parsing timed out.'
+        : (err.message || 'An error occurred during server-side document parsing.');
+      setErrorMessage(msg);
+      showToast(msg, 'error');
     }
   };
 
@@ -306,13 +365,20 @@ export default function ResumeUploader() {
     setFile(null);
     setFileName(null);
     setExtractedText(null);
+    setDetectedUrls([]);
+    setDetectedSections([]);
+    setRawPdfText(null);
+    setCleanedText(null);
+    setSectionTexts(null);
+    setLlmInputs(null);
+    setExtractedJson(null);
     setResumeData(null);
     setExternalData(null);
     setMergedData(null);
     setUploadProgress(0);
     setErrorMessage(null);
     setStatus('idle');
-    setActiveTab('resume');
+    setActiveTab('merged');
     
     if (user) {
       const sessionKey = `temp_resume_upload_${user.username}`;
@@ -1025,29 +1091,16 @@ export default function ResumeUploader() {
                     <span>External Profiles</span>
                   </button>
                 )}
-                {extractedText && (
-                  <button 
-                    onClick={() => setActiveTab('text')}
-                    className={`flex-1 flex items-center justify-center lg:justify-start gap-md px-md py-[10px] rounded-xl font-semibold text-sm transition-colors ${
-                      activeTab === 'text'
-                        ? 'bg-secondary-container text-on-surface-variant'
-                        : 'text-on-surface-variant hover:bg-surface-container-low'
-                    }`}
-                  >
-                    <Eye size={16} />
-                    <span>Raw Resume Text</span>
-                  </button>
-                )}
                 <button 
-                  onClick={() => setActiveTab('json')}
+                  onClick={() => setActiveTab('debug')}
                   className={`flex-1 flex items-center justify-center lg:justify-start gap-md px-md py-[10px] rounded-xl font-semibold text-sm transition-colors ${
-                    activeTab === 'json'
-                      ? 'bg-secondary-container text-on-surface-variant'
+                    activeTab === 'debug'
+                      ? 'bg-secondary-container text-on-surface-variant font-bold border border-primary/20'
                       : 'text-on-surface-variant hover:bg-surface-container-low'
                   }`}
                 >
-                  <Code size={16} />
-                  <span>Raw JSON</span>
+                  <Terminal size={16} />
+                  <span>AI Debug Console</span>
                 </button>
               </div>
 
@@ -1425,50 +1478,175 @@ export default function ResumeUploader() {
                     </motion.div>
                   )}
 
-                  {/* TAB 4: Raw Extracted Text */}
-                  {activeTab === 'text' && extractedText && (
+                  {/* TAB 4: AI Debug Console */}
+                  {activeTab === 'debug' && (
                     <motion.div
-                      key="text-tab"
-                      initial={{ opacity: 0, x: -10 }}
+                      key="debug-tab"
+                      initial={{ opacity: 0, x: 10 }}
                       animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 10 }}
-                      className="flex flex-col gap-sm"
+                      exit={{ opacity: 0, x: -10 }}
+                      className="flex flex-col gap-md"
                     >
-                      <label className="text-xs font-bold text-on-surface-variant uppercase tracking-wider block">Raw Extracted Text (Server-Side Debug)</label>
-                      <div className="bg-surface-container-lowest border border-outline-variant rounded-2xl overflow-hidden shadow-sm">
-                        <textarea 
-                          readOnly 
-                          value={extractedText} 
-                          className="w-full h-96 p-md font-mono text-xs text-on-surface bg-surface-container-lowest border-none outline-none resize-none focus:ring-0" 
-                        />
+                      {/* Sub-tab navigation */}
+                      <div className="flex flex-wrap gap-xs border-b border-outline-variant pb-sm">
+                        {[
+                          { id: 'rawPdf', label: 'Raw PDF Text' },
+                          { id: 'cleanedText', label: 'Cleaned Resume Text' },
+                          { id: 'sections', label: 'Detected Sections' },
+                          { id: 'sectionTexts', label: 'Section Text' },
+                          { id: 'llmInputs', label: 'LLM Input' },
+                          { id: 'extractedJson', label: 'Extracted JSON' },
+                          { id: 'finalPortfolio', label: 'Final Portfolio JSON' },
+                        ].map((sub) => (
+                          <button
+                            key={sub.id}
+                            onClick={() => setDebugSubTab(sub.id as any)}
+                            className={`px-md py-1.5 rounded-full text-xs font-semibold transition-all ${
+                              debugSubTab === sub.id
+                                ? 'bg-primary text-on-primary'
+                                : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high'
+                            }`}
+                          >
+                            {sub.label}
+                          </button>
+                        ))}
                       </div>
-                      <p className="text-xs text-on-surface-variant italic">This text block represents the exact character data extracted by the server-side parser.</p>
-                    </motion.div>
-                  )}
 
-                  {/* TAB 5: Raw JSON (Merged Portfolio Schema) */}
-                  {activeTab === 'json' && (
-                    <motion.div
-                      key="json-tab"
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 10 }}
-                      className="bg-[#1e1e2e] text-[#cdd6f4] rounded-2xl border border-outline-variant/30 overflow-hidden shadow-sm relative"
-                    >
-                      <div className="flex justify-between items-center bg-[#181825] px-md py-sm border-b border-[#313244]">
-                        <span className="text-xs font-bold font-mono text-[#a6adc8]">enriched_portfolio.json</span>
-                        <button 
-                          onClick={copyToClipboard}
-                          className="flex items-center gap-xs px-sm py-1 bg-[#313244] hover:bg-[#45475a] text-[#cdd6f4] rounded-lg text-xs font-semibold transition-colors"
-                        >
-                          {copied ? <Check size={12} className="text-tertiary" /> : <Copy size={12} />}
-                          <span>{copied ? 'Copied!' : 'Copy JSON'}</span>
-                        </button>
+                      {/* Sub-tab Contents */}
+                      <div className="mt-sm">
+                        {debugSubTab === 'rawPdf' && (
+                          <div className="flex flex-col gap-xs">
+                            <label className="text-xs font-bold text-on-surface-variant uppercase tracking-wider block">Raw PDF Text</label>
+                            <div className="bg-surface-container-lowest border border-outline-variant rounded-2xl overflow-hidden shadow-sm">
+                              <textarea 
+                                readOnly 
+                                value={rawPdfText || extractedText || 'No text extracted.'} 
+                                className="w-full h-96 p-md font-mono text-xs text-on-surface bg-surface-container-lowest border-none outline-none resize-none focus:ring-0" 
+                              />
+                            </div>
+                            <p className="text-xs text-on-surface-variant italic">Direct text extract output from the PDF document.</p>
+                          </div>
+                        )}
+
+                        {debugSubTab === 'cleanedText' && (
+                          <div className="flex flex-col gap-xs">
+                            <label className="text-xs font-bold text-on-surface-variant uppercase tracking-wider block">Cleaned Resume Text</label>
+                            <div className="bg-surface-container-lowest border border-outline-variant rounded-2xl overflow-hidden shadow-sm">
+                              <textarea 
+                                readOnly 
+                                value={cleanedText || extractedText || 'No text extracted.'} 
+                                className="w-full h-96 p-md font-mono text-xs text-on-surface bg-surface-container-lowest border-none outline-none resize-none focus:ring-0" 
+                              />
+                            </div>
+                            <p className="text-xs text-on-surface-variant italic">Layout-preserved clean text block used for section split.</p>
+                          </div>
+                        )}
+
+                        {debugSubTab === 'sections' && (
+                          <div className="flex flex-col gap-xs">
+                            <label className="text-xs font-bold text-on-surface-variant uppercase tracking-wider block">Detected Sections</label>
+                            <div className="bg-surface-container-lowest border border-outline-variant rounded-2xl p-md shadow-sm">
+                              {detectedSections.length > 0 ? (
+                                <div className="flex flex-wrap gap-sm">
+                                  {detectedSections.map((sec, idx) => (
+                                    <span key={idx} className="px-md py-1.5 bg-surface-container-low text-on-surface font-semibold text-xs rounded-full border border-outline-variant/30 capitalize">
+                                      {sec}
+                                    </span>
+                                  ))}
+                                </div>
+                              ) : (
+                                <p className="text-sm text-on-surface-variant italic p-sm text-center">No sections detected in the resume text.</p>
+                              )}
+                            </div>
+                          </div>
+                        )}
+
+                        {debugSubTab === 'sectionTexts' && (
+                          <div className="flex flex-col gap-xs">
+                            <label className="text-xs font-bold text-on-surface-variant uppercase tracking-wider block">Text Assigned to Each Section</label>
+                            <div className="space-y-md">
+                              {sectionTexts ? (
+                                Object.entries(sectionTexts).map(([section, textContent], idx) => (
+                                  <div key={idx} className="bg-surface-container-lowest border border-outline-variant rounded-2xl overflow-hidden shadow-sm">
+                                    <div className="bg-surface-container-low px-md py-sm border-b border-outline-variant flex justify-between items-center">
+                                      <span className="text-xs font-bold capitalize text-primary">{section} Section ({textContent.length} chars)</span>
+                                    </div>
+                                    <pre className="p-md text-xs font-mono overflow-auto max-h-60 leading-relaxed text-on-surface-variant select-text whitespace-pre-wrap">
+                                      <code>{textContent}</code>
+                                    </pre>
+                                  </div>
+                                ))
+                              ) : (
+                                <p className="text-sm text-on-surface-variant italic p-md text-center bg-surface-container-lowest border border-outline-variant rounded-2xl">No section text recorded.</p>
+                              )}
+                            </div>
+                          </div>
+                        )}
+
+                        {debugSubTab === 'llmInputs' && (
+                          <div className="flex flex-col gap-xs">
+                            <label className="text-xs font-bold text-on-surface-variant uppercase tracking-wider block">LLM Prompts (Section by Section)</label>
+                            <div className="space-y-md">
+                              {llmInputs ? (
+                                Object.entries(llmInputs).map(([section, promptText], idx) => (
+                                  <div key={idx} className="bg-surface-container-lowest border border-outline-variant rounded-2xl overflow-hidden shadow-sm">
+                                    <div className="bg-surface-container-low px-md py-sm border-b border-outline-variant flex justify-between items-center">
+                                      <span className="text-xs font-bold capitalize text-primary">{section} Prompt</span>
+                                    </div>
+                                    <pre className="p-md text-xs font-mono overflow-auto max-h-60 leading-relaxed text-on-surface-variant select-text">
+                                      <code>{promptText}</code>
+                                    </pre>
+                                  </div>
+                                ))
+                              ) : (
+                                <p className="text-sm text-on-surface-variant italic p-md text-center bg-surface-container-lowest border border-outline-variant rounded-2xl">No LLM inputs recorded.</p>
+                              )}
+                            </div>
+                          </div>
+                        )}
+
+                        {debugSubTab === 'extractedJson' && (
+                          <div className="bg-[#1e1e2e] text-[#cdd6f4] rounded-2xl border border-outline-variant/30 overflow-hidden shadow-sm relative">
+                            <div className="flex justify-between items-center bg-[#181825] px-md py-sm border-b border-[#313244]">
+                              <span className="text-xs font-bold font-mono text-[#a6adc8]">extracted_json_responses.json</span>
+                              <button 
+                                onClick={() => {
+                                  navigator.clipboard.writeText(JSON.stringify(extractedJson || resumeData, null, 2));
+                                  showToast('Extracted JSON copied!');
+                                }}
+                                className="flex items-center gap-xs px-sm py-1 bg-[#313244] hover:bg-[#45475a] text-[#cdd6f4] rounded-lg text-xs font-semibold transition-colors"
+                              >
+                                <Copy size={12} />
+                                <span>Copy JSON</span>
+                              </button>
+                            </div>
+                            <pre className="p-md text-xs font-mono overflow-auto max-h-[500px] leading-relaxed select-text selection:bg-[#45475a]">
+                              <code>{JSON.stringify(extractedJson || resumeData, null, 2)}</code>
+                            </pre>
+                          </div>
+                        )}
+
+                        {debugSubTab === 'finalPortfolio' && (
+                          <div className="bg-[#1e1e2e] text-[#cdd6f4] rounded-2xl border border-outline-variant/30 overflow-hidden shadow-sm relative">
+                            <div className="flex justify-between items-center bg-[#181825] px-md py-sm border-b border-[#313244]">
+                              <span className="text-xs font-bold font-mono text-[#a6adc8]">final_portfolio.json</span>
+                              <button 
+                                onClick={() => {
+                                  navigator.clipboard.writeText(JSON.stringify(mergedData || resumeData, null, 2));
+                                  showToast('Portfolio JSON copied!');
+                                }}
+                                className="flex items-center gap-xs px-sm py-1 bg-[#313244] hover:bg-[#45475a] text-[#cdd6f4] rounded-lg text-xs font-semibold transition-colors"
+                              >
+                                <Copy size={12} />
+                                <span>Copy JSON</span>
+                              </button>
+                            </div>
+                            <pre className="p-md text-xs font-mono overflow-auto max-h-[500px] leading-relaxed select-text selection:bg-[#45475a]">
+                              <code>{JSON.stringify(mergedData || resumeData, null, 2)}</code>
+                            </pre>
+                          </div>
+                        )}
                       </div>
-                      
-                      <pre className="p-md text-xs font-mono overflow-auto max-h-[500px] leading-relaxed select-text selection:bg-[#45475a]">
-                        <code>{JSON.stringify(mergedData || resumeData, null, 2)}</code>
-                      </pre>
                     </motion.div>
                   )}
                 </AnimatePresence>

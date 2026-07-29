@@ -2,6 +2,15 @@ import { StructuredResume } from './extractor';
 import { EnrichedData } from './enricher';
 
 /**
+ * Helper to determine if a value is missing or represents a placeholder.
+ */
+function isMissing(value: any): boolean {
+  if (value === null || value === undefined) return true;
+  const str = String(value).trim();
+  return str === '' || str.toLowerCase() === 'not found' || str.toLowerCase() === 'not provided';
+}
+
+/**
  * Merges structured resume data with enriched external profiles.
  * The resume remains the source of truth, and external data is used to enrich.
  */
@@ -10,37 +19,37 @@ export function mergeResumeAndExternalData(resume: StructuredResume, external: E
   const merged: StructuredResume = JSON.parse(JSON.stringify(resume));
 
   // 1. Personal Links & Socials Enrichment
-  if (external.github.length > 0 && !merged.github) {
+  if (external.github.length > 0 && isMissing(merged.github)) {
     merged.github = `https://github.com/${external.github[0].username}`;
   }
-  if (external.linkedin.length > 0 && !merged.linkedin) {
+  if (external.linkedin.length > 0 && isMissing(merged.linkedin)) {
     merged.linkedin = external.linkedin[0].profileUrl;
   }
-  if (external.portfolio.length > 0 && !merged.portfolio) {
+  if (external.portfolio.length > 0 && isMissing(merged.portfolio)) {
     merged.portfolio = external.portfolio[0].url;
   }
 
   // Coding profile links
   external.coding.forEach(profile => {
-    if (profile.platform === 'leetcode' && !merged.leetcode) {
+    if (profile.platform === 'leetcode' && isMissing(merged.leetcode)) {
       merged.leetcode = `https://leetcode.com/${profile.username}`;
-    } else if (profile.platform === 'codeforces' && !merged.codeforces) {
+    } else if (profile.platform === 'codeforces' && isMissing(merged.codeforces)) {
       merged.codeforces = `https://codeforces.com/profile/${profile.username}`;
-    } else if (profile.platform === 'codechef' && !merged.codechef) {
+    } else if (profile.platform === 'codechef' && isMissing(merged.codechef)) {
       merged.codechef = `https://www.codechef.com/users/${profile.username}`;
-    } else if (profile.platform === 'hackerrank' && !merged.hackerrank) {
+    } else if (profile.platform === 'hackerrank' && isMissing(merged.hackerrank)) {
       merged.hackerrank = `https://www.hackerrank.com/${profile.username}`;
     }
   });
 
   // 2. Personal Bio / Summary Enrichment
-  if (!merged.personal.summary && external.github.length > 0 && external.github[0].bio) {
+  if (isMissing(merged.personal.summary) && external.github.length > 0 && external.github[0].bio) {
     merged.personal.summary = external.github[0].bio;
-  } else if (!merged.personal.summary && external.linkedin.length > 0 && external.linkedin[0].about) {
+  } else if (isMissing(merged.personal.summary) && external.linkedin.length > 0 && external.linkedin[0].about) {
     merged.personal.summary = external.linkedin[0].about;
   }
 
-  if (!merged.personal.headline && external.linkedin.length > 0 && external.linkedin[0].headline) {
+  if (isMissing(merged.personal.headline) && external.linkedin.length > 0 && external.linkedin[0].headline) {
     merged.personal.headline = external.linkedin[0].headline;
   }
 
@@ -72,7 +81,9 @@ export function mergeResumeAndExternalData(resume: StructuredResume, external: E
 
   // 4. Projects Enrichment (Import GitHub repositories as projects)
   const existingProjectNames = new Set<string>(
-    merged.projects.map(p => p.name.toLowerCase().trim())
+    merged.projects
+      .map(p => p.name ? p.name.toLowerCase().trim() : '')
+      .filter(Boolean)
   );
 
   external.github.forEach(profile => {
@@ -83,12 +94,12 @@ export function mergeResumeAndExternalData(resume: StructuredResume, external: E
       if (!existingProjectNames.has(repoNameLower) && repo.stars >= 0) {
         merged.projects.push({
           name: repo.name.replace(/[-_]/g, ' ').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
-          description: repo.description || 'Public GitHub open-source repository.',
+          description: repo.description || null,
           tags: repo.language && repo.language !== 'Unknown' ? [repo.language] : [],
           githubUrl: repo.url,
-          liveUrl: '',
+          liveUrl: null,
           category: 'Open Source',
-          outcome: repo.stars > 0 ? `Accumulated ${repo.stars} stars on GitHub.` : 'Successfully published and maintained on GitHub.'
+          outcome: repo.stars > 0 ? `Accumulated ${repo.stars} stars on GitHub.` : null
         });
         existingProjectNames.add(repoNameLower);
       }

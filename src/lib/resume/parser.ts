@@ -1,4 +1,47 @@
 import mammoth from 'mammoth';
+import * as pdfjs from 'pdfjs-dist/legacy/build/pdf.mjs';
+
+/**
+ * Helper to parse a PDF buffer using pdfjs-dist.
+ */
+async function parseWithPdfJs(buffer: Buffer): Promise<string> {
+  const data = new Uint8Array(buffer);
+  const loadingTask = pdfjs.getDocument({
+    data,
+    useSystemFonts: true,
+    disableFontFace: true
+  });
+  
+  const pdfDocument = await loadingTask.promise;
+  const numPages = pdfDocument.numPages;
+  let fullText = '';
+
+  for (let pageNum = 1; pageNum <= numPages; pageNum++) {
+    const page = await pdfDocument.getPage(pageNum);
+    const textContent = await page.getTextContent();
+    let lastY = -1;
+    let pageText = '';
+
+    for (const item of textContent.items) {
+      if ('str' in item) {
+        const y = item.transform[5];
+        
+        if (lastY !== -1 && Math.abs(y - lastY) > 5) {
+          pageText += '\n';
+        } else if (lastY !== -1 && 'hasPageSpace' in item && item.hasPageSpace) {
+          pageText += ' ';
+        }
+        
+        pageText += item.str;
+        lastY = y;
+      }
+    }
+    
+    fullText += pageText + '\n\n';
+  }
+
+  return fullText;
+}
 
 /**
  * Helper to parse a PDF buffer using pdf2json.
@@ -7,7 +50,6 @@ async function parseWithPdf2Json(buffer: Buffer): Promise<string> {
   return new Promise((resolve, reject) => {
     try {
       const PDFParser = require('pdf2json');
-      // Instantiate PDFParser with null context and 1 (raw text mode)
       const pdfParser = new PDFParser(null, 1);
 
       pdfParser.on('pdfParser_dataError', (errData: any) => {
@@ -42,15 +84,28 @@ export async function parseResumeFile(buffer: Buffer, filename: string): Promise
   const name = filename.toLowerCase();
 
   if (name.endsWith('.pdf')) {
-    // 1. Validation: Verify the file is not corrupted and starts with the PDF magic header
     if (buffer.length < 4 || buffer.toString('ascii', 0, 4) !== '%PDF') {
       throw new Error('The uploaded PDF file is invalid or corrupted (missing %PDF header).');
     }
 
     const errors: string[] = [];
 
-    // --- PARSER A: pdf-parse ---
+    // --- PARSER A: pdfjs-dist (Recommended, layout-preserving) ---
     try {
+      console.log(`[Parser A: pdfjs-dist] Attempting text extraction...`);
+      const text = await parseWithPdfJs(buffer);
+      if (text && text.trim()) {
+        return text;
+      }
+      throw new Error('pdfjs-dist returned empty text content.');
+    } catch (err: any) {
+      console.warn(`[Parser A: pdfjs-dist] Failed to extract text:`, err.message || err);
+      errors.push(`pdfjs-dist error: ${err.message || err}`);
+    }
+
+    // --- PARSER B: pdf-parse (Fallback) ---
+    try {
+      console.log(`[Parser B: pdf-parse] Attempting fallback extraction...`);
       const pdfParse = require('pdf-parse/lib/pdf-parse.js');
       const data = await pdfParse(buffer);
       if (data && data.text && data.text.trim()) {
@@ -58,29 +113,27 @@ export async function parseResumeFile(buffer: Buffer, filename: string): Promise
       }
       throw new Error('pdf-parse returned empty text content.');
     } catch (err: any) {
-      console.warn(`[Parser A: pdf-parse] Failed to extract text:`, err.message || err);
+      console.warn(`[Parser B: pdf-parse] Failed to extract text:`, err.message || err);
       errors.push(`pdf-parse error: ${err.message || err}`);
     }
 
-    // --- PARSER B: pdf2json (Fallback) ---
+    // --- PARSER C: pdf2json (Fallback) ---
     try {
-      console.log(`[Parser B: pdf2json] Attempting fallback parsing...`);
+      console.log(`[Parser C: pdf2json] Attempting fallback parsing...`);
       const text = await parseWithPdf2Json(buffer);
       if (text && text.trim()) {
         return text;
       }
       throw new Error('pdf2json returned empty text content.');
     } catch (err: any) {
-      console.error(`[Parser B: pdf2json] Failed to extract text:`, err.message || err);
+      console.error(`[Parser C: pdf2json] Failed to extract text:`, err.message || err);
       errors.push(`pdf2json error: ${err.message || err}`);
     }
 
-    // If all parsers in the chain fail, throw a combined exception
     throw new Error(`All PDF parsers failed to extract text:\n- ${errors.join('\n- ')}`);
   } 
   
   if (name.endsWith('.docx')) {
-    // Validation: Verify the file is not corrupted and starts with ZIP magic header (PK)
     if (buffer.length < 4 || buffer.toString('ascii', 0, 2) !== 'PK') {
       throw new Error('The uploaded DOCX file is invalid or corrupted (missing PK header).');
     }
