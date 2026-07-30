@@ -800,24 +800,77 @@ Target JSON Schema:
 Text:
 ${sections.education}` : '';
 
-      const expPrompt = sections.experience ? `You are an expert resume parsing AI. Your task is to extract work experience entries from the following text and return them as a JSON array of objects.
-Do not fabricate or hallucinate any information. Only extract what is explicitly stated.
+      const expPrompt = sections.experience ? `CRITICAL TASK: EXHAUSTIVE MULTI-EXPERIENCE EXTRACTION ENGINE
 
-Target JSON Schema:
+MANDATE:
+You are an uncompromising JSON extraction parser. You are failing your objective if you return only the topmost or first work experience entry when a resume contains multiple work experiences. You MUST extract EVERY SINGLE work experience entry present in the input document.
+
+EXECUTION STEPS (FOLLOW IN EXACT SEQUENCE):
+STEP 1: EXPERIENCE DISCOVERY & SCANNING PHASE
+Before generating any JSON structure, scan the ENTIRE document text under "Experience" (or experience-related subheadings) and identify ALL candidate work experience entries.
+Count the total number of work experiences found: N.
+An entry is defined by ANY of the following: a job title/role (e.g. Senior Developer, Software Intern), a company name (e.g. Google, ABC Corp), a work date range (e.g. Jun 2025 - Aug 2025), or a distinct bulleted list block representing a job role.
+
+STEP 2: ARRAY CONSTRUCTION (NO EARLY STOPPING)
+Create the output array experience[]. You must run an explicit extraction loop until your array length equals N.
+FOR EACH discovered work experience entry (from 1 to N):
+  1. Set entry.company = Company Name (or null if not found)
+  2. Set entry.role = Job Title / Role Name (or null if not found)
+  3. Set entry.startDate = Start Date string (or null if not found)
+  4. Set entry.endDate = End Date string or "Present" (or null if not found)
+  5. Collect ALL bullet points/achievements beneath this role into entry.achievements[] exactly as written.
+  6. Push object to experience[]
+
+STRICT CONSTRAINTS & FAILURE PREVENTIONS:
+- NO TRUNCATION: If there are 3, 4, or 5 jobs/internships listed in the resume, your output array MUST contain 3, 4, or 5 objects. Outputting only the first one and ignoring the rest is a fatal error.
+- NO NESTED MERGING: Never dump Job 2's role or achievements into Job 1's achievements array. Job 2 MUST be instantiated as its own standalone JSON object in the experience[] array.
+- MULTIPLE ROLES AT SAME COMPANY: If the candidate held multiple roles at the same company (e.g. promoted from Intern to Software Engineer), extract them as separate objects in the array. Do not combine them.
+
+FEW-SHOT ENFORCEMENT EXAMPLE:
+SOURCE TEXT:
+WORK EXPERIENCE
+Google
+Software Engineer | Jun 2024 - Present
+- Developed high-throughput APIs in Go.
+- Collaborated with UX teams.
+Software Intern | Jun 2023 - Aug 2023
+- Built internal testing tools.
+
+Microsoft
+SDE Intern | May 2022 - Jul 2022
+- Optimized SQL database queries.
+
+EXPECTED OUTPUT (ALL 3 WORK EXPERIENCES MUST BE RETURNED):
 [
   {
-    "company": null,
-    "role": null,
-    "startDate": null,
-    "endDate": null,
-    "achievements": []
+    "company": "Google",
+    "role": "Software Engineer",
+    "startDate": "Jun 2024",
+    "endDate": "Present",
+    "achievements": [
+      "Developed high-throughput APIs in Go.",
+      "Collaborated with UX teams."
+    ]
+  },
+  {
+    "company": "Google",
+    "role": "Software Intern",
+    "startDate": "Jun 2023",
+    "endDate": "Aug 2023",
+    "achievements": [
+      "Built internal testing tools."
+    ]
+  },
+  {
+    "company": "Microsoft",
+    "role": "SDE Intern",
+    "startDate": "May 2022",
+    "endDate": "Jul 2022",
+    "achievements": [
+      "Optimized SQL database queries."
+    ]
   }
 ]
-
-Rules:
-1. Extract company name, job title/role, start date, end date, and achievements (as an array of bullet points exactly as written).
-2. If any field is missing, set its value to null.
-3. Do not merge multiple roles at the same company into a single entry; keep them separate.
 
 Text:
 ${sections.experience}` : '';
