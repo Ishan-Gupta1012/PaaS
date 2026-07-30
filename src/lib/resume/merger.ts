@@ -1,4 +1,4 @@
-import { StructuredResume } from './extractor';
+import { StructuredResume, mapToExpectedFormat } from './extractor';
 import { EnrichedData } from './enricher';
 
 /**
@@ -129,5 +129,5 @@ export function mergeResumeAndExternalData(resume: StructuredResume, external: E
     }
   });
 
-  return merged;
+  return mapToExpectedFormat(merged);
 }
