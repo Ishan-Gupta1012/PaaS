@@ -14,7 +14,7 @@ export default function ThemePage() {
           <Settings size={24} />
         </div>
         <h3 className="font-bold text-lg mb-2">Theme Manager Infrastructure</h3>
-        <p className="text-on-surface-variant text-sm text-center max-w-md">
+        <p className="text-on-surface-variant text-sm text-center w-full max-w-[400px] px-4">
           A dedicated space for global styling variables, dark mode toggles, and template selection.
         </p>
       </div>

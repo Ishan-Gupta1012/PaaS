@@ -11,7 +11,51 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import { ResumeData } from '@/lib/resume/pipeline/types';
+interface ResumeData {
+  personal: {
+    name: string;
+    headline: string;
+    email: string;
+    phone: string;
+    location: string;
+    summary: string;
+  };
+  education: Array<{
+    institution: string;
+    degree: string;
+    field: string;
+    gradYear: string;
+    gpa: string;
+  }>;
+  experience: Array<{
+    company: string;
+    role: string;
+    startDate: string;
+    endDate: string;
+    achievements: string[];
+  }>;
+  projects: Array<{
+    name: string;
+    description: string;
+    tags: string[];
+    githubUrl: string;
+    liveUrl: string;
+    category: string;
+    outcome: string;
+  }>;
+  skills: string[];
+  achievements: string[];
+  certifications: string[];
+  languages: string[];
+  github: string;
+  linkedin: string;
+  portfolio: string;
+  leetcode: string;
+  codeforces: string;
+  codechef: string;
+  hackerrank: string;
+  otherLinks: string[];
+}
 
 export default function ResumeUploader() {
   const { user, updateProfile } = useAuth();
@@ -369,30 +413,8 @@ export default function ResumeUploader() {
     fileInputRef.current?.click();
   };
 
-  const renderStructuredCards = (rawData: any) => {
-    console.log("Rendering structured cards with data:", JSON.stringify(rawData, null, 2));
-    
-    // Normalize old schema to new schema for backwards compatibility
-    const data: ResumeData = {
-      personal: rawData.personal || { name: '', email: '', phone: '', location: '' },
-      experience: rawData.experience || rawData.workExperience || [],
-      education: rawData.education || rawData.educationHistory || [],
-      projects: rawData.projects || [],
-      achievements: rawData.achievements || rawData.awards || [],
-      skills: rawData.skills && !Array.isArray(rawData.skills) ? rawData.skills : {
-        languages: Array.isArray(rawData.skills) ? rawData.skills : [],
-        frontend: [], backend: [], frameworks: [], databases: [], cloud: [], devops: [], tools: [], others: []
-      },
-      links: rawData.links || { linkedin: '', github: '', portfolio: '', website: '', leetcode: '', codeforces: '', codechef: '', hackerrank: '', geeksforgeeks: '', medium: '', other: [] },
-      certifications: rawData.certifications || [],
-      leadership: rawData.leadership || [],
-      publications: rawData.publications || [],
-      volunteer: rawData.volunteer || [],
-      rawText: rawData.rawText || '',
-      metadata: rawData.metadata || {}
-    };
-
-    console.log("Rendering structured cards with data:", JSON.stringify(data, null, 2));
+  // Helper function to render collapsible structured cards for both Resume and Merged tabs
+  const renderStructuredCards = (data: ResumeData) => {
     return (
       <div className="flex flex-col gap-md">
         {/* 1. PERSONAL CARD */}
@@ -423,7 +445,7 @@ export default function ResumeUploader() {
                   </div>
                   <div>
                     <label className="text-xs font-bold text-on-surface-variant uppercase tracking-wider block mb-1">Headline</label>
-                    <p className="font-medium text-on-surface bg-surface-container-low px-md py-[10px] rounded-xl">{data.experience?.[0]?.jobTitle || 'Not provided'}</p>
+                    <p className="font-medium text-on-surface bg-surface-container-low px-md py-[10px] rounded-xl">{data.personal?.headline || 'Not provided'}</p>
                   </div>
                   <div>
                     <label className="text-xs font-bold text-on-surface-variant uppercase tracking-wider block mb-1">Email</label>
@@ -439,7 +461,7 @@ export default function ResumeUploader() {
                   </div>
                   <div className="md:col-span-2">
                     <label className="text-xs font-bold text-on-surface-variant uppercase tracking-wider block mb-1">Summary</label>
-                    <p className="text-on-surface bg-surface-container-low px-md py-[10px] rounded-xl leading-relaxed">{'Not provided'}</p>
+                    <p className="text-on-surface bg-surface-container-low px-md py-[10px] rounded-xl leading-relaxed">{data.personal?.summary || 'Not provided'}</p>
                   </div>
                 </div>
               </motion.div>
@@ -473,11 +495,11 @@ export default function ResumeUploader() {
                     data.education.map((edu, idx) => (
                       <div key={idx} className="bg-surface-container-low p-md rounded-xl border border-outline-variant/30 text-sm">
                         <div className="flex justify-between items-start mb-sm">
-                          <h5 className="font-bold text-on-surface">{edu.institute}</h5>
-                          <span className="px-sm py-0.5 bg-secondary-container text-on-surface-variant font-semibold text-xs rounded-full">{edu.endDate}</span>
+                          <h5 className="font-bold text-on-surface">{edu.institution}</h5>
+                          <span className="px-sm py-0.5 bg-secondary-container text-on-surface-variant font-semibold text-xs rounded-full">{edu.gradYear}</span>
                         </div>
-                        <p className="text-on-surface-variant text-sm font-medium">{edu.degree} in {edu.branch}</p>
-                        {edu.cgpa && <p className="text-xs text-on-surface-variant mt-xs">GPA: <span className="font-semibold">{edu.cgpa}</span></p>}
+                        <p className="text-on-surface-variant text-sm font-medium">{edu.degree} in {edu.field}</p>
+                        {edu.gpa && <p className="text-xs text-on-surface-variant mt-xs">GPA: <span className="font-semibold">{edu.gpa}</span></p>}
                       </div>
                     ))
                   ) : (
@@ -510,20 +532,26 @@ export default function ResumeUploader() {
                 exit={{ height: 0 }}
                 className="overflow-hidden"
               >
-                <div className="p-md flex flex-col gap-sm">
+                <div className="p-md flex flex-col gap-md">
                   {data.experience?.length > 0 ? (
                     data.experience.map((exp, idx) => (
-                      <div key={idx} className="bg-surface-container-low px-md py-sm rounded-xl border border-outline-variant/30 flex items-center justify-between gap-md">
-                        <div className="flex-1 min-w-0">
-                          <h5 className="font-bold text-on-surface text-sm truncate">{exp.jobTitle}</h5>
-                          <span className="text-xs text-on-surface-variant">{exp.company}</span>
-                          {exp.employmentType && exp.employmentType !== 'Full-time' && (
-                            <span className="ml-sm px-1.5 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded">{exp.employmentType}</span>
-                          )}
+                      <div key={idx} className="bg-surface-container-low p-md rounded-xl border border-outline-variant/30 text-sm">
+                        <div className="flex justify-between items-start mb-sm">
+                          <div>
+                            <h5 className="font-bold text-on-surface">{exp.role}</h5>
+                            <span className="text-xs text-on-surface-variant">{exp.company}</span>
+                          </div>
+                          <span className="px-sm py-0.5 bg-secondary-container text-on-surface-variant font-semibold text-xs rounded-full">
+                            {exp.startDate} - {exp.endDate}
+                          </span>
                         </div>
-                        <span className="shrink-0 px-sm py-0.5 bg-secondary-container text-on-surface-variant font-semibold text-xs rounded-full whitespace-nowrap">
-                          {[exp.startDate, exp.endDate].filter(Boolean).join(' – ')}
-                        </span>
+                        {exp.achievements?.length > 0 && (
+                          <ul className="list-disc list-inside space-y-1 mt-sm pl-xs text-xs text-on-surface-variant">
+                            {exp.achievements.map((ach, aIdx) => (
+                              <li key={aIdx} className="leading-relaxed">{ach}</li>
+                            ))}
+                          </ul>
+                        )}
                       </div>
                     ))
                   ) : (
@@ -556,49 +584,36 @@ export default function ResumeUploader() {
                 exit={{ height: 0 }}
                 className="overflow-hidden"
               >
-                <div className="p-md flex flex-col gap-lg">
+                <div className="p-md flex flex-col gap-md">
                   {data.projects?.length > 0 ? (
                     data.projects.map((proj, idx) => (
                       <div key={idx} className="bg-surface-container-low p-md rounded-xl border border-outline-variant/30 text-sm">
-                        {/* Project header */}
                         <div className="flex justify-between items-start mb-sm">
-                          <h5 className="font-bold text-on-surface text-sm">{proj.projectName}</h5>
-                          <div className="flex gap-sm shrink-0 ml-sm">
-                            {proj.githubRepository && (
-                              <a href={proj.githubRepository} target="_blank" rel="noopener noreferrer" className="p-1 hover:bg-surface-container-highest rounded text-on-surface-variant hover:text-primary" title="GitHub">
-                                <ExternalLink size={13} />
-                              </a>
-                            )}
-                            {(proj.liveUrl || proj.deploymentUrl) && (
-                              <a href={proj.liveUrl || proj.deploymentUrl} target="_blank" rel="noopener noreferrer" className="p-1 hover:bg-surface-container-highest rounded text-on-surface-variant hover:text-primary" title="Live">
-                                <ExternalLink size={13} />
+                          <div>
+                            <h5 className="font-bold text-on-surface">{proj.name}</h5>
+                            {proj.category && <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-md font-semibold mt-1 inline-block">{proj.category}</span>}
+                          </div>
+                          <div className="flex gap-sm">
+                            {proj.githubUrl && (
+                              <a href={proj.githubUrl} target="_blank" rel="noopener noreferrer" className="p-1 hover:bg-surface-container-highest rounded text-on-surface-variant hover:text-primary">
+                                <ExternalLink size={14} />
                               </a>
                             )}
                           </div>
                         </div>
-
-                        {/* Tech stack chips */}
-                        {proj.techStack?.length > 0 && (
-                          <div className="flex flex-wrap gap-xs mb-sm">
-                            {proj.techStack.map((tag, tIdx) => (
-                              <span key={tIdx} className="bg-primary/10 text-primary px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">{tag}</span>
+                        <p className="text-xs text-on-surface-variant mb-md leading-relaxed">{proj.description}</p>
+                        {proj.outcome && (
+                          <div className="mb-md p-2 bg-tertiary-container/10 border-l-2 border-tertiary rounded text-xs text-on-surface-variant italic">
+                            <strong>Outcome: </strong> {proj.outcome}
+                          </div>
+                        )}
+                        {proj.tags?.length > 0 && (
+                          <div className="flex flex-wrap gap-xs">
+                            {proj.tags.map((tag, tIdx) => (
+                              <span key={tIdx} className="bg-surface-container-highest px-2 py-0.5 rounded text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">{tag}</span>
                             ))}
                           </div>
                         )}
-
-                        {/* Full bullet list */}
-                        {proj.bullets?.length > 0 ? (
-                          <ul className="space-y-1.5 mt-xs">
-                            {proj.bullets.map((b, bIdx) => (
-                              <li key={bIdx} className="flex gap-sm text-xs text-on-surface-variant leading-relaxed">
-                                <span className="text-primary shrink-0 mt-0.5">•</span>
-                                <span>{b}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        ) : proj.description ? (
-                          <p className="text-xs text-on-surface-variant leading-relaxed">{proj.description}</p>
-                        ) : null}
                       </div>
                     ))
                   ) : (
@@ -632,8 +647,8 @@ export default function ResumeUploader() {
                 className="overflow-hidden"
               >
                 <div className="p-md flex flex-wrap gap-sm">
-                  {Object.values(data.skills || {}).flat().length > 0 ? (
-                    Object.values(data.skills || {}).flat().map((skill, idx) => (
+                  {data.skills?.length > 0 ? (
+                    data.skills.map((skill, idx) => (
                       <span key={idx} className="px-md py-1.5 bg-surface-container-low text-on-surface font-semibold text-xs rounded-full border border-outline-variant/30 shadow-sm">
                         {skill}
                       </span>
@@ -721,8 +736,8 @@ export default function ResumeUploader() {
                 className="overflow-hidden"
               >
                 <div className="p-md flex flex-wrap gap-xs">
-                  {data.skills?.languages?.length > 0 ? (
-                    data.skills.languages.map((lang, idx) => (
+                  {data.languages?.length > 0 ? (
+                    data.languages.map((lang, idx) => (
                       <span key={idx} className="bg-surface-container-low text-on-surface px-md py-1 rounded-lg text-xs font-semibold">{lang}</span>
                     ))
                   ) : (
@@ -757,13 +772,13 @@ export default function ResumeUploader() {
               >
                 <div className="p-md grid grid-cols-1 md:grid-cols-2 gap-sm text-sm">
                   {[
-                    { label: 'GitHub', value: data.links?.github },
-                    { label: 'LinkedIn', value: data.links?.linkedin },
-                    { label: 'Portfolio', value: data.links?.portfolio },
-                    { label: 'Leetcode', value: data.links?.leetcode },
-                    { label: 'Codeforces', value: data.links?.codeforces },
-                    { label: 'Codechef', value: data.links?.codechef },
-                    { label: 'HackerRank', value: data.links?.hackerrank }
+                    { label: 'GitHub', value: data.github },
+                    { label: 'LinkedIn', value: data.linkedin },
+                    { label: 'Portfolio', value: data.portfolio },
+                    { label: 'Leetcode', value: data.leetcode },
+                    { label: 'Codeforces', value: data.codeforces },
+                    { label: 'Codechef', value: data.codechef },
+                    { label: 'HackerRank', value: data.hackerrank }
                   ].map((lnk, idx) => (
                     <div key={idx} className="flex justify-between items-center bg-surface-container-low p-sm rounded-xl border border-outline-variant/20">
                       <div>
@@ -891,10 +906,10 @@ export default function ResumeUploader() {
                         <span className="text-sm font-semibold text-on-surface block mt-0.5">{user.resumeData.personal.name}</span>
                       </div>
                     )}
-                    {user.resumeData.experience?.[0]?.jobTitle && (
+                    {user.resumeData.personal?.headline && (
                       <div>
                         <span className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider block">Role / Headline</span>
-                        <span className="text-xs text-on-surface-variant block mt-0.5 line-clamp-2">{user.resumeData.experience?.[0]?.jobTitle}</span>
+                        <span className="text-xs text-on-surface-variant block mt-0.5 line-clamp-2">{user.resumeData.personal.headline}</span>
                       </div>
                     )}
                     {user.resumeData.skills && user.resumeData.skills.length > 0 && (
