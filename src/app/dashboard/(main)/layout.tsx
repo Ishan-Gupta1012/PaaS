@@ -7,7 +7,7 @@ import { useAuth } from '@/context/AuthContext';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { 
   LayoutDashboard, Settings, LayoutTemplate, 
-  RefreshCw, BarChart3, Globe, Download, 
+  BarChart3, Download, 
   Search, Bell, ChevronDown, UserCircle, LogOut,
   FileText
 } from 'lucide-react';

@@ -200,7 +200,7 @@ export function extractStructuredInfo(
                                  .replace(/\(\s*Present\s*\)/i, '').trim();
         const parts = noDate.split(/[\-–|]/).map(p => p.replace(/\(.*?\)/g, '').trim()).filter(p => p.length > 0);
         let jobTitle = parts[0] || 'Unknown Role';
-        let company  = parts[1] || parts[0] || 'Unknown Company';
+        const company  = parts[1] || parts[0] || 'Unknown Company';
 
         // Employment type
         let employmentType = '';
@@ -307,7 +307,7 @@ export function extractStructuredInfo(
         const headerLine = nonBullets[0] || lines[0] || '';
 
         // Project name = everything before "(" or ":" or "·"
-        let projectName = headerLine
+        const projectName = headerLine
           .replace(/\(.*?\)/g, '')   // strip (Project Link) etc.
           .split(/[:\u00B7]/)[0]     // take before colon or ·
           .trim();

@@ -1,4 +1,4 @@
-import { PdfDocument, TextBlock, Annotation } from './types';
+import { PdfDocument, TextBlock } from './types';
 
 export async function extractAnnotations(pdfDoc: PdfDocument, blocks: TextBlock[]): Promise<TextBlock[]> {
   for (let pageNum = 1; pageNum <= pdfDoc.numPages; pageNum++) {

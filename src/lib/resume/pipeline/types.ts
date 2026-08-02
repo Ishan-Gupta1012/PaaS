@@ -1,5 +1,6 @@
 export interface PdfDocument {
   numPages: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getPage: (pageNumber: number) => Promise<any>;
 }
 
@@ -136,5 +137,5 @@ export interface ResumeData {
     other: string[];
   };
   rawText: string;
-  metadata: any;
+  metadata: Record<string, unknown>;
 }

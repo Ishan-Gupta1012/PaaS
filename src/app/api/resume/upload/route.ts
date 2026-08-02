@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     const { portfolio, rawText } = await processResumePipeline(buffer);
 
     console.log('[3/4] Enrichment (Optional)');
-    let externalData: any = { github: [], linkedin: [], coding: [], portfolio: [], otherLinks: [] };
+    let externalData: { github: unknown[]; linkedin: unknown[]; coding: unknown[]; portfolio: unknown[]; otherLinks: unknown[] } = { github: [], linkedin: [], coding: [], portfolio: [], otherLinks: [] };
     try {
       // Basic extraction of links from raw text for enrichment
       externalData = await enrichPortfolioData(rawText);
@@ -56,8 +56,10 @@ export async function POST(req: NextRequest) {
       debugInfo: { pipeline: 'deterministic-v1' }
     });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Server upload error:', error);
-    return NextResponse.json({ error: error.message || 'An unexpected server error occurred.' }, { status: 500 });
+    const msg = error instanceof Error ? error.message : 'An unexpected server error occurred.';
+    return NextResponse.json({ error: msg }, { status: 500 });
+
   }
 }

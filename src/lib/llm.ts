@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import fs from 'fs';
 import path from 'path';
 import { GoogleGenerativeAI } from '@google/generative-ai';
@@ -23,7 +24,7 @@ function loadEnvLocal() {
         }
       });
     }
-  } catch (err) {
+  } catch {
     // Ignore error
   }
 }

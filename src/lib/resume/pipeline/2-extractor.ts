@@ -1,10 +1,10 @@
 import { PdfDocument, TextItem } from './types';
 import { ExtractionEngine } from './parser-engine';
 import { createWorker } from 'tesseract.js';
-import * as pdfjs from 'pdfjs-dist';
 
 class PdfJsEngine implements ExtractionEngine {
-  async parse(pdfDoc: PdfDocument, buffer: Buffer): Promise<TextItem[]> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async parse(pdfDoc: PdfDocument, _buffer: Buffer): Promise<TextItem[]> {
     const allTextItems: TextItem[] = [];
 
     for (let pageNum = 1; pageNum <= pdfDoc.numPages; pageNum++) {
@@ -34,7 +34,8 @@ class PdfJsEngine implements ExtractionEngine {
 }
 
 class TesseractOcrEngine implements ExtractionEngine {
-  async parse(pdfDoc: PdfDocument, buffer: Buffer): Promise<TextItem[]> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async parse(pdfDoc: PdfDocument, _buffer: Buffer): Promise<TextItem[]> {
     console.log('Initiating OCR Fallback...');
     const allTextItems: TextItem[] = [];
     const worker = await createWorker('eng');
@@ -43,7 +44,7 @@ class TesseractOcrEngine implements ExtractionEngine {
       const page = await pdfDoc.getPage(pageNum);
       
       // Render page to canvas to pass to Tesseract
-      const viewport = page.getViewport({ scale: 2.0 });
+      page.getViewport({ scale: 2.0 });
       
       // In a real Node.js environment, converting PDF.js render to image buffer is complex.
       // This is a simplified representation of the intent since we cannot easily use Canvas in Node

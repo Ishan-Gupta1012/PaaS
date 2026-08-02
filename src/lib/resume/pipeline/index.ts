@@ -5,10 +5,10 @@ import { extractAnnotations } from './4-annotations';
 import { detectSectionsFromText } from './5-sections';
 import { extractStructuredInfo } from './6-structured';
 import { normalizeData } from './7-normalizer';
-import { TextBlock } from './types';
+import { TextBlock, ResumeData } from './types';
 
 export async function processResumePipeline(buffer: Buffer): Promise<{
-  portfolio: any;
+  portfolio: Partial<ResumeData>;
   rawText: string;
 }> {
   console.log('[Pipeline Stage 1] Loading PDF');

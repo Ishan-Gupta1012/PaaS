@@ -1,13 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
 import { 
   UploadCloud, FileText, CheckCircle2, AlertCircle, 
   ChevronDown, ChevronUp, Copy, Check, Briefcase, 
   GraduationCap, Code, Award, Sparkles, RefreshCw, 
   Globe, ExternalLink, Eye, Trash2, ShieldAlert,
-  Link as LinkIcon, Database, Terminal
+  Database, Terminal
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -42,7 +44,6 @@ export default function ResumeUploader() {
   // Views
   const [activeTab, setActiveTab] = useState<'resume' | 'external' | 'merged' | 'debug'>('merged');
   const [debugSubTab, setDebugSubTab] = useState<'rawPdf' | 'cleanedText' | 'sections' | 'sectionTexts' | 'llmInputs' | 'extractedJson' | 'finalPortfolio'>('rawPdf');
-  const [copied, setCopied] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   // Expandable sections for resume/merged cards
@@ -89,9 +90,36 @@ export default function ResumeUploader() {
     }
   }, []);
 
+  // handleClear defined early so it can be referenced in useEffect below
+  const handleClear = () => {
+    setFile(null);
+    setFileName(null);
+    setExtractedText(null);
+    setDetectedUrls([]);
+    setDetectedSections([]);
+    setRawPdfText(null);
+    setCleanedText(null);
+    setSectionTexts(null);
+    setLlmInputs(null);
+    setExtractedJson(null);
+    setResumeData(null);
+    setExternalData(null);
+    setMergedData(null);
+    setUploadProgress(0);
+    setErrorMessage(null);
+    setStatus('idle');
+    setActiveTab('merged');
+
+    if (user) {
+      const sessionKey = `temp_resume_upload_${user.username}`;
+      sessionStorage.removeItem(sessionKey);
+    }
+  };
+
   // Load temporary session resume data if present and belongs to the current user
   useEffect(() => {
     if (!user) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       handleClear();
       return;
     }
@@ -124,6 +152,7 @@ export default function ResumeUploader() {
       }
       isInitializedRef.current = true;
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   // Save temporary upload state to sessionStorage whenever it changes
@@ -154,8 +183,8 @@ export default function ResumeUploader() {
 
   const handleLoadFromProfile = () => {
     if (user?.resumeData) {
-      setResumeData(user.resumeData);
-      setMergedData(user.resumeData);
+      setResumeData(user.resumeData as unknown as ResumeData);
+      setMergedData(user.resumeData as unknown as ResumeData);
       setExternalData(user.resumeData.externalData || null);
       setFileName('Saved Profile Resume');
       setStatus('success');
@@ -311,36 +340,12 @@ export default function ResumeUploader() {
     
     updateProfile({
       ...user,
-      resumeData: dataToSave
+      resumeData: dataToSave as unknown as Record<string, unknown>
     });
     
     showToast('Enriched resume data synced and saved to your profile!');
   };
 
-  const handleClear = () => {
-    setFile(null);
-    setFileName(null);
-    setExtractedText(null);
-    setDetectedUrls([]);
-    setDetectedSections([]);
-    setRawPdfText(null);
-    setCleanedText(null);
-    setSectionTexts(null);
-    setLlmInputs(null);
-    setExtractedJson(null);
-    setResumeData(null);
-    setExternalData(null);
-    setMergedData(null);
-    setUploadProgress(0);
-    setErrorMessage(null);
-    setStatus('idle');
-    setActiveTab('merged');
-    
-    if (user) {
-      const sessionKey = `temp_resume_upload_${user.username}`;
-      sessionStorage.removeItem(sessionKey);
-    }
-  };
 
   const toggleSection = (section: string) => {
     setExpandedSections(prev => ({
@@ -356,21 +361,13 @@ export default function ResumeUploader() {
     }));
   };
 
-  const copyToClipboard = () => {
-    const dataToCopy = mergedData || resumeData;
-    if (!dataToCopy) return;
-    navigator.clipboard.writeText(JSON.stringify(dataToCopy, null, 2));
-    setCopied(true);
-    showToast('JSON copied to clipboard!');
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   const triggerFileSelect = () => {
     fileInputRef.current?.click();
   };
 
   const renderStructuredCards = (rawData: any) => {
-    console.log("Rendering structured cards with data:", JSON.stringify(rawData, null, 2));
+    console.log('Rendering structured cards with data:', JSON.stringify(rawData, null, 2));
     
     // Normalize old schema to new schema for backwards compatibility
     const data: ResumeData = {
@@ -885,23 +882,24 @@ export default function ResumeUploader() {
                   </div>
 
                   <div className="space-y-md mb-lg">
-                    {user.resumeData.personal?.name && (
+                    {(() => { const rd = user.resumeData as any; return (<>
+                    {rd?.personal?.name && (
                       <div>
                         <span className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider block">Candidate</span>
-                        <span className="text-sm font-semibold text-on-surface block mt-0.5">{user.resumeData.personal.name}</span>
+                        <span className="text-sm font-semibold text-on-surface block mt-0.5">{rd.personal.name}</span>
                       </div>
                     )}
-                    {user.resumeData.experience?.[0]?.jobTitle && (
+                    {rd?.experience?.[0]?.jobTitle && (
                       <div>
                         <span className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider block">Role / Headline</span>
-                        <span className="text-xs text-on-surface-variant block mt-0.5 line-clamp-2">{user.resumeData.experience?.[0]?.jobTitle}</span>
+                        <span className="text-xs text-on-surface-variant block mt-0.5 line-clamp-2">{rd.experience[0].jobTitle}</span>
                       </div>
                     )}
-                    {user.resumeData.skills && user.resumeData.skills.length > 0 && (
+                    {rd?.skills && rd.skills.length > 0 && (
                       <div>
                         <span className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider block mb-1">Key Skills</span>
                         <div className="flex flex-wrap gap-xs">
-                          {user.resumeData.skills.slice(0, 4).map((skill: string, index: number) => (
+                          {rd.skills.slice(0, 4).map((skill: string, index: number) => (
                             <span key={index} className="px-2 py-0.5 bg-surface-container-low text-on-surface text-[10px] rounded-full border border-outline-variant/30">
                               {skill}
                             </span>
@@ -909,6 +907,7 @@ export default function ResumeUploader() {
                         </div>
                       </div>
                     )}
+                    </>); })()}
                   </div>
                 </div>
 
@@ -1154,7 +1153,7 @@ export default function ResumeUploader() {
                                     <div key={idx} className="bg-surface-container-low p-md rounded-xl border border-outline-variant/30 text-sm">
                                       <div className="flex items-center gap-md mb-md">
                                         {gh.avatarUrl && (
-                                          <img src={gh.avatarUrl} alt={gh.username} className="w-12 h-12 rounded-full border border-outline-variant" />
+                                          <Image src={gh.avatarUrl} alt={gh.username} width={48} height={48} className="w-12 h-12 rounded-full border border-outline-variant" />
                                         )}
                                         <div>
                                           <h5 className="font-bold text-on-surface">{gh.name || `@${gh.username}`}</h5>
@@ -1164,7 +1163,8 @@ export default function ResumeUploader() {
                                           </a>
                                         </div>
                                       </div>
-                                      {gh.bio && <p className="text-xs text-on-surface-variant italic mb-md">"{gh.bio}"</p>}
+                                      {gh.bio && <p className="text-xs text-on-surface-variant italic mb-md">&ldquo;{gh.bio}&rdquo;</p>}
+
                                       
                                       <div className="grid grid-cols-3 gap-sm text-center mb-md text-xs">
                                         <div className="bg-surface-container-lowest p-sm rounded-lg border border-outline-variant/20">
