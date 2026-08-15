@@ -9,7 +9,7 @@ import {
   LayoutDashboard, Settings, LayoutTemplate, 
   BarChart3, Download, 
   Search, Bell, ChevronDown, UserCircle, LogOut,
-  FileText
+  FileText, Sparkles
 } from 'lucide-react';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -23,6 +23,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
 
     { name: 'Resume', href: '/dashboard/resume', icon: FileText },
+    { name: 'AI Builder', href: '/dashboard/ai-builder', icon: Sparkles },
 
     { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
     { name: 'Export', href: '/dashboard/export', icon: Download },

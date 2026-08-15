@@ -70,18 +70,14 @@ export const AchievementSection: React.FC<Props> = ({ data }) => {
                       </div>
 
                       <h3 className="font-display text-3xl font-bold tracking-tight text-white mb-2 group-hover:text-[#ccff00] transition-colors">
-                        {item.title || 'Achievement Title'}
+                        {item.title || item.organization || 'Experience'}
                       </h3>
                       
-                      {item.organization && (
+                      {item.organization && item.title && (
                         <h4 className="text-xl text-gray-400 mb-6 font-medium">
                           {item.organization}
                         </h4>
                       )}
-                      
-                      <p className="text-base text-gray-500 leading-relaxed font-light">
-                        {item.description}
-                      </p>
                       
                     </div>
                   </div>

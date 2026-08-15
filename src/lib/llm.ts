@@ -44,12 +44,19 @@ const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
  * @returns Parsed JSON object from the model's response.
  */
 export async function generateJSON(prompt: string): Promise<any> {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) {
-    throw new Error('GEMINI_API_KEY is not configured in environment variables.');
+  const apiKeys: string[] = [];
+  if (process.env.GEMINI_API_KEY) apiKeys.push(process.env.GEMINI_API_KEY);
+  for (let i = 1; i <= 20; i++) {
+    const key = process.env[`GEMINI_API_KEY_${i}`];
+    if (key) apiKeys.push(key);
   }
 
-  const genAI = new GoogleGenerativeAI(apiKey);
+  if (apiKeys.length === 0) {
+    throw new Error('No GEMINI_API_KEY configured in environment variables.');
+  }
+
+  let currentKeyIndex = Math.floor(Math.random() * apiKeys.length);
+  let genAI = new GoogleGenerativeAI(apiKeys[currentKeyIndex]);
   let lastError: any = null;
 
   for (const modelName of CANDIDATE_MODELS) {
@@ -83,6 +90,15 @@ export async function generateJSON(prompt: string): Promise<any> {
         // If it's a 429 (Rate Limit/Quota exceeded)
         if (errMsg.includes('429') || errMsg.includes('Quota exceeded') || errMsg.includes('Too Many Requests')) {
           attempts++;
+          
+          if (apiKeys.length > 1) {
+            currentKeyIndex = (currentKeyIndex + 1) % apiKeys.length;
+            genAI = new GoogleGenerativeAI(apiKeys[currentKeyIndex]);
+            console.warn(`[Rate Limit 429] Model "${modelName}" hit rate limit. Switched to alternative API key. Retrying (Attempt ${attempts}/${maxAttempts})...`);
+            await wait(1000);
+            continue;
+          }
+
           const delaySec = 3 * attempts;
           console.warn(`[Rate Limit 429] Model "${modelName}" hit rate limit. Waiting ${delaySec}s before retry (Attempt ${attempts}/${maxAttempts})...`);
           await wait(delaySec * 1000);

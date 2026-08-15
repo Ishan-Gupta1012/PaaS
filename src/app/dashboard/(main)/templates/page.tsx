@@ -40,7 +40,7 @@ export default function Dashboard() {
               <div className="w-full aspect-video bg-surface-container-low rounded-2xl mb-6 flex items-center justify-center overflow-hidden relative border border-white/5 shadow-inner">
                 <img src="https://i.postimg.cc/HkdNLqsM/Screenshot-2026-07-03-at-12-44-13-AM-1.png" alt="Modern Developer" className="w-full h-full object-cover blur-[2px] group-hover:blur-0 group-hover:scale-110 group-hover:rotate-1 transition-all duration-700 ease-out" />
                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 backdrop-blur-sm">
-                  <Link href="/dashboard/templates/preview" className="bg-white/10 text-white px-5 py-2.5 rounded-xl font-bold border border-white/20 hover:bg-white/20 transition-all hover:scale-105">
+                  <Link href="/dashboard/preview" className="bg-white/10 text-white px-5 py-2.5 rounded-xl font-bold border border-white/20 hover:bg-white/20 transition-all hover:scale-105">
                     Preview
                   </Link>
                   <Link href="/dashboard/builder" className="bg-primary text-on-primary px-5 py-2.5 rounded-xl font-bold hover:scale-105 transition-all shadow-[0_0_20px_rgba(var(--primary),0.4)]">
@@ -63,7 +63,7 @@ export default function Dashboard() {
               <div className="aspect-[16/9] w-full relative overflow-hidden bg-neutral-900 group">
                 <img src="https://i.postimg.cc/cLBz4Hd5/Screenshot-2026-07-26-at-5-35-09-PM.png" alt="Developer Pro" className="w-full h-full object-cover blur-[2px] group-hover:blur-0 group-hover:scale-110 group-hover:rotate-1 transition-all duration-700 ease-out" />
                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 backdrop-blur-sm">
-                  <Link href="/dashboard/templates/preview?template=software-engineer" className="bg-white/10 text-white px-5 py-2.5 rounded-xl font-bold border border-white/20 hover:bg-white/20 transition-all hover:scale-105">
+                  <Link href="/dashboard/preview?template=software-engineer" className="bg-white/10 text-white px-5 py-2.5 rounded-xl font-bold border border-white/20 hover:bg-white/20 transition-all hover:scale-105">
                     Preview
                   </Link>
                   <Link href="/dashboard/builder?template=software-engineer" className="bg-primary text-on-primary px-5 py-2.5 rounded-xl font-bold hover:scale-105 transition-all shadow-[0_0_20px_rgba(var(--primary),0.4)]">
