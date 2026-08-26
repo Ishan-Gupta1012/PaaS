@@ -35,12 +35,11 @@ interface Props {
   username?: string;
 }
 
-const DEFAULT_LAYOUT = ['summary', 'graph', 'repos', 'languages'];
+const DEFAULT_LAYOUT = ['summary', 'graph', 'languages'];
 
 const WIDGET_NAMES: Record<string, string> = {
   summary: 'Developer Profile',
   graph: 'GitHub Activity',
-  repos: 'Featured Repositories',
   languages: 'Language Distribution',
 };
 
@@ -196,7 +195,7 @@ export default function GithubDashboard({ username }: Props) {
           fetch(`https://api.github.com/users/${username}`),
           fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`),
           fetch(`https://api.github.com/users/${username}/events/public`),
-          fetch(`https://github-contributions-api.deno.dev/${username}.json`)
+          fetch(`/api/github/contributions?username=${username}`)
         ]);
 
         if (!profileRes.ok) throw new Error('Failed to fetch profile');
@@ -256,15 +255,7 @@ export default function GithubDashboard({ username }: Props) {
         return <DeveloperSummary profile={profile} stats={stats} />;
       case 'graph':
         return <ContributionGraph username={username!} stats={stats} />;
-      case 'repos':
-        return (
-          <FeaturedRepositories 
-            repos={repos} 
-            isEditMode={isEditMode} 
-            hiddenRepos={hiddenRepos} 
-            toggleRepo={(id) => setHiddenRepos(prev => prev.includes(id) ? prev.filter(r => r !== id) : [...prev, id])} 
-          />
-        );
+
       case 'languages':
         return (
           <LanguageChart 
@@ -283,8 +274,7 @@ export default function GithubDashboard({ username }: Props) {
     switch (id) {
       case 'summary': return 'md:col-span-12 xl:col-span-12';
       case 'graph': return 'md:col-span-12 xl:col-span-12';
-      case 'repos': return 'md:col-span-12 xl:col-span-8';
-      case 'languages': return 'md:col-span-12 xl:col-span-4';
+      case 'languages': return 'md:col-span-12 xl:col-span-12';
       default: return 'md:col-span-12';
     }
   };

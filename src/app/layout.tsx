@@ -26,7 +26,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${inter.variable} antialiased scroll-smooth`}
     >
-      <body className="min-h-screen bg-background text-foreground font-sans flex flex-col overflow-x-hidden">
+      <body className="min-h-screen bg-background text-on-background font-sans flex flex-col overflow-x-hidden">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

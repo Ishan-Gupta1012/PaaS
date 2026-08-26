@@ -14,7 +14,7 @@ export default function ExportPage() {
           <Download size={24} />
         </div>
         <h3 className="font-bold text-lg mb-2">Export Infrastructure</h3>
-        <p className="text-on-surface-variant text-sm text-center max-w-md">
+        <p className="text-on-surface-variant text-sm text-center w-full max-w-[400px] px-4">
           Ready to hook into static site generation triggers or PDF rendering services.
         </p>
       </div>

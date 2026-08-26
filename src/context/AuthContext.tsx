@@ -77,7 +77,7 @@ export interface StudentProfile {
   socialLinks: SocialLinks;
   themeSettings: ThemeSettings;
   notifications: StudentNotification[];
-  resumeData?: any;
+  resumeData?: Record<string, unknown>;
 }
 
 interface AuthContextType {

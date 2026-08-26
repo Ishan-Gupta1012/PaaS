@@ -14,7 +14,7 @@ export default function GithubPage() {
           <RefreshCw size={24} />
         </div>
         <h3 className="font-bold text-lg mb-2">GitHub Sync Infrastructure</h3>
-        <p className="text-on-surface-variant text-sm text-center max-w-md">
+        <p className="text-on-surface-variant text-sm text-center w-full max-w-[400px] px-4">
           Ready to plug in GitHub OAuth components, repository selection lists, and sync status logs.
         </p>
       </div>

@@ -7,9 +7,9 @@ import { useAuth } from '@/context/AuthContext';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { 
   LayoutDashboard, Settings, LayoutTemplate, 
-  RefreshCw, BarChart3, Globe, Download, 
+  BarChart3, Download, 
   Search, Bell, ChevronDown, UserCircle, LogOut,
-  FileText
+  FileText, Sparkles
 } from 'lucide-react';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -20,14 +20,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const navItems = [
     { name: 'Overview', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Templates', href: '/dashboard/templates', icon: LayoutTemplate },
-    { name: 'Settings', href: '/dashboard/settings', icon: Settings },
-    { name: 'Widgets', href: '/dashboard/widgets', icon: LayoutTemplate },
-    { name: 'GitHub Sync', href: '/dashboard/github', icon: RefreshCw },
+
+
     { name: 'Resume', href: '/dashboard/resume', icon: FileText },
-    { name: 'Theme', href: '/dashboard/theme', icon: Settings }, // could use a different icon like Palette
-    { name: 'Domain', href: '/dashboard/domain', icon: Globe },
+    { name: 'AI Builder', href: '/dashboard/ai-builder', icon: Sparkles },
+
     { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
     { name: 'Export', href: '/dashboard/export', icon: Download },
+    { name: 'Settings', href: '/dashboard/settings', icon: Settings },
   ];
 
   return (
@@ -58,11 +58,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           })}
         </nav>
 
-        <div className="px-md mt-auto pt-lg">
-          <Link href="/dashboard/builder" className="w-full flex justify-center py-md bg-primary text-on-primary rounded-xl font-semibold shadow-sm hover:opacity-90 transition-opacity">
-            Edit Portfolio
-          </Link>
-        </div>
+
       </aside>
 
       {/* Main Wrapper */}

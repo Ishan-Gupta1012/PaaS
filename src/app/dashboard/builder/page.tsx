@@ -23,6 +23,17 @@ export default function BuilderPage() {
       if (temp) {
         setTimeout(() => setSelectedTemplate(temp), 0);
       }
+      
+      const storedDraft = sessionStorage.getItem('portfolio_draft_data');
+      if (storedDraft) {
+        try {
+          const parsed = JSON.parse(storedDraft);
+          // eslint-disable-next-line react-hooks/set-state-in-effect
+          setData(parsed);
+        } catch (e) {
+          console.error('Failed to parse portfolio_draft_data', e);
+        }
+      }
     }
   }, []);
 
@@ -518,20 +529,9 @@ export default function BuilderPage() {
                     <div key={ach.id} className="bg-white/5 p-5 rounded-2xl border border-white/5 flex flex-col gap-5 relative group hover:border-primary/30 transition-all">
                       <button onClick={() => removeAchievement(index)} className="absolute top-4 right-4 text-error hover:bg-error/20 bg-black/40 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all shadow-sm"><Trash2 size={16} /></button>
                       
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-2 border-b border-white/10">
-                        <div className="flex flex-col gap-2">
-                          <label className="text-xs font-bold text-white/60 uppercase tracking-wider">Role / Title</label>
-                          <input type="text" placeholder="Senior Developer" value={ach.title} onChange={(e) => handleAchievementChange(index, 'title', e.target.value)} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none font-bold text-white placeholder:text-white/30" />
-                        </div>
-                        <div className="flex flex-col gap-2">
-                          <label className="text-xs font-bold text-white/60 uppercase tracking-wider">Type</label>
-                          <select value={ach.type} onChange={(e) => handleAchievementChange(index, 'type', e.target.value)} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none text-white cursor-pointer">
-                            <option value="job" className="bg-[#121212]">Job</option>
-                            <option value="internship" className="bg-[#121212]">Internship</option>
-                            <option value="freelance" className="bg-[#121212]">Freelance</option>
-                            <option value="achievement" className="bg-[#121212]">Achievement</option>
-                          </select>
-                        </div>
+                      <div className="flex flex-col gap-2 pb-2 border-b border-white/10">
+                        <label className="text-xs font-bold text-white/60 uppercase tracking-wider">Role / Title</label>
+                        <input type="text" placeholder="Senior Developer" value={ach.title} onChange={(e) => handleAchievementChange(index, 'title', e.target.value)} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none font-bold text-white placeholder:text-white/30" />
                       </div>
 
                       <div className="flex flex-col gap-2">
@@ -549,11 +549,7 @@ export default function BuilderPage() {
                           <input type="text" placeholder="Present" value={ach.endDate} onChange={(e) => handleAchievementChange(index, 'endDate', e.target.value)} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none text-white placeholder:text-white/30" />
                         </div>
                       </div>
-                      
-                      <div className="flex flex-col gap-2 pt-2">
-                        <label className="text-xs font-bold text-white/60 uppercase tracking-wider">Description</label>
-                        <textarea rows={4} placeholder="What were your key responsibilities and achievements?" value={ach.description} onChange={(e) => handleAchievementChange(index, 'description', e.target.value)} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none resize-none text-white placeholder:text-white/30" />
-                      </div>
+
                     </div>
                   ))}
                   

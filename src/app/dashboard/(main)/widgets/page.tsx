@@ -14,7 +14,7 @@ export default function WidgetsPage() {
           <LayoutTemplate size={24} />
         </div>
         <h3 className="font-bold text-lg mb-2">Widget Manager Infrastructure</h3>
-        <p className="text-on-surface-variant text-sm text-center max-w-md">
+        <p className="text-on-surface-variant text-sm text-center w-full max-w-[400px] px-4">
           This route will house the drag-and-drop block editor and section configuration tools.
         </p>
       </div>
