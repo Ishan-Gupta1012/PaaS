@@ -1,61 +1,148 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
+import { useState } from 'react';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
+  const pathname = usePathname();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const isActive = (path: string) => {
+    if (path === '/') return pathname === '/';
+    return pathname.startsWith(path);
+  };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="bg-primary text-white w-8 h-8 rounded-lg flex items-center justify-center font-bold text-lg">P</div>
-            <span className="font-bold text-xl tracking-tight text-black">Portfol.io</span>
-          </Link>
-        </div>
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[#F7F4EF]/90 backdrop-blur-xs border-b border-[#111111]/15 text-[#111111]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 h-16 flex items-center justify-between">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2 group">
+          <div className="border border-[#111111] w-7 h-7 rounded-sm flex items-center justify-center font-serif text-sm font-semibold transition-all group-hover:bg-[#111111] group-hover:text-[#F7F4EF]">
+            S
+          </div>
+          <span className="font-serif font-semibold text-lg tracking-tight">think.design</span>
+        </Link>
         
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-500">
-          <Link href="/" className="hover:text-black transition-colors">Home</Link>
-          <Link href="#features" className="hover:text-black transition-colors">Features</Link>
-          <Link href="#vision" className="hover:text-black transition-colors">Vision</Link>
+        {/* Navigation */}
+        <nav className="hidden md:flex items-center gap-10 font-mono text-[11px] uppercase tracking-widest">
+          <Link 
+            href="/" 
+            className={`transition-colors hover:text-black ${isActive('/') ? 'text-black font-semibold underline underline-offset-4' : 'text-[#111111]/60'}`}
+          >
+            Home
+          </Link>
+          <Link 
+            href="/about" 
+            className={`transition-colors hover:text-black ${isActive('/about') ? 'text-black font-semibold underline underline-offset-4' : 'text-[#111111]/60'}`}
+          >
+            About
+          </Link>
+          <Link 
+            href="/works" 
+            className={`transition-colors hover:text-black ${isActive('/works') ? 'text-black font-semibold underline underline-offset-4' : 'text-[#111111]/60'}`}
+          >
+            Works
+          </Link>
+          <Link 
+            href="/contact" 
+            className={`transition-colors hover:text-black ${isActive('/contact') ? 'text-black font-semibold underline underline-offset-4' : 'text-[#111111]/60'}`}
+          >
+            Contact
+          </Link>
         </nav>
         
+        {/* CTA / Auth Actions */}
         <div className="flex items-center gap-4">
           {user ? (
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 font-mono text-[11px] uppercase">
               <Link 
                 href="/dashboard" 
-                className="text-sm font-semibold text-primary hover:text-primary-hover transition-colors flex items-center gap-2"
+                className="transition-colors hover:text-black flex items-center gap-2 border border-[#111111] px-3 py-1 rounded-sm text-[#111111]"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img 
-                  src={user.personalInfo?.avatar ?? ''} 
-                  alt={user.personalInfo?.name ?? 'User'} 
-                  className="w-7 h-7 rounded-full border border-primary/20 object-cover"
-                />
-                <span className="hidden sm:inline">Dashboard</span>
+                {user.personalInfo?.avatar ? (
+                  <img 
+                    src={user.personalInfo.avatar} 
+                    alt={user.personalInfo.name ?? 'User'} 
+                    className="w-4 h-4 rounded-full object-cover border border-[#111111]/20"
+                  />
+                ) : (
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#111111]" />
+                )}
+                <span>Dashboard</span>
               </Link>
               <button 
                 onClick={logout} 
-                className="text-xs text-gray-500 hover:text-black transition-colors border border-gray-200 hover:border-gray-400 rounded-full px-3 py-1"
+                className="text-[#111111]/60 hover:text-black transition-colors"
               >
-                Log out
+                Logout
               </button>
             </div>
           ) : (
-            <>
-              <Link href="/signin" className="text-sm font-medium text-gray-500 hover:text-black hidden sm:block transition-colors">
+            <div className="flex items-center gap-4 font-mono text-[11px] uppercase">
+              <Link 
+                href="/signin" 
+                className="hidden sm:block text-[#111111]/60 hover:text-black transition-colors"
+              >
                 Sign in
               </Link>
-              <Link href="/signin" className="bg-primary hover:bg-primary-hover text-white text-sm font-medium px-4 py-2 rounded-full transition-colors">
+              <Link 
+                href="/signin" 
+                className="bg-[#111111] text-[#F7F4EF] hover:bg-[#111111]/80 transition-colors px-4 py-2 rounded-sm"
+              >
                 Get Started
               </Link>
-            </>
+            </div>
           )}
+
+          {/* Mobile Menu Toggle */}
+          <button 
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-1 text-[#111111] flex items-center"
+          >
+            <span className="material-symbols-outlined text-2xl">
+              {mobileMenuOpen ? 'close' : 'menu'}
+            </span>
+          </button>
         </div>
       </div>
+
+      {/* Mobile Navigation overlay */}
+      {mobileMenuOpen && (
+        <div className="md:hidden border-t border-[#111111]/15 bg-[#F7F4EF] w-full px-6 py-8 flex flex-col gap-6 font-mono text-sm uppercase tracking-wider">
+          <Link 
+            href="/" 
+            onClick={() => setMobileMenuOpen(false)}
+            className={`transition-colors ${isActive('/') ? 'text-black font-semibold' : 'text-[#111111]/60'}`}
+          >
+            Home
+          </Link>
+          <Link 
+            href="/about" 
+            onClick={() => setMobileMenuOpen(false)}
+            className={`transition-colors ${isActive('/about') ? 'text-black font-semibold' : 'text-[#111111]/60'}`}
+          >
+            About
+          </Link>
+          <Link 
+            href="/works" 
+            onClick={() => setMobileMenuOpen(false)}
+            className={`transition-colors ${isActive('/works') ? 'text-black font-semibold' : 'text-[#111111]/60'}`}
+          >
+            Works
+          </Link>
+          <Link 
+            href="/contact" 
+            onClick={() => setMobileMenuOpen(false)}
+            className={`transition-colors ${isActive('/contact') ? 'text-black font-semibold' : 'text-[#111111]/60'}`}
+          >
+            Contact
+          </Link>
+        </div>
+      )}
     </header>
   );
 }

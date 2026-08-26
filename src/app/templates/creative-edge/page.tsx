@@ -49,10 +49,24 @@ export default function CreativeEdgeTemplate() {
     setTimeout(() => setEmailCopied(false), 2000);
   };
 
-  const handleContactSubmit = (e: React.FormEvent) => {
+  const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (name && email && message) {
       setMessageSubmitted(true);
+      try {
+        await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name,
+            email,
+            message,
+            formName: 'Creative Edge Template Contact Form',
+          })
+        });
+      } catch (err) {
+        console.error(err);
+      }
       setTimeout(() => {
         setName(""); setEmail(""); setMessage(""); setMessageSubmitted(false);
       }, 3000);

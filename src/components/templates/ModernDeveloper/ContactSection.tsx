@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import { PortfolioData } from '@/types/portfolio';
 import { Mail, MapPin, ArrowUpRight } from 'lucide-react';
 
@@ -8,6 +10,39 @@ interface Props {
 }
 
 export const ContactSection: React.FC<Props> = ({ data, socials }) => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('loading');
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          email,
+          message,
+          formName: 'Modern Developer Template Contact Form',
+        })
+      });
+      if (res.ok) {
+        setStatus('success');
+        setName('');
+        setEmail('');
+        setMessage('');
+      } else {
+        setStatus('error');
+      }
+    } catch (err) {
+      console.error(err);
+      setStatus('error');
+    }
+  };
+
   return (
     <section id="contact" className="py-40 bg-transparent text-white flex flex-col relative overflow-hidden">
       
@@ -95,39 +130,65 @@ export const ContactSection: React.FC<Props> = ({ data, socials }) => {
               Send a Message
             </h2>
 
-            <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {status === 'success' ? (
+              <div className="border border-[#ccff00] p-8 text-center bg-[#111] rounded-[20px]">
+                <h3 className="text-xl font-bold text-[#ccff00] mb-2">Message Sent!</h3>
+                <p className="text-gray-400 text-sm">Thank you. Your message has been received.</p>
+              </div>
+            ) : (
+              <form className="space-y-8" onSubmit={handleSubmit}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-bold tracking-widest uppercase text-[#ccff00]">Name</label>
+                    <input 
+                      type="text" 
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="John Doe" 
+                      className="w-full bg-[#0a0a0a] border border-[#333] rounded-2xl px-4 py-4 text-sm text-white placeholder-gray-700 focus:outline-none focus:border-[#ccff00] transition-colors"
+                      required
+                      disabled={status === 'loading'}
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-bold tracking-widest uppercase text-[#ccff00]">Email</label>
+                    <input 
+                      type="email" 
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="john@example.com" 
+                      className="w-full bg-[#0a0a0a] border border-[#333] rounded-2xl px-4 py-4 text-sm text-white placeholder-gray-700 focus:outline-none focus:border-[#ccff00] transition-colors"
+                      required
+                      disabled={status === 'loading'}
+                    />
+                  </div>
+                </div>
+
                 <div className="space-y-3">
-                  <label className="text-[10px] font-bold tracking-widest uppercase text-[#ccff00]">Name</label>
-                  <input 
-                    type="text" 
-                    placeholder="John Doe" 
-                    className="w-full bg-[#0a0a0a] border border-[#333] rounded-2xl px-4 py-4 text-sm text-white placeholder-gray-700 focus:outline-none focus:border-[#ccff00] transition-colors"
+                  <label className="text-[10px] font-bold tracking-widest uppercase text-[#ccff00]">Message</label>
+                  <textarea 
+                    rows={5}
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Tell me about your project, timeline, and expectations..." 
+                    className="w-full bg-[#0a0a0a] border border-[#333] rounded-2xl px-4 py-4 text-sm text-white placeholder-gray-700 focus:outline-none focus:border-[#ccff00] transition-colors resize-none"
+                    required
+                    disabled={status === 'loading'}
                   />
                 </div>
-                <div className="space-y-3">
-                  <label className="text-[10px] font-bold tracking-widest uppercase text-[#ccff00]">Email</label>
-                  <input 
-                    type="email" 
-                    placeholder="john@example.com" 
-                    className="w-full bg-[#0a0a0a] border border-[#333] rounded-2xl px-4 py-4 text-sm text-white placeholder-gray-700 focus:outline-none focus:border-[#ccff00] transition-colors"
-                  />
-                </div>
-              </div>
 
-              <div className="space-y-3">
-                <label className="text-[10px] font-bold tracking-widest uppercase text-[#ccff00]">Message</label>
-                <textarea 
-                  rows={5}
-                  placeholder="Tell me about your project, timeline, and expectations..." 
-                  className="w-full bg-[#0a0a0a] border border-[#333] rounded-2xl px-4 py-4 text-sm text-white placeholder-gray-700 focus:outline-none focus:border-[#ccff00] transition-colors resize-none"
-                />
-              </div>
-
-              <button type="submit" className="flex items-center justify-center gap-2 w-full md:w-auto bg-[#ccff00] border border-[#ccff00] rounded-full text-black px-8 py-4 font-bold text-sm hover:bg-transparent hover:text-[#ccff00] transition-colors">
-                Send Message <ArrowUpRight size={16} />
-              </button>
-            </form>
+                <button 
+                  type="submit" 
+                  disabled={status === 'loading'}
+                  className="flex items-center justify-center gap-2 w-full md:w-auto bg-[#ccff00] border border-[#ccff00] rounded-full text-black px-8 py-4 font-bold text-sm hover:bg-transparent hover:text-[#ccff00] transition-colors disabled:opacity-50"
+                >
+                  {status === 'loading' ? 'Sending...' : 'Send Message'} <ArrowUpRight size={16} />
+                </button>
+                {status === 'error' && (
+                  <p className="text-red-500 text-xs mt-2">[ERROR: Failed to send message. Please try again.]</p>
+                )}
+              </form>
+            )}
           </div>
 
         </div>

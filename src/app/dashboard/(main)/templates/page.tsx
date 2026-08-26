@@ -4,84 +4,124 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 
-
 export default function Dashboard() {
   const [activeCategory, setActiveCategory] = useState('All');
   const categories = ['All', 'Your Templates', 'Premium'];
 
   return (
-        <main className="flex-1 p-lg md:p-xl space-y-xl max-w-container-max mx-auto w-full">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div>
-              <h2 className="font-headline-lg text-headline-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-600">Templates Library</h2>
-              <p className="text-on-surface-variant mt-xs text-lg">Select a stunning template to start building your portfolio.</p>
-            </div>
+    <main className="flex-1 p-6 md:p-8 space-y-8 max-w-7xl mx-auto w-full select-none text-[#111111] font-sans">
+      
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-[#111111] pb-6">
+        <div>
+          <div className="font-mono text-[9px] uppercase tracking-widest text-[#111111]/45 mb-2">[WORKSPACE / TEMPLATES]</div>
+          <h2 className="font-serif text-3xl md:text-4xl font-semibold">Templates Library</h2>
+          <p className="text-xs sm:text-sm text-[#111111]/70 mt-1">Select a layout to configure your public developer presence.</p>
+        </div>
 
-            {/* Category Selector */}
-            <div className="flex bg-surface-container-low p-1 rounded-2xl border border-outline-variant/50">
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`px-6 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 ${activeCategory === cat
-                      ? 'bg-primary text-on-primary shadow-lg shadow-primary/25 scale-105'
-                      : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest'
-                    }`}
+        {/* Category Selector */}
+        <div className="flex bg-[#E8E5DF] p-1 border border-[#111111] rounded-xs font-mono text-xs uppercase">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`px-4 py-2 rounded-xs font-semibold tracking-wider transition-all duration-150 ${activeCategory === cat
+                  ? 'bg-[#111111] text-[#F7F4EF]'
+                  : 'text-[#111111]/60 hover:text-black'
+                }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Grid of templates */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        {/* Slot 1: Modern Developer */}
+        <div className="bg-[#F7F4EF] p-6 border border-[#111111] rounded-sm transition-all hover:bg-[#111111]/5 flex flex-col justify-between relative group overflow-hidden">
+          <div>
+            <div className="w-full aspect-video bg-[#E8E5DF] rounded-xs mb-6 overflow-hidden relative border border-[#111111] shadow-inner">
+              <img 
+                src="https://i.postimg.cc/HkdNLqsM/Screenshot-2026-07-03-at-12-44-13-AM-1.png" 
+                alt="Modern Developer" 
+                className="w-full h-full object-cover blur-[1px] group-hover:blur-0 group-hover:scale-102 transition-all duration-500 ease-out" 
+              />
+              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 backdrop-blur-xs">
+                <Link 
+                  href="/dashboard/preview?template=modern-developer" 
+                  className="bg-[#F7F4EF] text-[#111111] px-4 py-2 rounded-xs font-mono text-xs uppercase tracking-widest border border-[#111111] hover:bg-[#111111] hover:text-[#F7F4EF] transition-all"
                 >
-                  {cat}
-                </button>
-              ))}
+                  Preview
+                </Link>
+                <Link 
+                  href="/dashboard/builder?template=modern-developer" 
+                  className="bg-[#111111] text-[#F7F4EF] px-4 py-2 rounded-xs font-mono text-xs uppercase tracking-widest border border-[#111111] hover:bg-[#111111]/85 transition-all"
+                >
+                  Build Now
+                </Link>
+              </div>
+            </div>
+            
+            <div className="flex justify-between items-start mb-4">
+              <div>
+                <h3 className="font-serif text-xl sm:text-2xl font-semibold text-[#111111] group-hover:underline">
+                  Modern Developer
+                </h3>
+                <p className="text-xs text-[#111111]/75 mt-2 leading-relaxed max-w-[360px]">
+                  Clean, minimalist layout featuring a side navbar, developer highlights grid, and custom email inquiry widgets.
+                </p>
+              </div>
+              <span className="font-mono text-[9px] uppercase tracking-wider bg-[#111111]/5 text-[#111111] px-2 py-0.5 rounded-xs border border-[#111111]/15">
+                Free
+              </span>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-lg">
-            {/* Slot 1: Modern Developer */}
-            <div className="bg-surface-container-lowest p-5 rounded-3xl border-2 border-outline-variant shadow-xl hover:border-primary/60 hover:shadow-primary/20 hover:-translate-y-2 transition-all duration-300 group block relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="w-full aspect-video bg-surface-container-low rounded-2xl mb-6 flex items-center justify-center overflow-hidden relative border border-white/5 shadow-inner">
-                <img src="https://i.postimg.cc/HkdNLqsM/Screenshot-2026-07-03-at-12-44-13-AM-1.png" alt="Modern Developer" className="w-full h-full object-cover blur-[2px] group-hover:blur-0 group-hover:scale-110 group-hover:rotate-1 transition-all duration-700 ease-out" />
-                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 backdrop-blur-sm">
-                  <Link href="/dashboard/preview" className="bg-white/10 text-white px-5 py-2.5 rounded-xl font-bold border border-white/20 hover:bg-white/20 transition-all hover:scale-105">
-                    Preview
-                  </Link>
-                  <Link href="/dashboard/builder" className="bg-primary text-on-primary px-5 py-2.5 rounded-xl font-bold hover:scale-105 transition-all shadow-[0_0_20px_rgba(var(--primary),0.4)]">
-                    Build Now
-                  </Link>
-                </div>
-              </div>
-              <div className="relative z-10 flex justify-between items-start">
-                <div>
-                  <h3 className="font-headline-sm text-headline-sm font-bold text-on-surface group-hover:text-primary transition-colors">Modern Developer</h3>
-                  <p className="text-label-sm text-on-surface-variant mt-2 leading-relaxed">Clean, minimalist glassmorphism design. Perfect for showcasing software engineering projects.</p>
-                </div>
-                <span className="bg-surface-container-highest text-xs font-bold px-3 py-1 rounded-full text-on-surface-variant border border-outline-variant">Free</span>
+        </div>
+
+        {/* Slot 2: Developer Pro */}
+        <div className="bg-[#F7F4EF] p-6 border border-[#111111] rounded-sm transition-all hover:bg-[#111111]/5 flex flex-col justify-between relative group overflow-hidden">
+          <div>
+            <div className="w-full aspect-video bg-[#E8E5DF] rounded-xs mb-6 overflow-hidden relative border border-[#111111] shadow-inner">
+              <img 
+                src="https://i.postimg.cc/cLBz4Hd5/Screenshot-2026-07-26-at-5-35-09-PM.png" 
+                alt="Developer Pro" 
+                className="w-full h-full object-cover blur-[1px] group-hover:blur-0 group-hover:scale-102 transition-all duration-500 ease-out" 
+              />
+              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 backdrop-blur-xs">
+                <Link 
+                  href="/dashboard/preview?template=software-engineer" 
+                  className="bg-[#F7F4EF] text-[#111111] px-4 py-2 rounded-xs font-mono text-xs uppercase tracking-widest border border-[#111111] hover:bg-[#111111] hover:text-[#F7F4EF] transition-all"
+                >
+                  Preview
+                </Link>
+                <Link 
+                  href="/dashboard/builder?template=software-engineer" 
+                  className="bg-[#111111] text-[#F7F4EF] px-4 py-2 rounded-xs font-mono text-xs uppercase tracking-widest border border-[#111111] hover:bg-[#111111]/85 transition-all"
+                >
+                  Build Now
+                </Link>
               </div>
             </div>
-
-            {/* Slot 2: Developer Pro */}
-            <div className="bg-surface-container-lowest p-5 rounded-3xl border-2 border-outline-variant shadow-xl hover:border-primary/60 hover:shadow-primary/20 hover:-translate-y-2 transition-all duration-300 group block relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="aspect-[16/9] w-full relative overflow-hidden bg-neutral-900 group">
-                <img src="https://i.postimg.cc/cLBz4Hd5/Screenshot-2026-07-26-at-5-35-09-PM.png" alt="Developer Pro" className="w-full h-full object-cover blur-[2px] group-hover:blur-0 group-hover:scale-110 group-hover:rotate-1 transition-all duration-700 ease-out" />
-                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 backdrop-blur-sm">
-                  <Link href="/dashboard/preview?template=software-engineer" className="bg-white/10 text-white px-5 py-2.5 rounded-xl font-bold border border-white/20 hover:bg-white/20 transition-all hover:scale-105">
-                    Preview
-                  </Link>
-                  <Link href="/dashboard/builder?template=software-engineer" className="bg-primary text-on-primary px-5 py-2.5 rounded-xl font-bold hover:scale-105 transition-all shadow-[0_0_20px_rgba(var(--primary),0.4)]">
-                    Build Now
-                  </Link>
-                </div>
+            
+            <div className="flex justify-between items-start mb-4">
+              <div>
+                <h3 className="font-serif text-xl sm:text-2xl font-semibold text-[#111111] group-hover:underline">
+                  Developer Pro
+                </h3>
+                <p className="text-xs text-[#111111]/75 mt-2 leading-relaxed max-w-[360px]">
+                  Curated dark bento-grid layout for software engineers. Integrated work timelines, code repositories sync, and stats.
+                </p>
               </div>
-              <div className="relative z-10 flex justify-between items-start">
-                <div>
-                  <h3 className="font-headline-sm text-headline-sm font-bold text-on-surface group-hover:text-primary transition-colors">Developer Pro</h3>
-                  <p className="text-label-sm text-on-surface-variant mt-2 leading-relaxed">Clean, dark-themed bento design. Perfect for modern software engineers.</p>
-                </div>
-                <span className="bg-surface-container-highest text-xs font-bold px-3 py-1 rounded-full text-on-surface-variant border border-outline-variant">Free</span>
-              </div>
+              <span className="font-mono text-[9px] uppercase tracking-wider bg-[#111111]/5 text-[#111111] px-2 py-0.5 rounded-xs border border-[#111111]/15">
+                Free
+              </span>
             </div>
-
-
           </div>
-        </main>
+        </div>
+
+      </div>
+    </main>
   );
 }

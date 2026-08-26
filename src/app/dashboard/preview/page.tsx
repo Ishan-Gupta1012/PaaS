@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 
 export default function PreviewPage() {
-  const [selectedTemplate, setSelectedTemplate] = useState<string>('modern-developer');
+  const [selectedTemplate, setSelectedTemplate] = useState<string>('software-engineer');
 
   useEffect(() => {
     if (typeof window !== 'undefined') {

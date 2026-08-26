@@ -22,7 +22,7 @@ export default function Dashboard() {
                 <div className="flex justify-between items-start mb-md">
                   <div>
                     <h2 className="font-headline-lg text-headline-lg text-on-surface">Welcome back, {user?.personalInfo?.name?.split(' ')[0] || 'Developer'}</h2>
-                    <p className="text-on-surface-variant mt-xs">Template: <span className="text-primary font-semibold">Modern Dev</span> • Last synced: 2 minutes ago</p>
+                    <p className="text-on-surface-variant mt-xs">Template: <span className="text-primary font-semibold">Developer Pro</span> • Last synced: 2 minutes ago</p>
                   </div>
                   <div className="flex gap-sm">
                     <button className="px-md py-sm border border-outline-variant rounded-lg text-label-md font-semibold hover:bg-surface-container-low transition-colors">Edit Bio</button>
@@ -152,8 +152,8 @@ export default function Dashboard() {
                     </div>
                     <div className="space-y-md py-xl text-center">
                       <div className="w-48 h-8 bg-primary/20 mx-auto rounded-lg"></div>
-                      <div className="w-full max-w-md h-4 bg-surface-container-highest mx-auto rounded"></div>
-                      <div className="w-3/4 max-w-sm h-4 bg-surface-container-highest mx-auto rounded"></div>
+                      <div className="w-full max-w-[400px] h-4 bg-surface-container-highest mx-auto rounded"></div>
+                      <div className="w-3/4 max-w-[300px] h-4 bg-surface-container-highest mx-auto rounded"></div>
                     </div>
                     <div className="grid grid-cols-3 gap-md opacity-60">
                       <div className="aspect-video bg-surface-container-highest rounded-lg border border-outline-variant"></div>

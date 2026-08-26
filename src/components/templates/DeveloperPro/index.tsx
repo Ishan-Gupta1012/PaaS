@@ -111,10 +111,24 @@ export default function DeveloperProTemplate({ data }: Props) {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.name && formData.email && formData.message) {
       setFormSent(true);
+      try {
+        await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            message: formData.message,
+            formName: 'Developer Pro Template Contact Form',
+          })
+        });
+      } catch (err) {
+        console.error(err);
+      }
       setTimeout(() => { setFormData({ name: "", email: "", message: "" }); setFormSent(false); }, 3500);
     }
   };

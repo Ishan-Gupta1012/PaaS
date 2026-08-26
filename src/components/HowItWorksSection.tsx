@@ -1,69 +1,68 @@
 export default function HowItWorksSection() {
   return (
-    <section className="py-24 bg-gray-50/50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-gray-200 text-xs font-medium text-gray-600 mb-8 shadow-sm">
-          <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
-          How it works
+    <section className="py-20 md:py-32 bg-[#F7F4EF] border-b border-[#111111] text-[#111111] font-sans bg-grid-paper">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8">
+        
+        {/* Header */}
+        <div className="mb-16 text-center max-w-2xl mx-auto">
+          <div className="font-mono text-xs uppercase tracking-widest text-[#111111]/60 mb-6">
+            ✦ Simple Workflow
+          </div>
+          <h2 className="font-serif text-4xl sm:text-5xl leading-tight tracking-tight mb-4">
+            Raw details in. <span className="italic text-stroke font-normal">Premium portfolio out.</span>
+          </h2>
+          <p className="text-sm md:text-base text-[#111111]/70">
+            Four simple steps. No complex layouts to configure. We transform your raw engineering data into a stunning, responsive portfolio.
+          </p>
         </div>
-        
-        <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-6">
-          Raw details in. <span className="text-primary">Premium<br />portfolio out.</span>
-        </h2>
-        
-        <p className="text-lg text-gray-500 mb-20 max-w-2xl mx-auto">
-          Four steps. No drag-and-drop. No AI-generated fluff. Just your work, framed properly.
-        </p>
-        
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
+
+        {/* 4-column border-boxed grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border-t border-l border-[#111111]">
           {/* Step 1 */}
-          <div className="bg-white border border-gray-100 rounded-3xl p-8 shadow-sm relative pt-12">
-            <div className="absolute -top-4 left-8 bg-primary text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-md">
-              STEP 01
+          <div className="p-8 border-r border-b border-[#111111] bg-[#F7F4EF]/50 hover:bg-[#111111]/5 transition-colors flex flex-col justify-between min-h-[220px]">
+            <div>
+              <div className="font-mono text-xs text-[#111111]/40 mb-6">[01 / INPUT]</div>
+              <h3 className="font-serif text-xl font-semibold mb-3">Dump raw details</h3>
+              <p className="text-xs text-[#111111]/70 leading-relaxed">
+                Paste your resume, share your GitHub link, or draft bullet points. No formatting necessary.
+              </p>
             </div>
-            <div className="text-gray-200 font-bold text-3xl mb-4">01</div>
-            <h3 className="text-lg font-bold text-gray-900 mb-3">Dump your raw details</h3>
-            <p className="text-gray-500 text-sm leading-relaxed">
-              Paste your resume, GitHub username, project notes — anything. No formatting needed.
-            </p>
           </div>
           
           {/* Step 2 */}
-          <div className="bg-white border border-gray-100 rounded-3xl p-8 shadow-sm relative pt-12">
-            <div className="absolute -top-4 left-8 bg-primary text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-md">
-              STEP 02
+          <div className="p-8 border-r border-b border-[#111111] bg-[#F7F4EF]/50 hover:bg-[#111111]/5 transition-colors flex flex-col justify-between min-h-[220px]">
+            <div>
+              <div className="font-mono text-xs text-[#111111]/40 mb-6">[02 / REWRITE]</div>
+              <h3 className="font-serif text-xl font-semibold mb-3">AI formats & polishes</h3>
+              <p className="text-xs text-[#111111]/70 leading-relaxed">
+                We restructure your projects, calculate metrics, and write descriptions. You maintain complete edit control.
+              </p>
             </div>
-            <div className="text-gray-200 font-bold text-3xl mb-4">02</div>
-            <h3 className="text-lg font-bold text-gray-900 mb-3">AI polishes the boring parts</h3>
-            <p className="text-gray-500 text-sm leading-relaxed">
-              We rewrite descriptions, summarize projects, and structure your timeline. You review.
-            </p>
           </div>
           
           {/* Step 3 */}
-          <div className="bg-white border border-gray-100 rounded-3xl p-8 shadow-sm relative pt-12">
-            <div className="absolute -top-4 left-8 bg-primary text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-md">
-              STEP 03
+          <div className="p-8 border-r border-b border-[#111111] bg-[#F7F4EF]/50 hover:bg-[#111111]/5 transition-colors flex flex-col justify-between min-h-[220px]">
+            <div>
+              <div className="font-mono text-xs text-[#111111]/40 mb-6">[03 / THEME]</div>
+              <h3 className="font-serif text-xl font-semibold mb-3">Select a template</h3>
+              <p className="text-xs text-[#111111]/70 leading-relaxed">
+                Pick a template built with premium animations (GSAP, Framer Motion) and fully clean code.
+              </p>
             </div>
-            <div className="text-gray-200 font-bold text-3xl mb-4">03</div>
-            <h3 className="text-lg font-bold text-gray-900 mb-3">Pick a hand-crafted template</h3>
-            <p className="text-gray-500 text-sm leading-relaxed">
-              Premium templates with GSAP, Framer Motion, and a clean Next.js architecture.
-            </p>
           </div>
           
           {/* Step 4 */}
-          <div className="bg-white border border-gray-100 rounded-3xl p-8 shadow-sm relative pt-12">
-            <div className="absolute -top-4 left-8 bg-primary text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-md">
-              STEP 04
+          <div className="p-8 border-r border-b border-[#111111] bg-[#F7F4EF]/50 hover:bg-[#111111]/5 transition-colors flex flex-col justify-between min-h-[220px]">
+            <div>
+              <div className="font-mono text-xs text-[#111111]/40 mb-6">[04 / DEPLOY]</div>
+              <h3 className="font-serif text-xl font-semibold mb-3">Export or Deploy</h3>
+              <p className="text-xs text-[#111111]/70 leading-relaxed">
+                Deploy directly to Vercel/Netlify with one click, or export clean code to host anywhere.
+              </p>
             </div>
-            <div className="text-gray-200 font-bold text-3xl mb-4">04</div>
-            <h3 className="text-lg font-bold text-gray-900 mb-3">Deploy. Or export the code.</h3>
-            <p className="text-gray-500 text-sm leading-relaxed">
-              One-click to Vercel, or download production-ready source you own forever.
-            </p>
           </div>
         </div>
+
       </div>
     </section>
   );

@@ -14,7 +14,7 @@ export default function BuilderPage() {
   const [data, setData] = useState<PortfolioData>(initialPortfolioData);
   const [isPreviewFullscreen] = useState(false);
   const [activeTab, setActiveTab] = useState<'hero' | 'projects' | 'achievements' | 'skills' | 'contact'>('hero');
-  const [selectedTemplate, setSelectedTemplate] = useState<string>('modern-developer');
+  const [selectedTemplate, setSelectedTemplate] = useState<string>('software-engineer');
 
   useEffect(() => {
     if (typeof window !== 'undefined') {

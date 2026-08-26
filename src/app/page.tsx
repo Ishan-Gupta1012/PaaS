@@ -9,7 +9,7 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <>
+    <div className="bg-[#F7F4EF] text-[#111111] min-h-screen flex flex-col custom-cursor font-sans">
       <Navbar />
       <main className="flex-1 flex flex-col w-full">
         <Hero />
@@ -20,6 +20,6 @@ export default function Home() {
         <CtaSection />
       </main>
       <Footer />
-    </>
+    </div>
   );
 }

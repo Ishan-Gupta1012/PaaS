@@ -1,82 +1,180 @@
-import { ArrowRight } from "lucide-react";
+'use client';
+
+import { useState, useRef, useEffect } from 'react';
+import Link from 'next/link';
 
 export default function Hero() {
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [translateX, setTranslateX] = useState(-150);
+  const [scaleValue, setScaleValue] = useState(50);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [localTime, setLocalTime] = useState('');
+
+  // Local Time logic (Hanoi Local Time context)
+  useEffect(() => {
+    const updateTime = () => {
+      const options: Intl.DateTimeFormatOptions = {
+        timeZone: 'Asia/Ho_Chi_Minh',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+      };
+      setLocalTime(new Intl.DateTimeFormat('en-US', options).format(new Date()));
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Draggable Ruler logic
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    setStartX(e.clientX - translateX);
+    e.preventDefault();
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging) return;
+    const newX = e.clientX - startX;
+    
+    // Bounds for scrolling/dragging
+    const minX = -450;
+    const maxX = 150;
+    const boundedX = Math.max(minX, Math.min(maxX, newX));
+    
+    setTranslateX(boundedX);
+    
+    // Calculate percentage (0 - 100) based on bounds
+    const totalRange = maxX - minX;
+    const currentOffset = boundedX - minX;
+    const percentage = Math.round((currentOffset / totalRange) * 100);
+    setScaleValue(percentage);
+  };
+
+  const handleMouseUpOrLeave = () => {
+    setIsDragging(false);
+  };
+
+  // Touch Support
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setIsDragging(true);
+    const touch = e.touches[0];
+    setStartX(touch.clientX - translateX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging) return;
+    const touch = e.touches[0];
+    const newX = touch.clientX - startX;
+    const minX = -450;
+    const maxX = 150;
+    const boundedX = Math.max(minX, Math.min(maxX, newX));
+    setTranslateX(boundedX);
+    
+    const totalRange = maxX - minX;
+    const currentOffset = boundedX - minX;
+    const percentage = Math.round((currentOffset / totalRange) * 100);
+    setScaleValue(percentage);
+  };
+
   return (
-    <section className="relative pt-32 pb-0 lg:pt-40 lg:pb-0 overflow-hidden bg-grid-pattern">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-gray-200 text-xs font-medium text-gray-500 mb-8 shadow-sm">
-          <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
-          Building in public - Validating the idea
-        </div>
+    <section className="relative pt-32 pb-16 md:pt-40 md:pb-24 overflow-hidden border-b border-[#111111] bg-grid-paper select-none text-[#111111]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8">
         
-        <h1 className="text-5xl md:text-[5rem] font-bold tracking-tight text-gray-900 mb-6 leading-[1.1]">
-          Why are developer<br />portfolios still <span className="text-primary">stuck in<br />2020?</span>
-        </h1>
-        
-        <p className="text-lg md:text-xl text-gray-500 mb-10 max-w-2xl mx-auto leading-relaxed">
-          Between internships and DSA grinds, nobody has time to wire up GSAP,
-          Framer Motion, and a clean Next.js architecture from scratch. We do it
-          for you — without the AI fluff.
-        </p>
-        
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-          <button className="w-full sm:w-auto bg-primary hover:bg-primary-hover text-white px-6 py-3 rounded-full font-medium flex items-center justify-center gap-2 transition-all shadow-lg shadow-primary/20">
-            Join the waitlist <ArrowRight className="w-4 h-4" />
-          </button>
-          <button className="w-full sm:w-auto bg-white hover:bg-gray-50 text-gray-900 px-6 py-3 rounded-full font-medium border border-gray-200 transition-all shadow-sm">
-            See how it works
-          </button>
-        </div>
-        
-        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs md:text-sm text-gray-500 font-medium">
-          <div className="flex items-center gap-1.5">
-            <div className="w-1.5 h-1.5 rounded-full bg-gray-400"></div>
-            Production-ready Next.js
-          </div>
-          <div className="flex items-center gap-1.5">
-            <div className="w-1.5 h-1.5 rounded-full bg-gray-400"></div>
-            Framer Motion + GSAP
-          </div>
-          <div className="flex items-center gap-1.5">
-            <div className="w-1.5 h-1.5 rounded-full bg-gray-400"></div>
-            Hand-crafted templates
+        {/* Local time and metadata */}
+        <div className="flex justify-between items-center border-b border-[#111111] pb-6 mb-8 md:mb-12 font-mono text-xs uppercase tracking-widest text-[#111111]/70">
+          <div>Creative Practice / Hanoi, VN</div>
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#111111] animate-pulse-soft"></span>
+            Hanoi: {localTime || '12:00 PM'}
           </div>
         </div>
-      </div>
 
-      {/* Mock Template Preview */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 relative">
-        <div className="absolute top-0 right-8 w-24 h-24 sm:w-32 sm:h-32 bg-primary rounded-[1.5rem] sm:rounded-[2rem] -rotate-12 translate-x-4 -translate-y-6 z-0"></div>
-        <div className="bg-[#0A0A0A] rounded-t-3xl p-8 md:p-12 border-t border-x border-gray-800 shadow-2xl overflow-hidden relative z-10 h-80">
-          <div className="text-gray-500 text-xs font-semibold tracking-[0.2em] uppercase mb-4">Live Template Preview</div>
-          <h2 className="text-4xl md:text-5xl font-semibold text-white mb-2">Aarav Mehta</h2>
-          <p className="text-gray-400 text-sm md:text-base mb-8">Full-stack engineer · ex-Razorpay intern · building developer tools</p>
-          
-          <div className="flex flex-wrap gap-3 mb-10">
-            <span className="px-4 py-1.5 rounded-full bg-gray-900/80 border border-gray-800 text-gray-300 text-xs font-medium">TypeScript</span>
-            <span className="px-4 py-1.5 rounded-full bg-gray-900/80 border border-gray-800 text-gray-300 text-xs font-medium">Next.js</span>
-            <span className="px-4 py-1.5 rounded-full bg-gray-900/80 border border-gray-800 text-gray-300 text-xs font-medium">Postgres</span>
-            <span className="px-4 py-1.5 rounded-full bg-gray-900/80 border border-gray-800 text-gray-300 text-xs font-medium">Rust</span>
+        {/* Hero Content */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start mb-16">
+          <div className="md:col-span-8">
+            <h1 className="font-serif text-5xl sm:text-7xl lg:text-8xl leading-[0.9] tracking-tight mb-8">
+              Why are developer portfolios <span className="italic text-stroke font-normal">still stuck</span> in 2020?
+            </h1>
+          </div>
+          <div className="md:col-span-4 md:pl-6 flex flex-col justify-between h-full pt-2">
+            <p className="font-sans text-sm md:text-base leading-relaxed text-[#111111]/85 mb-8">
+              Portfol.io is a curated platform for creators. We believe every portfolio begins with intention—sketched on craft paper, refined with care, and built to last. We shape your work into a premium, editorial presence.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link 
+                href="/signin" 
+                className="bg-[#111111] text-[#F7F4EF] hover:bg-[#111111]/85 transition-colors px-6 py-3 text-center font-mono text-xs uppercase tracking-widest rounded-sm border border-[#111111]"
+              >
+                Get Started
+              </Link>
+              <Link 
+                href="/works" 
+                className="bg-transparent text-[#111111] hover:bg-[#111111]/5 transition-colors px-6 py-3 text-center font-mono text-xs uppercase tracking-widest rounded-sm border border-[#111111]"
+              >
+                Browse Works
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Draggable ruler micro-interaction */}
+        <div className="border border-[#111111] bg-[#F7F4EF] rounded-sm p-6 relative overflow-hidden flex flex-col gap-4">
+          <div className="flex justify-between items-center font-mono text-xs uppercase tracking-widest text-[#111111]/70">
+            <div>Interactive Tool / Curiosity Index</div>
+            <div className="text-right">Scale: <span className="text-[#111111] font-bold">{scaleValue}%</span></div>
           </div>
 
-          <div className="flex gap-4">
-            <div className="bg-[#111111] border border-gray-800 rounded-2xl p-4 flex flex-col items-center justify-center w-28 sm:w-32 shadow-inner">
-              <span className="text-2xl md:text-3xl font-bold text-white">23</span>
-              <span className="text-[9px] text-gray-500 uppercase tracking-widest mt-1">Projects</span>
+          {/* Draggable Container */}
+          <div 
+            ref={containerRef}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUpOrLeave}
+            onMouseLeave={handleMouseUpOrLeave}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleMouseUpOrLeave}
+            className={`h-24 border-y border-[#111111]/25 relative cursor-grab active:cursor-grabbing overflow-hidden flex items-center bg-[#F7F4EF] transition-shadow ${isDragging ? 'shadow-inner' : ''}`}
+          >
+            {/* The ruler track */}
+            <div 
+              className="absolute left-1/2 flex items-end gap-1.5 h-16 w-max transition-transform duration-75 ease-out"
+              style={{ transform: `translateX(${translateX}px)` }}
+            >
+              {Array.from({ length: 120 }).map((_, i) => {
+                const isMajor = i % 10 === 0;
+                const isMedium = i % 5 === 0 && !isMajor;
+                
+                return (
+                  <div key={i} className="flex flex-col items-center justify-end h-full w-2">
+                    {isMajor && (
+                      <span className="font-mono text-[9px] text-[#111111]/50 mb-1 select-none">
+                        {i * 10}
+                      </span>
+                    )}
+                    <div 
+                      className="w-0.5 bg-[#111111] transition-all"
+                      style={{ 
+                        height: isMajor ? '28px' : isMedium ? '18px' : '10px',
+                        opacity: isMajor ? 0.6 : isMedium ? 0.4 : 0.2
+                      }}
+                    />
+                  </div>
+                );
+              })}
             </div>
-            <div className="bg-[#111111] border border-gray-800 rounded-2xl p-4 flex flex-col items-center justify-center w-28 sm:w-32 shadow-inner">
-              <span className="text-2xl md:text-3xl font-bold text-white flex items-center gap-1">4<span className="text-lg">★</span></span>
-              <span className="text-[9px] text-gray-500 uppercase tracking-widest mt-1">GH Stars 1.2k</span>
-            </div>
-            <div className="bg-[#111111] border border-gray-800 rounded-2xl p-4 flex flex-col items-center justify-center w-28 sm:w-32 shadow-inner">
-              <span className="text-2xl md:text-3xl font-bold text-white">3</span>
-              <span className="text-[9px] text-gray-500 uppercase tracking-widest mt-1">Internships</span>
-            </div>
+
+            {/* Central indicator line */}
+            <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-0.5 bg-red-500 z-10 shadow-sm" />
           </div>
-          
-          {/* Fading bottom gradient */}
-          <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#0A0A0A] to-transparent"></div>
+
+          <div className="font-mono text-[10px] text-[#111111]/50 uppercase tracking-wider text-center">
+            ← Drag the ruler to measure your curiosity limit →
+          </div>
         </div>
+
       </div>
     </section>
   );

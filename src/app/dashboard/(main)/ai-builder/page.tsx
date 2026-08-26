@@ -15,7 +15,7 @@ export default function AIBuilderPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [step, setStep] = useState<1 | 2 | 3>(1);
-  const [selectedTemplate, setSelectedTemplate] = useState<string>('modern-developer');
+  const [selectedTemplate, setSelectedTemplate] = useState<string>('software-engineer');
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);

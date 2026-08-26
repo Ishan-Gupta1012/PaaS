@@ -1,44 +1,83 @@
-import Link from "next/link";
+'use client';
+
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 export default function Footer() {
+  const [hanoiTime, setHanoiTime] = useState('');
+
+  useEffect(() => {
+    const updateHanoiTime = () => {
+      const options: Intl.DateTimeFormatOptions = {
+        timeZone: 'Asia/Ho_Chi_Minh',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false,
+      };
+      const formatted = new Intl.DateTimeFormat('en-US', options).format(new Date());
+      setHanoiTime(formatted);
+    };
+
+    updateHanoiTime();
+    const interval = setInterval(updateHanoiTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <footer className="bg-white pt-16 pb-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-          
-          <div className="md:col-span-2">
-            <div className="flex items-center gap-2 mb-6">
-              <div className="bg-primary text-white w-8 h-8 rounded-lg flex items-center justify-center font-bold text-lg">P</div>
-              <span className="font-bold text-xl tracking-tight text-gray-900">Portfol.io</span>
+    <footer className="bg-[#F7F4EF] border-t border-[#111111] text-[#111111] font-sans">
+      <div className="max-w-7xl mx-auto">
+        {/* Main Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-12 border-b border-[#111111]">
+          {/* Brand Col */}
+          <div className="md:col-span-6 p-8 md:p-12 border-b md:border-b-0 md:border-r border-[#111111] flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-2 mb-6">
+                <div className="border border-[#111111] w-8 h-8 rounded-sm flex items-center justify-center font-serif text-base font-semibold">
+                  S
+                </div>
+                <span className="font-serif font-semibold text-xl tracking-tight">think.design</span>
+              </div>
+              <p className="font-serif text-2xl md:text-3xl leading-tight italic mb-8 text-[#111111]/85">
+                "Thoughtful design, crafted with care and built to last."
+              </p>
             </div>
-            <p className="text-gray-500 text-sm leading-relaxed max-w-xs">
-              Portfolio-as-a-Service for developers. AI handles the boring parts so your engineering shines in a premium, hand-crafted UI.
-            </p>
+            <div className="font-mono text-xs text-[#111111]/60 mt-8">
+              <span className="text-[#111111] font-semibold">HANOI, VN LOCAL TIME:</span> {hanoiTime || '12:00:00'} (GMT+7)
+            </div>
           </div>
-          
-          <div>
-            <h4 className="font-bold text-gray-900 mb-6 text-sm">Product</h4>
-            <ul className="space-y-4">
-              <li><Link href="#" className="text-gray-500 hover:text-black text-sm transition-colors">Features</Link></li>
-              <li><Link href="#" className="text-gray-500 hover:text-black text-sm transition-colors">Vision</Link></li>
-              <li><Link href="#" className="text-gray-500 hover:text-black text-sm transition-colors">Templates</Link></li>
+
+          {/* Navigation Links Col */}
+          <div className="md:col-span-3 p-8 md:p-12 border-b md:border-b-0 md:border-r border-[#111111]">
+            <h4 className="font-mono text-xs uppercase tracking-widest text-[#111111]/45 mb-6">Index</h4>
+            <ul className="space-y-4 font-mono text-xs uppercase tracking-wider">
+              <li><Link href="/" className="hover:text-black hover:underline transition-all">Home</Link></li>
+              <li><Link href="/about" className="hover:text-black hover:underline transition-all">About</Link></li>
+              <li><Link href="/works" className="hover:text-black hover:underline transition-all">Works</Link></li>
+              <li><Link href="/contact" className="hover:text-black hover:underline transition-all">Contact</Link></li>
             </ul>
           </div>
-          
-          <div>
-            <h4 className="font-bold text-gray-900 mb-6 text-sm">Build in public</h4>
-            <ul className="space-y-4">
-              <li><Link href="#" className="text-gray-500 hover:text-black text-sm transition-colors">Twitter / X</Link></li>
-              <li><Link href="#" className="text-gray-500 hover:text-black text-sm transition-colors">LinkedIn</Link></li>
-              <li><Link href="#" className="text-gray-500 hover:text-black text-sm transition-colors">GitHub</Link></li>
+
+          {/* Social Links Col */}
+          <div className="md:col-span-3 p-8 md:p-12">
+            <h4 className="font-mono text-xs uppercase tracking-widest text-[#111111]/45 mb-6">Socials</h4>
+            <ul className="space-y-4 font-mono text-xs uppercase tracking-wider">
+              <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-black hover:underline transition-all">Instagram</a></li>
+              <li><a href="https://behance.net" target="_blank" rel="noopener noreferrer" className="hover:text-black hover:underline transition-all">Behance</a></li>
+              <li><a href="https://dribbble.com" target="_blank" rel="noopener noreferrer" className="hover:text-black hover:underline transition-all">Dribbble</a></li>
+              <li><a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-black hover:underline transition-all">Twitter / X</a></li>
             </ul>
           </div>
-          
         </div>
-        
-        <div className="pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-gray-400 text-xs">© 2026 Portfol.io — Built in public.</p>
-          <p className="text-gray-400 text-xs">Crafted with intent. Shipped with conviction.</p>
+
+        {/* Footer Sub Bar */}
+        <div className="p-8 md:px-12 flex flex-col md:flex-row justify-between items-center gap-4 font-mono text-[10px] text-[#111111]/60 uppercase tracking-widest">
+          <div>
+            © 2026 Studio Think. All Rights Reserved.
+          </div>
+          <div className="flex gap-2 items-center">
+            <span>Crafted with intent. Shipped with conviction.</span>
+          </div>
         </div>
       </div>
     </footer>
